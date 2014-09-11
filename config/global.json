@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "Pony Up": {
+            "applicationId": "Ee0MUKJlx3VeKFoeJJoc4B5WBYwvIUAIpDIwyOVl", 
+            "masterKey": "23cRrSSgY9O3n2gicHofmxlBVaoUC20HoVaZhvp9"
+        }, 
+        "_default": {
+            "link": "Pony Up"
+        }
+    }
+}
