@@ -282,9 +282,9 @@ input::-webkit-inner-spin-button {
 .animate.ng-enter, .animate.ng-leave {
   opacity: 0;
   -webkit-transition:all .5s ease-in-out;
-    -moz-transition:all .5s ease-in-out;
-    -o-transition:all .5s ease-in-out;
-    transition:all .5s ease-in-out;
+  -moz-transition:all .5s ease-in-out;
+  -o-transition:all .5s ease-in-out;
+  transition:all .5s ease-in-out;
 }
 
 .animate.ng-enter {
@@ -307,9 +307,9 @@ input::-webkit-inner-spin-button {
 .fa.ng-leave {
   opacity: 0;
   -webkit-transition:all .0s ease-in-out;
-    -moz-transition:all .0s ease-in-out;
-    -o-transition:all .0s ease-in-out;
-    transition:all .0s ease-in-out;
+  -moz-transition:all .0s ease-in-out;
+  -o-transition:all .0s ease-in-out;
+  transition:all .0s ease-in-out;
 }
 
 .specialAlert {
