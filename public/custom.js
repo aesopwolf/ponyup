@@ -1,7 +1,8 @@
 var app = angular.module('app', [
   'ui.router',
   'ui.bootstrap',
-  'ngFitText'
+  'ngFitText',
+  'angular-loading-bar'
 ])
 .filter('url', function ($sce) {
   return function (text) {
@@ -81,6 +82,7 @@ var app = angular.module('app', [
   $scope.totalPrice = 0;
   $scope.isFocused = false;
   $scope.isCollapsed = true;
+  $scope.loading = false;
 
   $scope.focusInput = function() {
     $scope.isFocused = !$scope.isFocused;
@@ -110,12 +112,16 @@ var app = angular.module('app', [
   }, true)
 
   $scope.submit = function() {
+    $scope.loading = true;
+    $scope.errorMessage = false;
     $http.post('api/cause', $scope.cause)
     .success(function(data) {
-      console.log(data);
+      $scope.loading = false;
     })
-    .error(function() {
-      alert("error");
+    .error(function(data) {
+      $scope.loading = false;
+      $scope.errorMessage = data.message || "You can try refreshing the page.";
     });
+
   }
 });

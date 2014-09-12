@@ -1,4 +1,5 @@
 <div class="row">
+<div class="col-sm-12">
   <h1 class="text-center" data-fittext-max="50" data-fittext-min="12" data-fittext="1.5">An easy way to collect money</h1>
   <form name="theCause" role="form">
     <div class="form-group">
@@ -15,7 +16,7 @@
       <table class="table table-striped table-responsive table-condensed">
         <tr ng-repeat="item in cause.items">
           <td class="addRemove">
-            <a ng-click="remove($index)" ng-disabled="$first" class="btn btn-danger text-center"><span class="glyphicon glyphicon-minus"></span></a>
+            <a ng-click="remove($index)" ng-disabled="$first" class="btn btn-danger text-center"><i class="fa fa-minus"></i></a>
           </td>
           <td>
             <input ng-maxlength="60" maxlength="60" ng-show="!$last" class="form-control" type="text" placeholder="{{item.placeholder}}" ng-model="item.description">
@@ -24,8 +25,10 @@
           <td class="priceColumn"><input class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number></td>
         </tr>
       </table>
-      <p style="padding-bottom: 40px;"><button ng-disabled="items.length >= 10" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add another item </button></p>
+      <p style="padding-bottom: 40px;"><button ng-disabled="items.length >= 10" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
     </div>
-    <button ng-disabled="!cause.name" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <span class="glyphicon glyphicon-chevron-right"></span></button>
+    <div ng-if="errorMessage" class="alert alert-danger"><strong>Something went wrong!</strong> {{errorMessage}}</div>
+    <button ng-disabled="!cause.name || loading" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <i ng-if="!loading" class="fa fa-chevron-right"></i><i ng-if="loading" class="fa fa-circle-o-notch fa-spin"></i></button>
   </form>
+  </div>
 </div>

@@ -13,10 +13,14 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="custom.css">
 
-  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="bower_components/ngFitText/ng-FitText.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+
   <script src="custom.js"></script>
 </head>
 <body class="main" ng-controller="main">
@@ -47,8 +51,14 @@
   <div class="container body" ui-view></div>
 
   <footer style="margin-top: 40px;">
-    <p class="pull-right"><a href="mailto:yourfriends@ponyup.io">yourfriends@ponyup.io</a> &middot; <a href="/faq">FAQ</a></p>
-    <p>&copy; 2014 PonyUp, LLC. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+          <p class="text-center"><a href="/faq">FAQ</a> | <a href="/stats">Stats</a> | <a href="mailto:yourfriends@ponyup.io">yourfriends@ponyup.io</a></p>
+        </div>
+        <div class="col-sm-6"><p class="text-center"><a href="#">Privacy</a> | <a href="#">Terms</a> &copy; 2014 PonyUp, LLC.</p></div>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
