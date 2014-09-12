@@ -1,6 +1,7 @@
 var app = angular.module('app', [
   'ui.router',
   'ui.bootstrap',
+  'ngAnimate',
   'ngFitText',
   'angular-loading-bar'
 ])
@@ -61,9 +62,9 @@ var app = angular.module('app', [
     }
   };
 })
-.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(function($stateProvider, $locationProvider, $uiViewScrollProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
-
+  $uiViewScrollProvider.useAnchorScroll()
   $urlRouterProvider.otherwise("/");
 
   $stateProvider
@@ -74,19 +75,19 @@ var app = angular.module('app', [
     .state('faq', {
       url: "/faq",
       templateUrl: "partials/faq.html"
+    })
+    .state('demo', {
+      url: "/demo",
+      templateUrl: "partials/cause.html"
     });
 })
-.controller("main", function($scope, $http) {
+.controller("main", function($rootScope, $scope, $http) {
   $scope.cause = {};
   $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
   $scope.totalPrice = 0;
   $scope.isFocused = false;
   $scope.isCollapsed = true;
   $scope.loading = false;
-
-  $scope.focusInput = function() {
-    $scope.isFocused = !$scope.isFocused;
-  };
 
   $scope.add = function() {
     $scope.isFocused = false;
@@ -122,6 +123,13 @@ var app = angular.module('app', [
       $scope.loading = false;
       $scope.errorMessage = data.message || "You can try refreshing the page.";
     });
-
   }
+
+  $rootScope.pages = 0;
+  $rootScope.$on('$stateChangeStart', function() {
+    $rootScope.pages += 1;
+    if($rootScope.pages >= 2) {
+      $scope.isCollapsed = true;
+    }
+  })
 });

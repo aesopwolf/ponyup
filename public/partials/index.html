@@ -1,9 +1,8 @@
 <div class="row">
-<div class="col-sm-12">
   <h1 class="text-center" data-fittext-max="50" data-fittext-min="12" data-fittext="1.5">An easy way to collect money</h1>
   <form name="theCause" role="form">
     <div class="form-group">
-      <p>&nbsp;&nbsp;What are you collecting money for?</p>
+      <p>&nbsp;What are you collecting money for?</p>
       <input type="text" class="form-control" id="cause" ng-model="cause.name" placeholder="Study group" ng-maxlength="60" maxlength="60" autofocus>
     </div>
     <div class="form-group">
@@ -27,8 +26,7 @@
       </table>
       <p style="padding-bottom: 40px;"><button ng-disabled="items.length >= 10" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
     </div>
-    <div ng-if="errorMessage" class="alert alert-danger"><strong>Something went wrong!</strong> {{errorMessage}}</div>
+    <div ng-if="errorMessage" class="alert alert-danger animate"><strong>Something went wrong!</strong> {{errorMessage}}</div>
     <button ng-disabled="!cause.name || loading" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <i ng-if="!loading" class="fa fa-chevron-right"></i><i ng-if="loading" class="fa fa-circle-o-notch fa-spin"></i></button>
   </form>
-  </div>
 </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta name="description" content="PonyUp - An easy way to collect money">
   <link rel="icon" href="favicon.ico">
 
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="custom.css">
 
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="bower_components/ngFitText/ng-FitText.js"></script>
@@ -39,7 +40,7 @@
           </div>
           <div class="navbar-collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="/demo" target="_blank">Demo</a></li>
+              <li><a href="/demo">Demo</a></li>
               <li><a href="/pricing">Pricing</a></li>
             </ul>
           </div>
@@ -48,15 +49,15 @@
     </div>
   </div>
 
-  <div class="container body" ui-view></div>
+  <div class="container body" ui-view autoscroll="true"></div>
 
   <footer style="margin-top: 40px;">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin: 0; padding: 0;">
       <div class="row">
         <div class="col-sm-6">
-          <p class="text-center"><a href="/faq">FAQ</a> | <a href="/stats">Stats</a> | <a href="mailto:yourfriends@ponyup.io">yourfriends@ponyup.io</a></p>
+          <p class="text-center" data-fittext-max="18" data-fittext-min="10" data-fittext="2"><a href="/faq">FAQ</a> | <a href="/stats">Stats</a> | <a href="mailto:yourfriends@ponyup.io">yourfriends@ponyup.io</a></p>
         </div>
-        <div class="col-sm-6"><p class="text-center"><a href="#">Privacy</a> | <a href="#">Terms</a> &copy; 2014 PonyUp, LLC.</p></div>
+        <div class="col-sm-6"><p class="text-center" data-fittext-max="18" data-fittext-min="12" data-fittext="2"><a href="#">Privacy</a> | <a href="#">Terms</a> &copy; 2014 PonyUp LLC.</p></div>
       </div>
     </div>
   </footer>

@@ -3,7 +3,6 @@
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
-
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
   top: 0;
@@ -22,9 +21,35 @@
   width: auto;
 }
 
-.ladda-spinner {
-  right: auto !important;
-  padding-left: 30px !important;
+.navbar {
+  margin-bottom: 0;
+}
+
+.navbar-brands {
+  background-image: url("images/ponyup.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.container>.navbar-header .navbar-toggle {
+  background-color: #3782B2;
+  margin: 0;
+  height: 50px;
+  width: 50px;
+}
+
+.icon-bar {
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+.container>.navbar-header {
+  padding: 4px;
+}
+
+.navbar-collapse {
+  border: none;
 }
 
 /* RESPONSIVE CSS
@@ -64,47 +89,21 @@
     text-decoration: none;
     background-color: #FF8281;
     color: #fff;
+    text-decoration: underline;
   }
 }
 
+/* MAIN CSS
+-------------------------------------------------- */
+
 body, html {
   background-color: #68c4ff;
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.8em;
-}
-
-.navbar {
-  margin-bottom: 0;
-}
-
-.navbar-brands {
-  background-image: url("images/ponyup.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-
-.container>.navbar-header .navbar-toggle {
-  background-color: #3782B2;
-  margin: 0;
-  height: 50px;
-  width: 50px;
-}
-
-.icon-bar {
-  background-color: #fff;
-  margin: 0 auto;
-}
-
-.container>.navbar-header {
-  padding: 4px;
-}
-
-.navbar-collapse {
-  border: none;
 }
 
 a {
@@ -196,8 +195,8 @@ table {
 
 .main {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .body {
@@ -219,7 +218,8 @@ footer p {
 
 footer a {
   color: #dadada;
-  padding: 6px;
+  padding: 4px;
+  margin: 2px;
 }
 
 footer a:hover {
@@ -264,21 +264,39 @@ input::-webkit-inner-spin-button {
   display: none !important;
 }
 
-@-moz-keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
+
+/* ANIMATIONS
+-------------------------------------------------- */
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  opacity: 0;
+  -webkit-transition:all .5s ease-in-out;
+    -moz-transition:all .5s ease-in-out;
+    -o-transition:all .5s ease-in-out;
+    transition:all .5s ease-in-out;
 }
 
-@-webkit-keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
+[ui-view].ng-enter {
+  opacity: 0;
 }
 
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
+[ui-view].ng-enter-active {
+  opacity: 1;
 }
 
-.fa-spin {
-  animation: fadeIn 5000ms;
+[ui-view].ng-leave {
+  opacity: 1; 
+}
+
+[ui-view].ng-leave-active {
+  display: none;
+}
+
+/*disable animations on font-awesome*/
+.fa.ng-leave {
+  opacity: 0;
+  -webkit-transition:all .0s ease-in-out;
+    -moz-transition:all .0s ease-in-out;
+    -o-transition:all .0s ease-in-out;
+    transition:all .0s ease-in-out;
 }
