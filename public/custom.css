@@ -134,6 +134,12 @@ h1 {
 
 h2 {
   color: #fff;
+  font-size: 30px;
+  background: #FF8281;
+  margin: 0;
+  padding: 0.5em;
+  text-align: center;
+  font-weight: 300;
 }
 
 form {
@@ -178,6 +184,10 @@ table {
   color: #fff;
   font-size: 1.5em;
   font-weight: 300;
+}
+
+.total > td {
+  background-color: #333 !important;
 }
 
 .totalPrice {
@@ -237,6 +247,7 @@ button.jumbo {
 
 ::selection {
     background: #000;
+    color: #fff;
 }
 
 [ng-click],
@@ -268,7 +279,7 @@ input::-webkit-inner-spin-button {
 /* ANIMATIONS
 -------------------------------------------------- */
 
-[ui-view].ng-enter, [ui-view].ng-leave {
+.animate.ng-enter, .animate.ng-leave {
   opacity: 0;
   -webkit-transition:all .5s ease-in-out;
     -moz-transition:all .5s ease-in-out;
@@ -276,19 +287,19 @@ input::-webkit-inner-spin-button {
     transition:all .5s ease-in-out;
 }
 
-[ui-view].ng-enter {
+.animate.ng-enter {
   opacity: 0;
 }
 
-[ui-view].ng-enter-active {
+.animate.ng-enter-active {
   opacity: 1;
 }
 
-[ui-view].ng-leave {
+.animate.ng-leave {
   opacity: 1; 
 }
 
-[ui-view].ng-leave-active {
+.animate.ng-leave-active {
   display: none;
 }
 
@@ -299,4 +310,21 @@ input::-webkit-inner-spin-button {
     -moz-transition:all .0s ease-in-out;
     -o-transition:all .0s ease-in-out;
     transition:all .0s ease-in-out;
+}
+
+.specialAlert {
+  padding: 0;
+  margin: -15px;
+  margin-top: 0;
+  border-radius: 0;
+  line-height: 2em;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  margin-bottom: 100px;
+  z-index: 100;
+}
+
+.panel {
+  font-size: 0.8em;
 }
