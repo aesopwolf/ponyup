@@ -1,0 +1,17 @@
+{
+  "name": "ngFitText",
+  "version": "2.4.0",
+  "main": [
+    "ng-FitText.js"
+  ],
+  "keywords": [
+    "angular",
+    "javascript",
+    "typography"
+  ],
+  "ignore": [
+    "styles",
+    "test",
+    "index.html"
+  ]
+}

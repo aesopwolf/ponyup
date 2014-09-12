@@ -1,21 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PonyUp - An easy way to collect money">
+  <link rel="icon" href="favicon.ico">
 
-<html>
-  <head>
-    <title>My ParseApp site</title>
-    <style>
-    body { font-family: Helvetica, Arial, sans-serif; }
-    div { width: 800px; height: 400px; margin: 40px auto; padding: 20px; border: 2px solid #5298fc; }
-    h1 { font-size: 30px; margin: 0; }
-    p { margin: 40px 0; }
-    em { font-family: monospace; }
-    a { color: #5298fc; text-decoration: none; }
-    </style>
-  </head>
-  <body>
-    <div>
-      <h1>Congratulations! You're already hosting with Parse.</h1>
-      <p>To get started, edit this file at <em>public/index.html</em> and start adding static content.</p>
-      <p>If you want something a bit more dynamic, delete this file and check out <a href="https://parse.com/docs/hosting_guide#webapp">our hosting docs</a>.</p>
+  <title>PonyUp - An easy way to collect money</title>
+
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans:700,400,300'>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="custom.css">
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="bower_components/ngFitText/ng-FitText.js"></script>
+  <script src="custom.js"></script>
+</head>
+<body class="main" ng-controller="main">
+  <div class="navbar-wrapper">
+    <div class="container">
+      <div class="navbar navbar-static-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" style="padding: 0;"><img class="img-responsive" style="max-height: 50px;" src="images/ponyup.png"></a>
+          </div>
+          <div class="navbar-collapse" collapse="isCollapsed">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/demo" target="_blank">Demo</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
+  </div>
+
+  <div class="container body" ui-view></div>
+
+  <footer style="margin-top: 40px;">
+    <p class="pull-right"><a href="mailto:yourfriends@ponyup.io">yourfriends@ponyup.io</a> &middot; <a href="/faq">FAQ</a></p>
+    <p>&copy; 2014 PonyUp, LLC. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+  </footer>
+</body>
 </html>

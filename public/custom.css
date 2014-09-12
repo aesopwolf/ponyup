@@ -1,0 +1,240 @@
+/* Fix from http://angular-ui.github.io/bootstrap/ */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 20;
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper > .container {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.navbar-wrapper .navbar .container {
+  width: auto;
+}
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .navbar-wrapper {
+    margin-top: 40px;
+  }
+
+  .navbar-wrapper .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .navbar-wrapper .navbar {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .nav>li>a:hover, .nav>li>a:focus {
+    text-decoration: none;
+    background-color: #3782B2;
+    border-radius: 4px;
+    color: #fff;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav>li {
+    background-color: #3782B2;
+  }
+
+  .nav>li>a:hover, .nav>li>a:focus {
+    text-decoration: none;
+    background-color: #FF8281;
+    color: #fff;
+  }
+}
+
+body, html {
+  background-color: #68c4ff;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.8em;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.navbar-brands {
+  background-image: url("images/ponyup.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.container>.navbar-header .navbar-toggle {
+  background-color: #3782B2;
+  margin: 0;
+  height: 50px;
+  width: 50px;
+}
+
+.icon-bar {
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+.container>.navbar-header {
+  padding: 4px;
+}
+
+.navbar-collapse {
+  border: none;
+}
+
+a {
+  color: #fff;
+}
+
+.body p {
+  color: #252525;
+}
+
+.body p a {
+  color: #3782B2;
+  text-decoration: underline;
+  padding: 8px;
+}
+
+.body p a:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+h2 {
+  color: #fff;
+}
+
+form {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+input[type="text"], input[type="number"] {
+  height: 50px;
+  font-size: 1em;
+}
+
+input[type="number"] {
+  max-width: 80px
+}
+
+td[align="right"] {
+  width: 80px;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #c8c8c8 !important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #c8c8c8 !important;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #c8c8c8 !important;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #c8c8c8 !important;
+}
+
+table {
+  background-color: #fff;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.addRemove {
+  width: 1px;
+  vertical-align: middle !important;
+}
+
+.total {
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+.totalPrice {
+  font-weight: 700;
+  text-align: center;
+}
+
+.priceColumn {
+  width: 80px;
+}
+
+.table>tbody>tr>td {
+  border: none;
+}
+
+.main {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.body {
+  flex: 1;
+}
+
+footer {
+  margin-top: 40px;
+  background-color: #3782B2;
+  padding: 10px;
+  font-weight: 300;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: #dadada;
+  padding: 6px;
+}
+
+footer a:hover {
+  text-decoration: none;
+  color: #fff;
+  background-color: #FF8281;
+  border-radius: 4px;
+}
+
+button.jumbo {
+  padding: 20px;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+::selection {
+    background: #000;
+}
