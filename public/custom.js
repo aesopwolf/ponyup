@@ -43,6 +43,23 @@ var app = angular.module('app', [
     }
   }
 })
+.directive('decimalPlaces', function() {
+  return {
+    link:function($scope, $element, attrs){
+      $element.bind('keypress',function(e){
+        var newVal=$element.val()+(e.charCode!==0?String.fromCharCode(e.charCode):'');
+        if($element.val().search(/(.*)\.[0-9][0-9]/)===0 && newVal.length>$element.val().length){
+          e.preventDefault();
+        }
+        var temp = $element.val().toString();
+
+        if($element.val() > 9999.99) {
+          e.preventDefault();
+        }
+      });
+    }
+  };
+})
 .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
@@ -58,8 +75,9 @@ var app = angular.module('app', [
       templateUrl: "partials/faq.html"
     });
 })
-.controller("main", function($scope) {
-  $scope.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+.controller("main", function($scope, $http) {
+  $scope.cause = {};
+  $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
   $scope.totalPrice = 0;
   $scope.isFocused = false;
   $scope.isCollapsed = true;
@@ -70,7 +88,7 @@ var app = angular.module('app', [
 
   $scope.add = function() {
     $scope.isFocused = false;
-    $scope.items.push({});
+    $scope.cause.items.push({});
     setTimeout(function() {
       $scope.$apply(function() {
         $scope.isFocused = true;
@@ -79,15 +97,25 @@ var app = angular.module('app', [
   }
 
   $scope.remove = function(data) {
-    $scope.items.splice(data, 1);
+    $scope.cause.items.splice(data, 1);
   };
 
-  $scope.$watch("items", function(newValue, oldValue) {
+  $scope.$watch("cause.items", function(newValue, oldValue) {
     $scope.totalPrice = 0;
-    angular.forEach($scope.items, function(value, key) {
+    angular.forEach($scope.cause.items, function(value, key) {
       if(parseFloat(value.price, 10)) {
         $scope.totalPrice += parseFloat(value.price, 10);
       }
     })
   }, true)
+
+  $scope.submit = function() {
+    $http.post('api/cause', $scope.cause)
+    .success(function(data) {
+      console.log(data);
+    })
+    .error(function() {
+      alert("error");
+    });
+  }
 });

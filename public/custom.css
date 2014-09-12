@@ -141,14 +141,6 @@ input[type="text"], input[type="number"] {
   font-size: 1em;
 }
 
-input[type="number"] {
-  max-width: 80px
-}
-
-td[align="right"] {
-  width: 80px;
-}
-
 ::-webkit-input-placeholder { /* WebKit browsers */
     color:    #c8c8c8 !important;
 }
@@ -189,7 +181,7 @@ table {
 }
 
 .priceColumn {
-  width: 80px;
+  width: 100px;
 }
 
 .table>tbody>tr>td {
@@ -237,4 +229,25 @@ button.jumbo {
 
 ::selection {
     background: #000;
+}
+
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+input.ng-dirty.ng-invalid {
+  border: 2px solid #E14D4C;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

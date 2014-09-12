@@ -1,8 +1,12 @@
-var express = require('express');
+var express = require('express'),
+    bodyParser = require('body-parser');
 var app = express();
 
-app.get('/api/test', function(req, res) {
-  res.send("test");
+app.use(express.static('public'));
+app.use(bodyParser.json());
+
+app.post('/api/cause', function(req, res) {
+  res.send(req.body);
 });
 
 app.listen(8080);
