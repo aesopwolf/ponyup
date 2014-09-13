@@ -32,6 +32,10 @@ var app = angular.module('app', [
     .state('demo.active', {
       templateUrl: 'partials/cause.html',
       controller: 'causeCtrl'
+    })
+    .state('pricing', {
+      url: '/pricing',
+      templateUrl: 'partials/pricing.html'
     });
 })
 .run(function($location) {
@@ -81,8 +85,12 @@ var app = angular.module('app', [
   $scope.cause = {};
   $scope.cause.name = "Summer BBQ at the beach";
   $scope.cause.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
-  $scope.cause.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}, {description: "Plates/napkins/charcoal/lighter fluid", price: 15.16}];
+  $scope.cause.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}];
 
+  $scope.totalPrice = 0;
+  angular.forEach($scope.cause.items, function(value, key) {
+    $scope.totalPrice += value.price;
+  });
   var handler = StripeCheckout.configure({
     key: 'pk_test_854lbQWakbhRqcBFPcjRfXfx',
     token: function(token) {
@@ -109,7 +117,6 @@ var app = angular.module('app', [
   }
 })
 .controller("mainCtrl", function($rootScope, $scope, $http, $location, $timeout, $state) {
-  $rootScope.playDemo = false;
   $scope.cause = {};
   $scope.cause.name = '';
   $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
@@ -135,8 +142,15 @@ var app = angular.module('app', [
   };
 
   $scope.demo = function() {
-    $rootScope.playDemo = true;
-
+    if($rootScope.isDemoPlaying) {
+      // in case people click the button twice in a row
+      return
+    };
+    if($location.path() !== '/') {
+      $state.go('home');
+    }
+    $rootScope.isDemoPlaying = true;
+    $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
     $timeout(function() {
       typingAnimation('$scope.cause.name', "Summer BBQ at the beach");
       $timeout(function() {
@@ -153,7 +167,7 @@ var app = angular.module('app', [
       }, 1200);
 
       $timeout(function() {
-        $rootScope.playDemo = false;
+        $rootScope.isDemoPlaying = false;
         $state.go('demo');
       }, 2100);
     }, 500);
@@ -162,7 +176,9 @@ var app = angular.module('app', [
   // hide the navigation bar for certain pages
   $scope.hidden = true;
   $rootScope.$on('$stateChangeSuccess', function() {
+    $scope.home = false;
     if($location.path() == '/') {
+      $scope.home = true;
       angular.element('.fakeMouse').remove();
       $scope.cause = {};
       $scope.cause.name = '';

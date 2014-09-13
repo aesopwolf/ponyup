@@ -11,6 +11,10 @@
           <td>{{item.description}}</td>
           <td class="priceColumn">{{item.price | currency:"$"}}</td>
         </tr>
+        <tr class="total">
+          <td>Total</td>
+          <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
+        </tr>
       </table>
     </div>
 
@@ -56,7 +60,7 @@
         </li>
         <li class="list-group-item blackFriday">
           <div class="pull-left">
-            <h3>How much do you want to contribute?</h3>
+            <h3>Your contribution: </h3>
           </div>
           <div class="pull-right">
             <input required class="form-control priceColumn" type="number" placeholder="$0.00" ng-model="dollarAmount" min="0" max="10000" step="any" decimal-places valid-number>

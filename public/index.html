@@ -44,8 +44,7 @@
           </div>
           <div class="navbar-collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-right">
-              <li><a ng-disabled="playDemo" ng-click="demo()">Demo</a><span class="fakeMouse" ng-if="playDemo"></span></li>
-              <!-- <li><a href="/demo">Demo</a></li> -->
+              <li><a ng-click="demo()">Demo</a><span class="fakeMouse" ng-if="isDemoPlaying"></span></li>
               <li><a href="/pricing">Pricing</a></li>
             </ul>
           </div>
