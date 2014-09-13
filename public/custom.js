@@ -49,12 +49,10 @@ var app = angular.module('app', [
       console.log(token.id);
     },
     opened: function() {
-      console.log('opened');
       angular.element('body').addClass('overflowFix');
       angular.element('footer').addClass('hidden');
     },
     closed: function() {
-      console.log('closed'),
       angular.element('body').removeClass('overflowFix');
       angular.element('footer').removeClass('hidden');
     }
@@ -63,8 +61,8 @@ var app = angular.module('app', [
   $scope.getCC = function() {
     handler.open({
       name: 'Sarah Fox',
-      description: 'Kimberly\'s Surpise Birthday BBQ',
-      amount: 2000
+      description: 'Kimberly\'s Surprise Birthday BBQ',
+      amount: $scope.dollarAmount * 100
     });
   }
 })
@@ -82,7 +80,7 @@ var app = angular.module('app', [
   });
 
   $scope.cause = {};
-  $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+  $scope.cause.lineItems = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
   $scope.totalPrice = 0;
   $scope.isFocused = false;
   $scope.isCollapsed = true;
@@ -90,7 +88,7 @@ var app = angular.module('app', [
 
   $scope.add = function() {
     $scope.isFocused = false;
-    $scope.cause.items.push({});
+    $scope.cause.lineItems.push({});
     setTimeout(function() {
       $scope.$apply(function() {
         $scope.isFocused = true;
@@ -99,12 +97,12 @@ var app = angular.module('app', [
   }
 
   $scope.remove = function(data) {
-    $scope.cause.items.splice(data, 1);
+    $scope.cause.lineItems.splice(data, 1);
   };
 
-  $scope.$watch("cause.items", function(newValue, oldValue) {
+  $scope.$watch("cause.lineItems", function(newValue, oldValue) {
     $scope.totalPrice = 0;
-    angular.forEach($scope.cause.items, function(value, key) {
+    angular.forEach($scope.cause.lineItems, function(value, key) {
       if(parseFloat(value.price, 10)) {
         $scope.totalPrice += parseFloat(value.price, 10);
       }

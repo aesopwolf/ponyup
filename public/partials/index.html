@@ -14,7 +14,7 @@
       </table>
       <div class="panel panel-default">
         <table class="table table-striped table-responsive table-condensed">
-          <tr ng-repeat="item in cause.items">
+          <tr ng-repeat="item in cause.lineItems">
             <td class="addRemove">
               <a ng-click="remove($index)" ng-disabled="$first" class="btn btn-danger text-center"><i class="fa fa-minus"></i></a>
             </td>
@@ -26,7 +26,7 @@
           </tr>
         </table>
       </div>
-      <p style="padding-bottom: 40px;"><button ng-disabled="cause.items.length >= 10" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
+      <p style="padding-bottom: 40px;"><button ng-disabled="cause.lineItems.length >= 10" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
     </div>
     <div ng-if="errorMessage" class="alert alert-danger animate"><strong>Something went wrong!</strong> {{errorMessage}}</div>
     <button ng-disabled="!cause.name || loading" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <i ng-if="!loading" class="fa fa-chevron-right"></i><i ng-if="loading" class="fa fa-circle-o-notch fa-spin"></i></button>

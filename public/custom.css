@@ -135,7 +135,6 @@ h1 {
 h2 {
   color: #fff;
   font-size: 30px;
-  background: #3782B2;
   margin: 0;
   padding: 0.5em;
   text-align: center;
@@ -145,6 +144,8 @@ h2 {
 h3 {
   margin: 0;
   line-height: 50px;
+  font-size: 14px;
+  font-weight: 300; 
 }
 
 form {
@@ -343,4 +344,16 @@ input::-webkit-inner-spin-button {
 .blackFriday {
   background-color: #252525;
   color: #fff;
+}
+
+#elevatorPitch {
+  color: #3782B2;
+  font-weight: 300 !important;
+  font-size: 18px;
+  text-align: center;
+}
+
+#elevatorPitch a {
+  color: #3782B2;
+  text-decoration: underline;
 }

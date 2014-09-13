@@ -1,13 +1,10 @@
 <div class="row">
-  <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">Kimberly's Surpise Birthday BBQ</h2>
-  
-  <div style="max-width: 768px; margin: 0 auto; margin-top: 20px;">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        Hey guys! We're having a suprise birthday party for Kim on November 18th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$$! <br><br>Thanks :)<br>Sarah
-      </div>
+  <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">Kimberly's Surprise Birthday BBQ</h2>
+  <hr style="margin-top: 0;">
+  <div style="max-width: 768px; margin: 0 auto;">
+    <div>
+      <blockquote><small>Hey guys! We're having a surprise birthday party for Kim on November 18th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$$! <br><br>Thanks :)<br>Sarah</small></blockquote>
     </div>
-
     <div class="panel panel-default">
       <table class="table table-striped table-responsive">
         <tr>
@@ -75,16 +72,22 @@
         </li>
         <li class="list-group-item blackFriday">
           <div class="pull-left">
-            <h3 data-fittext-max="20" data-fittext-min="14" data-fittext="2.5">How much do you want contribute?</h3>
+            <h3>How much do you want to contribute?</h3>
           </div>
           <div class="pull-right">
-            <input class="form-control priceColumn" type="number" placeholder="$0.00" ng-model="dollarAmount" min="0" max="10000" step="any" decimal-places valid-number>
+            <input required class="form-control priceColumn" type="number" placeholder="$0.00" ng-model="dollarAmount" min="0" max="10000" step="any" decimal-places valid-number>
           </div>
           <div class="clearfix"></div>
         </li>
       </ul>
     </div>
 
-    <button ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Enter Credit Card Info</button>
+    <button ng-disabled="!dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Enter Credit Card Info</button>
+
+    <hr>
+
+    <div id="elevatorPitch">
+      <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money.</small>
+    </div>
   </div>
 </div>
