@@ -14,11 +14,13 @@
   <link rel="stylesheet" href="custom.css">
 
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/greensock/src/minified/TweenMax.min.js"></script>
+
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="bower_components/ngFitText/ng-FitText.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -42,7 +44,8 @@
           </div>
           <div class="navbar-collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="/demo">Demo</a></li>
+              <li><a ng-disabled="playDemo" ng-click="demo()">Demo</a><span class="fakeMouse" ng-if="playDemo"></span></li>
+              <!-- <li><a href="/demo">Demo</a></li> -->
               <li><a href="/pricing">Pricing</a></li>
             </ul>
           </div>
