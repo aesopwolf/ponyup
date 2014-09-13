@@ -135,11 +135,16 @@ h1 {
 h2 {
   color: #fff;
   font-size: 30px;
-  background: #FF8281;
+  background: #3782B2;
   margin: 0;
   padding: 0.5em;
   text-align: center;
   font-weight: 300;
+}
+
+h3 {
+  margin: 0;
+  line-height: 50px;
 }
 
 form {
@@ -153,18 +158,18 @@ input[type="text"], input[type="number"] {
 }
 
 ::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #c8c8c8 !important;
+    color: #c8c8c8 !important;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    #c8c8c8 !important;
+    color: #c8c8c8 !important;
     opacity:  1;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    #c8c8c8 !important;
+    color: #c8c8c8 !important;
     opacity:  1;
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #c8c8c8 !important;
+    color: #c8c8c8 !important;
 }
 
 table {
@@ -187,7 +192,7 @@ table {
 }
 
 .total > td {
-  background-color: #333 !important;
+  background-color: #FF8281 !important;
 }
 
 .totalPrice {
@@ -220,6 +225,8 @@ footer {
   background-color: #3782B2;
   padding: 10px;
   font-weight: 300;
+  /*position: relative;*/
+  /*z-index: 1;*/
 }
 
 footer p {
@@ -327,4 +334,13 @@ input::-webkit-inner-spin-button {
 
 .panel {
   font-size: 0.8em;
+}
+
+.overflowFix {
+  height: 1px;
+}
+
+.blackFriday {
+  background-color: #252525;
+  color: #fff;
 }

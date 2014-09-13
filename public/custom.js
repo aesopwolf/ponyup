@@ -30,27 +30,54 @@ var app = angular.module('app', [
       controller: 'demoCtrl'
     })
     .state('demo.active', {
-      templateUrl: 'partials/cause.html'
+      templateUrl: 'partials/cause.html',
+      controller: 'causeCtrl'
     });
 })
 .run(function($location) {
 
 })
-.controller("demoCtrl", function($scope, $state) {
-  angular.element('.navbar-wrapper').addClass('hidden');
+.controller("demoCtrl", function($state) {
   $state.go('demo.active');
 })
-.controller("causeCtrl", function($rootScope, $scope, $http) {
+.controller("causeCtrl", function($scope, $modal) {
+  var handler = StripeCheckout.configure({
+    key: 'pk_test_854lbQWakbhRqcBFPcjRfXfx',
+    token: function(token) {
+      // Use the token to create the charge with a server-side script.
+      // You can access the token ID with `token.id`
+      console.log(token.id);
+    },
+    opened: function() {
+      console.log('opened');
+      angular.element('body').addClass('overflowFix');
+      angular.element('footer').addClass('hidden');
+    },
+    closed: function() {
+      console.log('closed'),
+      angular.element('body').removeClass('overflowFix');
+      angular.element('footer').removeClass('hidden');
+    }
+  });
 
+  $scope.getCC = function() {
+    handler.open({
+      name: 'Sarah Fox',
+      description: 'Kimberly\'s Surpise Birthday BBQ',
+      amount: 2000
+    });
+  }
 })
 .controller("mainCtrl", function($rootScope, $scope, $http, $location) {
   // hide the navigation bar for certain pages
+  $scope.hidden = true;
   $rootScope.$on('$stateChangeSuccess', function() {
     if($location.path() == '/cause' || $location.path() == '/demo') {
       angular.element('.navbar-wrapper').addClass('hidden');
     }
     else {
       angular.element('.navbar-wrapper').removeClass('hidden');
+      $scope.hidden = false;
     }
   });
 

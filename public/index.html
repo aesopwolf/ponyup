@@ -24,9 +24,10 @@
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
 
   <script src="custom.js"></script>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
 </head>
 <body class="main" ng-controller="mainCtrl">
-  <div class="navbar-wrapper">
+  <div class="navbar-wrapper" ng-if="!hidden">
     <div class="container">
       <div class="navbar navbar-static-top" role="navigation">
         <div class="container">

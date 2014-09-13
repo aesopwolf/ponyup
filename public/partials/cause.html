@@ -73,9 +73,18 @@
           </div>
           <div class="clearfix"></div>
         </li>
+        <li class="list-group-item blackFriday">
+          <div class="pull-left">
+            <h3 data-fittext-max="20" data-fittext-min="14" data-fittext="2.5">How much do you want contribute?</h3>
+          </div>
+          <div class="pull-right">
+            <input class="form-control priceColumn" type="number" placeholder="$0.00" ng-model="dollarAmount" min="0" max="10000" step="any" decimal-places valid-number>
+          </div>
+          <div class="clearfix"></div>
+        </li>
       </ul>
     </div>
 
-    <button data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Send Money to "Sarah Fox"</button>
+    <button ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Enter Credit Card Info</button>
   </div>
 </div>
