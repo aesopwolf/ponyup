@@ -221,6 +221,7 @@ var app = angular.module('app', [
   // fetch the ledger info
   $http.get('/api/ledger/' + $stateParams.id)
   .success(function(body) {
+    angular.element('body').animate({scrollTop: 0}, "fast");
     if(body.code !== 101) {
       $scope.ledger = body;
 
