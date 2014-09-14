@@ -40,7 +40,7 @@
     </div>
 
     <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
-      <blockquote><small>{{ledger.description | unsafe}}</small></blockquote>
+      <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
     </div>
 
     <!-- Line items -->
@@ -142,7 +142,7 @@
       </ul>
     </div>
 
-    <button ng-disabled="!ledger.dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Enter Credit Card Info {{ledger.dollarAmount}}</button>
+    <button ng-disabled="!ledger.dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>
 

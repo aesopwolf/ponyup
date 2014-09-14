@@ -3,7 +3,8 @@ var app = angular.module('app', [
   'ui.bootstrap',
   'ngAnimate',
   'ngFitText',
-  'angular-loading-bar'
+  'angular-loading-bar',
+  'xeditable'
 ])
 .config(function($stateProvider, $locationProvider, $uiViewScrollProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
@@ -38,8 +39,8 @@ var app = angular.module('app', [
       controller: 'ledgerCtrl'
     });
 })
-.run(function($location) {
-
+.run(function(editableOptions) {
+  editableOptions.theme = 'bs3'; // for xeditable
 })
 .animation(".fakeMouse", function() {
   return {
@@ -221,7 +222,7 @@ var app = angular.module('app', [
   .success(function(body) {
     if(body.code !== 101) {
       $scope.ledger = body;
-      
+
       // calculate the total price
       $scope.totalPrice = 0;
       angular.forEach($scope.ledger.items, function(value, key) {

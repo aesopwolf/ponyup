@@ -72,7 +72,7 @@ app.post('/api/ledger/update', function(req, res) {
   req.body.missingEmail = undefined;
 
   // rename description field
-  req.body.description = req.body.descriptionNew ? req.body.descriptionNew : undefined;
+  req.body.description = req.body.descriptionNew ? req.body.descriptionNew : req.body.description;
   req.body.descriptionNew = undefined;
 
   request.put({
