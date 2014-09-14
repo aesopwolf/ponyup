@@ -19,11 +19,6 @@ var app = angular.module('app', [
       url: '/faq',
       templateUrl: 'partials/faq.html'
     })
-    .state('ledger', {
-      url: '/ledger',
-      templateUrl: 'partials/ledger.html',
-      controller: 'ledgerCtrl'
-    })
     .state('demo', {
       url: '/demo',
       templateUrl: 'partials/demo.html',
@@ -226,6 +221,17 @@ var app = angular.module('app', [
   .success(function(body) {
     if(body.code !== 101) {
       $scope.ledger = body;
+      
+      // calculate the total price
+      $scope.totalPrice = 0;
+      angular.forEach($scope.ledger.items, function(value, key) {
+        if(typeof(value.price) === "number") {
+          $scope.totalPrice += value.price;
+        }
+        else {
+          $scope.totalPrice += 0;
+        }
+      });
     }
     else {
       $scope.error = body.error;
@@ -233,17 +239,6 @@ var app = angular.module('app', [
   })
   .error(function() {
 
-  });
-
-  // calculate the total price
-  $scope.totalPrice = 0;
-  angular.forEach($scope.ledger.items, function(value, key) {
-    if(typeof(value.price) === "number") {
-      $scope.totalPrice += value.price;
-    }
-    else {
-      $scope.totalPrice += 0;
-    }
   });
 
   // collect money from a user
@@ -352,7 +347,6 @@ var app = angular.module('app', [
     link: function($scope,elem,attrs) {
       elem.bind('keydown', function(e) {
         var code = e.keyCode || e.which;
-        console.log(attrs.focus);
         if (code === 13) {
           e.preventDefault();
           angular.element("#" + attrs.focus).focus();
@@ -360,6 +354,16 @@ var app = angular.module('app', [
       });
     }
   }
+})
+.directive('selectOnClick', function () {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      element.on('click', function () {
+        this.select();
+      });
+    }
+  };
 })
 .directive('decimalPlaces', function() {
   return {

@@ -1,0 +1,26 @@
+<div class="form-group" ng-hide="editingItems">
+  <table class="table table-responsive table-condensed" style="background-color: #68c4ff; border: none;">
+    <tr>
+      <td colspan="2" style="vertical-align: middle"><span>What are your expenses?</span></td>
+      <td align="center" class="priceColumn"><span ng-if="totalPrice" class="totalPrice">{{totalPrice | currency:"$"}}</td>
+    </tr>
+  </table>
+  <div class="panel panel-default">
+    <table class="table table-striped table-responsive table-condensed">
+      <tr ng-repeat="item in ledger.items">
+        <td class="addRemove">
+          <a ng-click="remove($index)" ng-disabled="$first" class="btn btn-danger text-center"><i class="fa fa-minus"></i></a>
+        </td>
+        <td>
+          <input focus="price{{$index}}" ng-maxlength="60" maxlength="60" ng-if="!$last" class="form-control animate" id="{{'item' + $index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.description">
+          <input focus="price{{$index}}" ng-maxlength="60" maxlength="60" ng-if="$last" class="form-control animate" id="{{'item' + $index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.description" sync-focus-with="isFocused">
+        </td>
+        <td class="priceColumn">
+          <input ng-if="$first" focus="item1" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
+          <input ng-if="!$first" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p style="padding-bottom: 40px;"><button ng-disabled="ledger.items.length >= 100" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
+</div>
