@@ -43,21 +43,22 @@
       <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
     </div>
 
-    <!-- Line items -->
-    <div class="panel panel-default" ng-if="ledger.items.length > 0" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: -2px; z-index: 2; position: relative; border-bottom: 1px;">
+    <!-- Buttons to edit line items -->
+    <div class="panel panel-default" ng-show="ledger.items.length > 0" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: -2px; z-index: 2; position: relative; border-bottom: 1px;">
       <div class="panel-heading">
         <span class="pull-left"><strong>Expenses:</strong></span>
         <span class="pull-right text-right">
-          <a ng-hide="editingItems" ng-click="editingItems = true" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
-          <a ng-show="editingItems" ng-click="editingItems = false" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
-          <a ng-show="editingItems" ng-click="editingItems = false" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
-        </span><div class="clearfix"></div>
+          <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
+          <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
+          <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
+        </span>
+        <div class="clearfix"></div>
       </div>
     </div>
 
-    
+    <!-- Display line items -->
     <div class="panel panel-default" ng-if="ledger.items.length > 0">
-      <table class="table table-striped table-responsive" ng-if="!editingItems">
+      <table class="table table-striped table-responsive" ng-hide="editingItems">
         <tr ng-repeat="item in ledger.items">
           <td style="padding-left: 15px">{{item.description || "(empty)"}}</td>
           <td class="priceColumn">{{item.price || 0 | currency:"$"}}</td>
@@ -69,7 +70,42 @@
       </table>
     </div>
 
-    <div ui-view></div>
+    <div ng-show="editingItems">
+      <form name="theledger" role="form">
+        <div class="panel panel-default" style="margin-top: -21px; border-top-left-radius: 0; border-top-right-radius: 0;">
+          <table class="table table-striped table-responsive table-condensed">
+            <tr ng-repeat="item in ledger.items">
+              <td class="addRemove">
+                <a ng-click="remove($index)" ng-disabled="$first" class="btn btn-danger text-center"><i class="fa fa-minus"></i></a>
+              </td>
+              <td>
+                <input focus="price{{$index}}" ng-maxlength="60" maxlength="60" ng-if="!$last" class="form-control animate" id="{{'item' + $index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.description">
+                <input focus="price{{$index}}" ng-maxlength="60" maxlength="60" ng-if="$last" class="form-control animate" id="{{'item' + $index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.description" sync-focus-with="isFocused">
+              </td>
+              <td class="priceColumn">
+                <input ng-if="$first" focus="item1" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
+                <input ng-if="!$first" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
+              </td>
+            </tr>
+            <tr class="total">
+              <td><button ng-disabled="ledger.items.length >= 100" class="btn btn-success btn-block" ng-click="add()"><i class="fa fa-plus"></i></button></td>
+              <td style="padding-left: 15px">Total</td>
+              <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <span class="pull-right text-right" style="padding-right: 10px;">
+                  <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
+                  <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
+                  <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
+                </span>
+                <div class="clearfix"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
 
     <div class="panel panel-info">
       <div class="panel-heading">

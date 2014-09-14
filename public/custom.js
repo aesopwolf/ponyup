@@ -1,10 +1,11 @@
 var app = angular.module('app', [
+  'angular-loading-bar',
   'ui.router',
   'ui.bootstrap',
   'ngAnimate',
+  'ngCookies',
   'ngFitText',
-  'angular-loading-bar',
-  'xeditable'
+  'xeditable',
 ])
 .config(function($stateProvider, $locationProvider, $uiViewScrollProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
@@ -216,7 +217,7 @@ var app = angular.module('app', [
     $scope.totalPrice += value.price;
   });
 })
-.controller("ledgerCtrl", function($scope, $http, $stateParams, $location) {
+.controller("ledgerCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore) {
   // fetch the ledger info
   $http.get('/api/ledger/' + $stateParams.id)
   .success(function(body) {
@@ -282,6 +283,41 @@ var app = angular.module('app', [
       $scope.errorMessage = data.message || "You can try refreshing the page.";
     });
   }
+
+  // edit line-items
+  $scope.editingItems = false;
+
+  $scope.makeCopy = function(data) {
+    $cookieStore.put('itemsCopy', data);
+  };
+
+  $scope.cancelEditItems = function() {
+    $scope.ledger.items = $cookieStore.get('itemsCopy');
+    $cookieStore.remove('itemsCopy');
+  }
+
+  $scope.add = function() {
+    $scope.isFocused = false;
+    $scope.ledger.items.push({});
+    setTimeout(function() {
+      $scope.$apply(function() {
+        $scope.isFocused = true;
+      });
+    }, 100);
+  }
+
+  $scope.remove = function(data) {
+    $scope.ledger.items.splice(data, 1);
+  };
+
+  $scope.$watch("ledger.items", function(newValue, oldValue) {
+    $scope.totalPrice = 0;
+    angular.forEach($scope.ledger.items, function(value, key) {
+      if(parseFloat(value.price, 10)) {
+        $scope.totalPrice += parseFloat(value.price, 10);
+      }
+    })
+  }, true)
 })
 .filter('url', function ($sce) {
   return function (text) {
