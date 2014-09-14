@@ -221,6 +221,7 @@ var app = angular.module('app', [
   });
 })
 .controller("ledgerCtrl", function($scope, $http, $stateParams, $location) {
+  // fetch the ledger info
   $http.get('/api/ledger/' + $stateParams.id)
   .success(function(body) {
     if(body.code !== 101) {
@@ -234,6 +235,7 @@ var app = angular.module('app', [
 
   });
 
+  // calculate the total price
   $scope.totalPrice = 0;
   angular.forEach($scope.ledger.items, function(value, key) {
     if(typeof(value.price) === "number") {
@@ -244,6 +246,7 @@ var app = angular.module('app', [
     }
   });
 
+  // collect money from a user
   var handler = StripeCheckout.configure({
     key: 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN',
     token: function(token) {
@@ -266,6 +269,21 @@ var app = angular.module('app', [
       name: $scope.ledger.legalName || 'PonyUp, LLC',
       description: $scope.ledger.name,
       amount: $scope.ledger.dollarAmount * 100
+    });
+  }
+
+  // update ledger information
+  $scope.submit = function() {
+    $scope.loading = true;
+    $scope.errorMessage = false;
+    $http.post('api/ledger/update', $scope.ledger)
+    .success(function(data) {
+      $scope.loading = false;
+      $scope.ledger = data;
+    })
+    .error(function(data) {
+      $scope.loading = false;
+      $scope.errorMessage = data.message || "You can try refreshing the page.";
     });
   }
 })

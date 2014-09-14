@@ -17,10 +17,10 @@
         <strong>We need your email so we can send you money:</strong>
       </div>
       <div class="panel-body">
-        <form name="emailForm">
+        <form name="emailForm" ng-submit="submit();">
           <div class="form-group">
             <div class="input-group">
-              <input autofocus class="form-control" required type="email" ng-model="email" placeholder="Enter email" style="height: 48px;">
+              <input autofocus class="form-control" required type="email" ng-model="ledger.missingEmail" placeholder="Enter email" style="height: 48px;">
               <div class="input-group-addon"><button ng-disabled="emailForm.$invalid" type="submit" class="btn btn-primary">Submit</button></div>
             </div>
           </div>
@@ -29,12 +29,12 @@
     </div>
 
     <!-- Description -->
-    <div class="panel panel-default" ng-if="ledger.items.length < 1" ng-hide="dismissDescription">
+    <div class="panel panel-default" ng-if="editDescription || !ledger.description">
       <div class="panel-heading">
         <div class="pull-left">Short description (optional):</div><div class="pull-right"><i style="padding: 10px; margin: -10px;" ng-click="dismissDescription = true" class="fa fa-close"></i></div><div class="clearfix"></div>
       </div>
       <div class="panel-body">
-        <form name="descriptionForm">
+        <form name="descriptionForm" ng-submit="submit();">
           <div class="form-group">
             <textarea required ng-maxlength="300" maxlength="300" name="description" id="description" ng-model="ledger.descriptionNew" class="form-control" rows="3"></textarea>
           </div>
@@ -42,7 +42,8 @@
         </form>
       </div>
     </div>
-    <div ng-if="ledger.description">
+
+    <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
       <blockquote><small>{{ledger.description | unsafe}}</small></blockquote>
     </div>
 
