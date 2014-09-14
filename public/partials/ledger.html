@@ -24,7 +24,7 @@
       <hr>
     </div>
 
-    <!-- Description -->
+    <!-- Empty description -->
     <div class="panel panel-default" ng-if="editDescription || !ledger.description" ng-hide="dismissDescription">
       <div class="panel-heading">
         <div class="pull-left">Short description (optional):</div><div class="pull-right"><i style="padding: 10px; margin: -10px;" ng-click="dismissDescription = true" class="fa fa-close"></i></div><div class="clearfix"></div>
@@ -39,6 +39,7 @@
       </div>
     </div>
 
+    <!-- Show description -->
     <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
       <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
     </div>
@@ -70,6 +71,7 @@
       </table>
     </div>
 
+    <!-- Edit line items -->
     <div ng-show="editingItems">
       <form name="theledger" role="form">
         <div class="panel panel-default" style="margin-top: -21px; border-top-left-radius: 0; border-top-right-radius: 0;">
@@ -107,6 +109,7 @@
       </form>
     </div>
 
+    <!-- Contributions -->
     <div class="panel panel-info">
       <div class="panel-heading">
         <span class="pull-left">So far we've ponied up:</span><span class="pull-right priceColumnAlt"><strong>{{totalContributions || 0 | currency:"$"}}</strong></span><div class="clearfix"></div>
@@ -178,6 +181,7 @@
       </ul>
     </div>
 
+    <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
     <button ng-disabled="!ledger.dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>

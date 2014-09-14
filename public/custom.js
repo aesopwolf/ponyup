@@ -262,8 +262,12 @@ var app = angular.module('app', [
   });
 
   $scope.getCC = function() {
+    if(!$scope.ledger.email) {
+      $scope.ownerError = "The owner hasn't entered their email yet. If this is your listing, please claim it using the box at the top of the page.";
+      return;
+    }
     handler.open({
-      name: $scope.ledger.legalName || 'PonyUp, LLC',
+      name: $scope.ledger.email,
       description: $scope.ledger.name,
       amount: $scope.ledger.dollarAmount * 100
     });
@@ -277,6 +281,9 @@ var app = angular.module('app', [
     .success(function(data) {
       $scope.loading = false;
       $scope.ledger = data;
+      if($scope.ledger.email && $scope.ownerError) {
+        $scope.ownerError = undefined;
+      }
     })
     .error(function(data) {
       $scope.loading = false;
