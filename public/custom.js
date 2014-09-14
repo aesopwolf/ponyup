@@ -19,23 +19,28 @@ var app = angular.module('app', [
       url: '/faq',
       templateUrl: 'partials/faq.html'
     })
-    .state('cause', {
-      url: '/cause',
-      templateUrl: 'partials/cause.html',
-      controller: 'causeCtrl'
+    .state('ledger', {
+      url: '/ledger',
+      templateUrl: 'partials/ledger.html',
+      controller: 'ledgerCtrl'
     })
     .state('demo', {
       url: '/demo',
       templateUrl: 'partials/demo.html',
-      controller: 'demoCtrl'
+      controller: 'demoCtrlForward'
     })
     .state('demo.active', {
-      templateUrl: 'partials/cause.html',
-      controller: 'causeCtrl'
+      templateUrl: 'partials/ledger.html',
+      controller: 'demoCtrl'
     })
     .state('pricing', {
       url: '/pricing',
       templateUrl: 'partials/pricing.html'
+    })
+    .state('listing', {
+      url: "/{id:[A-Za-z0-9]{10}}",
+      templateUrl: 'partials/ledger.html',
+      controller: 'ledgerCtrl'
     });
 })
 .run(function($location) {
@@ -53,8 +58,8 @@ var app = angular.module('app', [
       };
 
       var ending = {
-        top: angular.element("#cause")[0].offsetTop,
-        left: angular.element("#cause")[0].offsetLeft,
+        top: angular.element("#ledger")[0].offsetTop,
+        left: angular.element("#ledger")[0].offsetLeft,
       };
 
       var point1 = {
@@ -78,48 +83,13 @@ var app = angular.module('app', [
     }
   }
 })
-.controller("demoCtrl", function($state) {
+.controller("demoCtrlForward", function($state) {
   $state.go('demo.active');
 })
-.controller("causeCtrl", function($scope, $modal) {
-  $scope.cause = {};
-  $scope.cause.name = "Summer BBQ at the beach";
-  $scope.cause.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
-  $scope.cause.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}];
-
-  $scope.totalPrice = 0;
-  angular.forEach($scope.cause.items, function(value, key) {
-    $scope.totalPrice += value.price;
-  });
-  var handler = StripeCheckout.configure({
-    key: 'pk_test_854lbQWakbhRqcBFPcjRfXfx',
-    token: function(token) {
-      // Use the token to create the charge with a server-side script.
-      // You can access the token ID with `token.id`
-      console.log(token.id);
-    },
-    opened: function() {
-      angular.element('body').addClass('overflowFix');
-      angular.element('footer').addClass('hidden');
-    },
-    closed: function() {
-      angular.element('body').removeClass('overflowFix');
-      angular.element('footer').removeClass('hidden');
-    }
-  });
-
-  $scope.getCC = function() {
-    handler.open({
-      name: 'Sarah Fox',
-      description: 'Summer BBQ at the beach',
-      amount: $scope.dollarAmount * 100
-    });
-  }
-})
 .controller("mainCtrl", function($rootScope, $scope, $http, $location, $timeout, $state) {
-  $scope.cause = {};
-  $scope.cause.name = '';
-  $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+  $scope.ledger = {};
+  $scope.ledger.name = '';
+  $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
 
   $scope.totalPrice = 0;
   $scope.isFocused = false;
@@ -130,7 +100,6 @@ var app = angular.module('app', [
     eval(scope + " = '';");
     var counter = 0;
     var interval = setInterval(function() {
-      // console.log(counter);
       $scope.$apply(function() {
         eval(scope  + " += text.split('')[counter];");
       });
@@ -150,19 +119,19 @@ var app = angular.module('app', [
       $state.go('home');
     }
     $rootScope.isDemoPlaying = true;
-    $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+    $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
     $timeout(function() {
-      typingAnimation('$scope.cause.name', "Summer BBQ at the beach");
+      typingAnimation('$scope.ledger.name', "Summer BBQ at the beach");
       $timeout(function() {
-        typingAnimation('$scope.cause.items[0].description', "Hamburgers and hotdogs");
+        typingAnimation('$scope.ledger.items[0].description', "Hamburgers and hotdogs");
         $timeout(function() {
-          $scope.cause.items[0].price = 22.56;
+          $scope.ledger.items[0].price = 22.56;
         }, 200)
       }, 600);
       $timeout(function() {
-        typingAnimation('$scope.cause.items[1].description', "Drinks and ice");
+        typingAnimation('$scope.ledger.items[1].description', "Drinks and ice");
         $timeout(function() {
-          $scope.cause.items[1].price = 12.56;
+          $scope.ledger.items[1].price = 12.56;
         }, 200)
       }, 1200);
 
@@ -180,12 +149,12 @@ var app = angular.module('app', [
     if($location.path() == '/') {
       $scope.home = true;
       angular.element('.fakeMouse').remove();
-      $scope.cause = {};
-      $scope.cause.name = '';
-      $scope.cause.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+      $scope.ledger = {};
+      $scope.ledger.name = '';
+      $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
     }
 
-    if($location.path() == '/cause' || $location.path() == '/demo') {
+    if($location.path() == '/ledger' || $location.path() == '/demo' || $location.path().split('').length == 11) {
       angular.element('.navbar-wrapper').addClass('hidden');
     }
     else {
@@ -196,7 +165,7 @@ var app = angular.module('app', [
 
   $scope.add = function() {
     $scope.isFocused = false;
-    $scope.cause.items.push({});
+    $scope.ledger.items.push({});
     setTimeout(function() {
       $scope.$apply(function() {
         $scope.isFocused = true;
@@ -205,12 +174,12 @@ var app = angular.module('app', [
   }
 
   $scope.remove = function(data) {
-    $scope.cause.items.splice(data, 1);
+    $scope.ledger.items.splice(data, 1);
   };
 
-  $scope.$watch("cause.items", function(newValue, oldValue) {
+  $scope.$watch("ledger.items", function(newValue, oldValue) {
     $scope.totalPrice = 0;
-    angular.forEach($scope.cause.items, function(value, key) {
+    angular.forEach($scope.ledger.items, function(value, key) {
       if(parseFloat(value.price, 10)) {
         $scope.totalPrice += parseFloat(value.price, 10);
       }
@@ -220,9 +189,10 @@ var app = angular.module('app', [
   $scope.submit = function() {
     $scope.loading = true;
     $scope.errorMessage = false;
-    $http.post('api/cause', $scope.cause)
+    $http.post('api/ledger', $scope.ledger)
     .success(function(data) {
       $scope.loading = false;
+      $location.url('/' + data.objectId);
     })
     .error(function(data) {
       $scope.loading = false;
@@ -237,6 +207,67 @@ var app = angular.module('app', [
       $scope.isCollapsed = true;
     }
   })
+})
+.controller("demoCtrl", function($scope, $http, $stateParams, $location) {
+  $scope.ledger = {};
+  $scope.ledger.name = "Summer BBQ at the beach";
+  $scope.ledger.email = 'yourfriends@ponyup.io';
+  $scope.ledger.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
+  $scope.ledger.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}];
+
+  $scope.totalPrice = 0;
+  angular.forEach($scope.ledger.items, function(value, key) {
+    $scope.totalPrice += value.price;
+  });
+})
+.controller("ledgerCtrl", function($scope, $http, $stateParams, $location) {
+  $http.get('/api/ledger/' + $stateParams.id)
+  .success(function(body) {
+    if(body.code !== 101) {
+      $scope.ledger = body;
+    }
+    else {
+      $scope.error = body.error;
+    }
+  })
+  .error(function() {
+
+  });
+
+  $scope.totalPrice = 0;
+  angular.forEach($scope.ledger.items, function(value, key) {
+    if(typeof(value.price) === "number") {
+      $scope.totalPrice += value.price;
+    }
+    else {
+      $scope.totalPrice += 0;
+    }
+  });
+
+  var handler = StripeCheckout.configure({
+    key: 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN',
+    token: function(token) {
+      // Use the token to create the charge with a server-side script.
+      // You can access the token ID with `token.id`
+      console.log(token.id);
+    },
+    opened: function() {
+      angular.element('body').addClass('overflowFix');
+      angular.element('footer').addClass('hidden');
+    },
+    closed: function() {
+      angular.element('body').removeClass('overflowFix');
+      angular.element('footer').removeClass('hidden');
+    }
+  });
+
+  $scope.getCC = function() {
+    handler.open({
+      name: $scope.ledger.legalName || 'PonyUp, LLC',
+      description: $scope.ledger.name,
+      amount: $scope.ledger.dollarAmount * 100
+    });
+  }
 })
 .filter('url', function ($sce) {
   return function (text) {
@@ -280,6 +311,35 @@ var app = angular.module('app', [
           $element[0].blur();
         }
       })
+    }
+  }
+})
+.directive('focusFirst', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      elem.bind('keydown', function(e) {
+        var code = e.keyCode || e.which;
+        if (code === 13) {
+          e.preventDefault();
+          angular.element('#item0').focus();
+        }
+      });
+    }
+  }
+})
+.directive('focus', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      elem.bind('keydown', function(e) {
+        var code = e.keyCode || e.which;
+        console.log(attrs.focus);
+        if (code === 13) {
+          e.preventDefault();
+          angular.element("#" + attrs.focus).focus();
+        }
+      });
     }
   }
 })

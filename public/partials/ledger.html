@@ -1,0 +1,143 @@
+<div class="row" ng-if="error">
+  <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">Not Found</h2>
+  <hr style="margin-top: 0;">
+  <div style="max-width: 768px; margin: 0 auto;">
+    <h3 class="text-center">The page you visited doesn't exist!</h3>
+  </div>
+</div>
+
+<div class="row" ng-if="ledger.name">
+  <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">{{ledger.name}}</h2>
+  <hr style="margin-top: 0;">
+  <div style="max-width: 768px; margin: 0 auto;">
+
+    <!-- Claim listing -->
+    <div class="panel panel-danger" ng-if="!ledger.email">
+      <div class="panel-heading">
+        <strong>We need your email so we can send you money:</strong>
+      </div>
+      <div class="panel-body">
+        <form name="emailForm">
+          <div class="form-group">
+            <div class="input-group">
+              <input autofocus class="form-control" required type="email" ng-model="email" placeholder="Enter email" style="height: 48px;">
+              <div class="input-group-addon"><button ng-disabled="emailForm.$invalid" type="submit" class="btn btn-primary">Submit</button></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="panel panel-default" ng-if="ledger.items.length < 1" ng-hide="dismissDescription">
+      <div class="panel-heading">
+        <div class="pull-left">Short description (optional):</div><div class="pull-right"><i style="padding: 10px; margin: -10px;" ng-click="dismissDescription = true" class="fa fa-close"></i></div><div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <form name="descriptionForm">
+          <div class="form-group">
+            <textarea required ng-maxlength="300" maxlength="300" name="description" id="description" ng-model="ledger.descriptionNew" class="form-control" rows="3"></textarea>
+          </div>
+          <button ng-disabled="descriptionForm.$invalid" type="submit" class="btn btn-primary pull-right">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div ng-if="ledger.description">
+      <blockquote><small>{{ledger.description | unsafe}}</small></blockquote>
+    </div>
+
+    <!-- Edit items -->
+    <div class="panel panel-danger" ng-if="ledger.items.length < 1">
+      <div class="panel-heading">
+        You haven't entered any items yet!
+      </div>
+      <div class="panel-body">
+        You haven't entered any items yet!
+      </div>
+    </div>
+
+    <!-- Line items -->
+    <div class="panel panel-default" ng-if="ledger.items.length > 0">
+      <div class="panel-heading">
+        <span class="pull-left"><strong>Expenses:</strong></span>
+        <span class="pull-right text-right">
+          <a ng-hide="editingItems" ng-click="editingItems = true" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
+          <a ng-show="editingItems" ng-click="editingItems = false" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
+          <a ng-show="editingItems" ng-click="editingItems = false" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
+        </span><div class="clearfix"></div>
+      </div>
+      <div class="panel-body" style="padding: 0;">
+        <table class="table table-striped table-responsive" ng-if="!editingItems">
+          <tr ng-repeat="item in ledger.items">
+            <td style="padding-left: 15px">{{item.description || "(empty)"}}</td>
+            <td class="priceColumn">{{item.price || 0 | currency:"$"}}</td>
+          </tr>
+          <tr class="total">
+            <td style="padding-left: 15px">Total</td>
+            <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <span class="pull-left">So far we've ponied up:</span><span class="pull-right priceColumnAlt"><strong>$42</strong></span><div class="clearfix"></div>
+      </div>
+
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="pull-left">
+            <i class="fa fa-cc-visa"></i> Nov 18 6:42pm
+          </div>
+          <div class="pull-right priceColumnAlt">
+            $3
+          </div>
+          <div class="clearfix"></div>
+          <div class="pull-left">
+            <i class="fa fa-cc-visa"></i> Nov 19 3:08pm
+          </div>
+          <div class="pull-right priceColumnAlt">
+            $4
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item">
+          <div class="pull-left">
+            <i class="fa fa-cc-discover"></i> Nov 17 4:58pm
+          </div>
+          <div class="pull-right priceColumnAlt">
+            $5
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item">
+          <div class="pull-left">
+            <i class="fa fa-cc-mastercard"></i> Nov 24 8:12pm
+          </div>
+          <div class="pull-right priceColumnAlt">
+            $8
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item blackFriday">
+          <div class="pull-left">
+            <h3>Your contribution: </h3>
+          </div>
+          <div class="pull-right">
+            <input style="font-size: 1.5em" class="form-control priceColumn" type="number" placeholder="$0.00" ng-model="ledger.dollarAmount" min="0" max="10000" step="any" decimal-places valid-number>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+
+    <button ng-disabled="!ledger.dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Enter Credit Card Info {{ledger.dollarAmount}}</button>
+
+    <hr>
+
+    <div id="elevatorPitch">
+      <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money.</small>
+    </div>
+  </div>
+</div>

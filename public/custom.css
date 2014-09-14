@@ -144,8 +144,7 @@ h2 {
 h3 {
   margin: 0;
   line-height: 50px;
-  font-size: 14px;
-  font-weight: 300; 
+  font-size: 1.5em;
 }
 
 blockquote {
@@ -197,7 +196,6 @@ table {
 .total {
   color: #fff;
   font-size: 1.5em;
-  font-weight: 300;
 }
 
 .total > td {
@@ -211,6 +209,11 @@ table {
 
 .priceColumn {
   width: 100px;
+}
+
+.priceColumnAlt {
+  width: 74px;
+  text-align: left;
 }
 
 .table>tbody>tr>td {
