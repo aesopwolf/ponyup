@@ -118,7 +118,7 @@
 
 
       <ul class="list-group">
-        <li class="list-group-item" ng-if="!totalContributions">
+        <li class="list-group-item" ng-if="!ledger.contributions || ledger.contributions.length < 1">
             <h3 class="text-center" style="padding-top: 30px; padding-bottom: 30px;"><strong>No one has made any contributions yet!</strong></h3>
             <div class="container" style="width: 100%">
               <div class="row">
@@ -135,7 +135,18 @@
               </div>
             </div>
         </li>
-        <!-- <li class="list-group-item">
+        <li class="list-group-item" ng-repeat="payment in ledger.contributions">
+          <div class="pull-left">
+            <i class="fa fa-cc-{{payment.card.brand | lowercase}}"></i> {{ payment.created | date:'MMM d, y h:mm a'}}
+          </div>
+          <div class="pull-right priceColumnAlt">
+            {{payment.amount / 100 | currency:"$"}}
+          </div>
+          <div class="clearfix"></div>
+        </li>
+
+        <!-- 
+        <li class="list-group-item">
           <div class="pull-left">
             <i class="fa fa-cc-visa"></i> Nov 18 6:42pm
           </div>
@@ -151,6 +162,9 @@
           </div>
           <div class="clearfix"></div>
         </li>
+         -->
+
+        <!-- 
         <li class="list-group-item">
           <div class="pull-left">
             <i class="fa fa-cc-discover"></i> Nov 17 4:58pm
@@ -160,15 +174,7 @@
           </div>
           <div class="clearfix"></div>
         </li>
-        <li class="list-group-item">
-          <div class="pull-left">
-            <i class="fa fa-cc-mastercard"></i> Nov 24 8:12pm
-          </div>
-          <div class="pull-right priceColumnAlt">
-            $8
-          </div>
-          <div class="clearfix"></div>
-        </li> -->
+         -->
 
         <li class="list-group-item blackFriday">
           <div class="pull-left">
@@ -183,6 +189,7 @@
     </div>
 
     <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
+    <div class="alert alert-danger" ng-if="chargeError">{{chargeError}}</div>
     <button ng-disabled="!ledger.dollarAmount" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>

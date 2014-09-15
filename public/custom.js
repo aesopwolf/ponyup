@@ -207,6 +207,7 @@ var app = angular.module('app', [
 })
 .controller("demoCtrl", function($scope, $http, $stateParams, $location) {
   $scope.ledger = {};
+  $scope.ledger.objectId = 123;
   $scope.ledger.name = "Summer BBQ at the beach";
   $scope.ledger.email = 'yourfriends@ponyup.io';
   $scope.ledger.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
@@ -254,9 +255,32 @@ var app = angular.module('app', [
   var handler = StripeCheckout.configure({
     key: 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN',
     token: function(token) {
-      // Use the token to create the charge with a server-side script.
-      // You can access the token ID with `token.id`
-      console.log(token.id);
+      token.amount = $scope.ledger.dollarAmount * 100;
+
+      $http.post('api/charge', token)
+      .success(function(data) {
+        // add payment info to contributions list
+        $scope.ledger.contributions.push(data.message)
+        $scope.ledger.dollarAmount = undefined;
+
+        // add up total contributions
+        $scope.totalContributions = 0;
+        angular.forEach($scope.ledger.contributions, function(value, key) {
+          if(typeof(value.amount) === "number") {
+            $scope.totalContributions += (value.amount  / 100);
+          }
+          else {
+            $scope.totalContributions += 0;
+          }
+        });
+
+        if(data.status == 'error') {
+          $scope.chargeError = data.message;
+        }
+      })
+      .error(function(data) {
+        $scope.chargeError = data;
+      });
     },
     opened: function() {
       angular.element('body').addClass('overflowFix');
@@ -271,7 +295,6 @@ var app = angular.module('app', [
   $scope.getCC = function() {
     var hash = md5($scope.ledger.email.toLowerCase() || "");
     var defaultImage = encodeURI("http://i.imgur.com/dwL4UxC.jpg");
-    console.log(hash);
     if(!$scope.ledger.email) {
       $scope.ownerError = "The owner hasn't entered their email yet. If this is your listing, please claim it using the box at the top of the page.";
       return;
@@ -282,6 +305,7 @@ var app = angular.module('app', [
       amount: $scope.ledger.dollarAmount * 100,
       image: "https://www.gravatar.com/avatar/" + hash + "?d=" + defaultImage
     });
+    $scope.chargeError = undefined;
   }
 
   // update ledger information

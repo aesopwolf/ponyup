@@ -48,7 +48,7 @@ app.post('/api/ledger', function(req, res) {
   })
 });
 
-// READ LEADER
+// READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
   request.get({
     url: "https://api.parse.com/1/classes/Ledger/" + req.params.id,
@@ -61,6 +61,7 @@ app.get('/api/ledger/:id', function(req, res) {
   }, function(error, message, body) {
     body = JSON.parse(body);
     body.name = body.name ? body.name : "(empty)";
+    body.contributions = [];
     res.send(body);
   })
 });
@@ -101,6 +102,26 @@ app.post('/api/ledger/update', function(req, res) {
       res.send(req.body);
     }
   })
+});
+
+// CHARGE CARD
+app.post('/api/charge', function(req, res) {
+  stripe = require("stripe")(app.get("Stripe-Secret-Key"));
+
+  var charge = stripe.charges.create({
+    amount: req.body.amount,
+    currency: "usd",
+    card: req.body.id,
+    description: req.body.email
+  }, function(err, charge) {
+    if (err && err.type === 'StripeCardError') {
+      // The card has been declined
+      res.json({status: "error", message: err});
+    }
+    else {
+      res.json({status: "success", message: charge});
+    }
+  });
 });
 
 app.get('*', function(req, res) {
