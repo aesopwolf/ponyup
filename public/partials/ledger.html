@@ -137,44 +137,13 @@
         </li>
         <li class="list-group-item" ng-repeat="payment in ledger.contributions">
           <div class="pull-left">
-            <i class="fa fa-cc-{{payment.card.brand | lowercase}}"></i> {{ payment.created | date:'MMM d, y h:mm a'}}
+            <i class="fa fa-cc-{{payment.cardBrand | lowercase}}"></i> {{ payment.created * 1000 | date:'MMM d, y h:mm a'}}
           </div>
           <div class="pull-right priceColumnAlt">
             {{payment.amount / 100 | currency:"$"}}
           </div>
           <div class="clearfix"></div>
         </li>
-
-        <!-- 
-        <li class="list-group-item">
-          <div class="pull-left">
-            <i class="fa fa-cc-visa"></i> Nov 18 6:42pm
-          </div>
-          <div class="pull-right priceColumnAlt">
-            $3
-          </div>
-          <div class="clearfix"></div>
-          <div class="pull-left">
-            <i class="fa fa-cc-visa"></i> Nov 19 3:08pm
-          </div>
-          <div class="pull-right priceColumnAlt">
-            $4
-          </div>
-          <div class="clearfix"></div>
-        </li>
-         -->
-
-        <!-- 
-        <li class="list-group-item">
-          <div class="pull-left">
-            <i class="fa fa-cc-discover"></i> Nov 17 4:58pm
-          </div>
-          <div class="pull-right priceColumnAlt">
-            $5
-          </div>
-          <div class="clearfix"></div>
-        </li>
-         -->
 
         <li class="list-group-item blackFriday">
           <div class="pull-left">

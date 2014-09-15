@@ -112,16 +112,69 @@ app.post('/api/charge', function(req, res) {
     amount: req.body.amount,
     currency: "usd",
     card: req.body.id,
-    description: req.body.email
+    description: "https:/www.ponyup.io/" + req.body.objectId,
+    metadata: {
+      customerEmail: req.body.email
+    },
+    statement_description: ".io/" + req.body.objectId,
+    receipt_email: req.body.email
   }, function(err, charge) {
     if (err && err.type === 'StripeCardError') {
       // The card has been declined
       res.json({status: "error", message: err});
     }
     else {
-      res.json({status: "success", message: charge});
+      // add some extra meta info
+      charge.chargeId = charge.id;
+      charge.ledgerId = req.body.objectId;
+
+      // save charge to parse
+      request.post({
+        json: charge,
+        url: "https://api.parse.com/1/classes/Charge",
+        headers: {
+          "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
+          "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+        },
+        strictSSL: true,
+        gzip: true
+      }, function(error, message, body) {
+        // send the user the response
+        res.json({status: "success", message: charge});
+      })
     }
   });
+});
+
+// GET PAYMENTS FOR A PARTICULAR LEDGER
+app.get('/api/ledger/:id/charges', function(req, res) {
+  var query = encodeURI('where={"ledgerId": "' + req.params.id + '"}');
+  request.get({
+    url: "https://api.parse.com/1/classes/Charge?" + query,
+    headers: {
+      "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
+      "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+    },
+    strictSSL: true,
+    gzip: true
+  }, function(error, message, body) {
+    var bodyObject = JSON.parse(body);
+
+    // select only certain fields to make public
+    var filteredCharges = [];
+    _.each(bodyObject.results, function(element, index, list) {
+      element.cardBrand = element.card.type;
+      element = _.pick(element, [
+        'cardBrand',
+        'amount',
+        'created'
+      ]);
+      filteredCharges.push(element);
+    });
+
+    // send it off
+    res.json({results: filteredCharges});
+  })
 });
 
 app.get('*', function(req, res) {

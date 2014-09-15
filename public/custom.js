@@ -207,15 +207,42 @@ var app = angular.module('app', [
 })
 .controller("demoCtrl", function($scope, $http, $stateParams, $location) {
   $scope.ledger = {};
-  $scope.ledger.objectId = 123;
+  $scope.ledger.objectId = 'demo';
   $scope.ledger.name = "Summer BBQ at the beach";
   $scope.ledger.email = 'yourfriends@ponyup.io';
   $scope.ledger.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
   $scope.ledger.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}];
+  $scope.ledger.contributions = [
+    {
+      "cardBrand": "Visa",
+      "amount": 300,
+      "created": 1410485457
+    },
+    {
+      "cardBrand": "Mastercard",
+      "amount": 400,
+      "created": 1410755533
+    },
+    {
+      "cardBrand": "Discover",
+      "amount": 500,
+      "created": 1410753208
+    },
+    {
+      "cardBrand": "Visa",
+      "amount": 600,
+      "created": 1410754366
+    }
+  ];
 
   $scope.totalPrice = 0;
   angular.forEach($scope.ledger.items, function(value, key) {
     $scope.totalPrice += value.price;
+  });
+
+  $scope.totalContributions = 0;
+  angular.forEach($scope.ledger.contributions, function(value, key) {
+    $scope.totalContributions += (value["amount"] / 100);
   });
 })
 .controller("ledgerCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore) {
@@ -251,11 +278,33 @@ var app = angular.module('app', [
 
   });
 
+  // fetch the payments made
+  $http.get('/api/ledger/' + $stateParams.id + "/charges")
+  .success(function(body) {
+    if(body.code !== 101) {
+      $scope.ledger.contributions = body.results;
+
+      // calculate the payments made
+      $scope.totalContributions = 0;
+      angular.forEach($scope.ledger.contributions, function(value, key) {
+        $scope.totalContributions += (value.amount / 100);
+      });
+    }
+    else {
+      $scope.error = body.error;
+    }
+  })
+  .error(function() {
+
+  });
+
   // collect money from a user
   var handler = StripeCheckout.configure({
     key: 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN',
     token: function(token) {
       token.amount = $scope.ledger.dollarAmount * 100;
+      token.description = $scope.ledger.name;
+      token.objectId = $scope.ledger.objectId;
 
       $http.post('api/charge', token)
       .success(function(data) {
