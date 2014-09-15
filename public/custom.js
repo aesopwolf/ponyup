@@ -318,6 +318,11 @@ var app = angular.module('app', [
   $scope.cancelEditItems = function() {
     $scope.ledger.items = $cookieStore.get('itemsCopy');
     $cookieStore.remove('itemsCopy');
+
+    // show at least one line-item
+    if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+      $scope.ledger.items = [{}];
+    }
   }
 
   $scope.add = function() {

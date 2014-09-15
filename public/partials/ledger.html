@@ -7,7 +7,7 @@
 </div>
 
 <div class="row" ng-if="ledger.objectId">
-  <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">{{ledger.name}}</h2>
+  <h2 class="title"><span e-maxlength="60" editable-text="ledger.name" onaftersave="submit()">{{ledger.name}}</span></h2>
   <hr style="margin-top: 0;">
   <div style="max-width: 768px; margin: 0 auto;">
 
@@ -96,7 +96,7 @@
               <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
             </tr>
             <tr>
-              <td colspan="3">
+              <td colspan="3" style="background-color: #f5f5f5;">
                 <span class="pull-right text-right" style="padding-right: 10px;">
                   <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
                   <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>

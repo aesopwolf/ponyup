@@ -383,6 +383,7 @@ input::-webkit-inner-spin-button {
 
 form.editable-wrap, textarea.editable-has-buttons, .editable-controls {
   width: 100% !important;
+  position: relative;
 }
 
 .editable-controls .editable-buttons {
@@ -390,4 +391,27 @@ form.editable-wrap, textarea.editable-has-buttons, .editable-controls {
   float: right;
   margin: 10px;
   margin-bottom: 0;
+}
+
+.title {
+  position: relative;
+}
+
+.title .editable-controls input[type="text"] {
+  font-size: 18px;
+  float: left;
+  width: 100%;
+  height: 50px;
+}
+
+.title .editable-controls .editable-buttons {
+  position: absolute;
+  right: 10px;
+  height: 50px;
+  margin: 0;
+  margin-top: 6px;
+}
+
+h2.title .editable {
+  color: #fff;
 }
