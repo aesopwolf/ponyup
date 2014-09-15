@@ -1,21 +1,40 @@
 var express = require('express'),
+    cookieParser = require('cookie-parser'),
+    session = require('express-session'),
+    RedisStore = require('connect-redis')(session),
     bodyParser = require('body-parser'),
     request = require('request'),
     fs = require('fs'),
     nconf = require('nconf'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    bcrypt = require('bcrypt'),
+    cache = require('memory-cache');
 
 var app = express();
-
-// middleware
-app.use(express.static('public'));
-app.use(bodyParser.json());
 
 // load keys/secrets/salts/etc into app
 nconf.argv().file({file: 'config.json'}).env();
 _.each(nconf.get(), function(value, key, list) {
   app.set(key, value.toString());
 });
+
+// middleware
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({
+  store: new RedisStore({
+    host:  app.get('Redis-Host'),
+    pass:  app.get('Redis-Pass'),
+    port: app.get('Redis-Port')
+  }),
+  name: 'session',
+  secret: app.get('Express-Session-Secret'),
+  cookie: { path: '/', httpOnly: true, secure: false, maxAge: null },
+  resave: true,
+  saveUninitialized: true,
+  rolling: true
+}));
 
 // helper functions
 var removeEmptyItems = function(object) {
@@ -34,6 +53,7 @@ var removeEmptyItems = function(object) {
 app.post('/api/ledger', function(req, res) {
   req.body = removeEmptyItems(req.body);
 
+  // save listing to parse
   request.post({
     json: req.body,
     url: "https://api.parse.com/1/classes/Ledger",
@@ -43,13 +63,35 @@ app.post('/api/ledger', function(req, res) {
     },
     strictSSL: true,
     gzip: true
-  }, function(error, message, body) {
+  },
+  function(error, message, body) {
+    // finally send the data to client
     res.send(body);
+
+    // generate secret access key
+    bcrypt.hash(body.objectId, 8, function(err, hash) {
+      // save a secret access key
+      request.put({
+        json: {secretKey: hash},
+        url: "https://api.parse.com/1/classes/Ledger/" + body.objectId,
+        headers: {
+          "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
+          "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+        },
+        strictSSL: true,
+        gzip: true
+      },
+      function(error, message, bodyNew) {
+        // insert body.objectId into user session?
+      });
+    });
   })
 });
 
 // READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
+  console.log(req.session);
+
   request.get({
     url: "https://api.parse.com/1/classes/Ledger/" + req.params.id,
     headers: {
@@ -62,12 +104,28 @@ app.get('/api/ledger/:id', function(req, res) {
     body = JSON.parse(body);
     body.name = body.name ? body.name : "(empty)";
     body.contributions = [];
+    body.secretKey = undefined;
     res.send(body);
+
+    // save to cache (for use in creating a user session faster)
+    cache.put(body.objectId, body);
   })
 });
 
 // UPDATE LEDGER
 app.post('/api/ledger/update', function(req, res) {
+  /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
+  if(req.body.missingEmail && !cache.get(req.body.objectId).email) {
+    // extend the session for one month
+    var hour = 3600000
+    req.session.cookie.maxAge = hour * 24 * 30;
+
+    // save ledger id to session
+    req.session.ledgers = [];
+    req.session.ledgers.push(req.body.objectId);
+  }
+
+  /* CLEAN UP INCOMING DATA */
   req.body = removeEmptyItems(req.body);
 
   // add/remove email keys accordingly
@@ -101,7 +159,7 @@ app.post('/api/ledger/update', function(req, res) {
       req.body.status = "error";
       res.send(req.body);
     }
-  })
+  });
 });
 
 // CHARGE CARD
@@ -178,6 +236,7 @@ app.get('/api/ledger/:id/charges', function(req, res) {
 });
 
 app.get('*', function(req, res) {
+  // send single page app
   res.sendFile('index.html', {'root': 'public'});
 })
 

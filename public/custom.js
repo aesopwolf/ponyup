@@ -15,28 +15,33 @@ var app = angular.module('app', [
   $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'partials/index.html'
+      templateUrl: '/partials/index.html'
     })
     .state('faq', {
       url: '/faq',
-      templateUrl: 'partials/faq.html'
+      templateUrl: '/partials/faq.html'
     })
     .state('demo', {
       url: '/demo',
-      templateUrl: 'partials/demo.html',
+      templateUrl: '/partials/demo.html',
       controller: 'demoCtrlForward'
     })
     .state('demo.active', {
-      templateUrl: 'partials/ledger.html',
+      templateUrl: '/partials/ledger.html',
       controller: 'demoCtrl'
     })
     .state('pricing', {
       url: '/pricing',
-      templateUrl: 'partials/pricing.html'
+      templateUrl: '/partials/pricing.html'
+    })
+    .state('listingEdit', {
+      url: "/{id:[A-Za-z0-9]{10}}/manage",
+      templateUrl: '/partials/ledgerEdit.html',
+      controller: 'ledgerCtrl'
     })
     .state('listing', {
       url: "/{id:[A-Za-z0-9]{10}}",
-      templateUrl: 'partials/ledger.html',
+      templateUrl: '/partials/ledger.html',
       controller: 'ledgerCtrl'
     });
 })
@@ -151,7 +156,8 @@ var app = angular.module('app', [
       $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
     }
 
-    if($location.path() == '/ledger' || $location.path() == '/demo' || $location.path().split('').length == 11) {
+
+    if($location.path().search('manage') > 0 || $location.path() == '/ledger' || $location.path() == '/demo' || $location.path().split('').length == 11) {
       angular.element('.navbar-wrapper').addClass('hidden');
     }
     else {
