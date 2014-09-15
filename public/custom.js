@@ -235,6 +235,12 @@ var app = angular.module('app', [
           $scope.totalPrice += 0;
         }
       });
+
+      // show edit screen if items is empty
+      if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+        $scope.ledger.items = [{}, {}];
+        $scope.editingItems = true;
+      }
     }
     else {
       $scope.error = body.error;
@@ -263,6 +269,9 @@ var app = angular.module('app', [
   });
 
   $scope.getCC = function() {
+    var hash = md5($scope.ledger.email.toLowerCase() || "");
+    var defaultImage = encodeURI("http://i.imgur.com/dwL4UxC.jpg");
+    console.log(hash);
     if(!$scope.ledger.email) {
       $scope.ownerError = "The owner hasn't entered their email yet. If this is your listing, please claim it using the box at the top of the page.";
       return;
@@ -270,7 +279,8 @@ var app = angular.module('app', [
     handler.open({
       name: $scope.ledger.email,
       description: $scope.ledger.name,
-      amount: $scope.ledger.dollarAmount * 100
+      amount: $scope.ledger.dollarAmount * 100,
+      image: "https://www.gravatar.com/avatar/" + hash + "?d=" + defaultImage
     });
   }
 
@@ -284,6 +294,12 @@ var app = angular.module('app', [
       $scope.ledger = data;
       if($scope.ledger.email && $scope.ownerError) {
         $scope.ownerError = undefined;
+      }
+
+      // show edit screen if items is empty
+      if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+        $scope.ledger.items = [{}];
+        $scope.editingItems = true;
       }
     })
     .error(function(data) {
@@ -309,6 +325,8 @@ var app = angular.module('app', [
     $scope.ledger.items.push({});
     setTimeout(function() {
       $scope.$apply(function() {
+        var name = "#item" + ($scope.ledger.items.length - 1);
+        angular.element(name).focus();
         $scope.isFocused = true;
       });
     }, 100);

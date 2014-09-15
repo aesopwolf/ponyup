@@ -6,10 +6,11 @@
   </div>
 </div>
 
-<div class="row" ng-if="ledger.name">
+<div class="row" ng-if="ledger.objectId">
   <h2 data-fittext-max="40" data-fittext-min="12" data-fittext="2">{{ledger.name}}</h2>
   <hr style="margin-top: 0;">
   <div style="max-width: 768px; margin: 0 auto;">
+
     <!-- Claim listing -->
     <div ng-show="!ledger.email">
       <div class="alert alert-danger">We need your email address so we can send you money once people start contributing.</div>
@@ -45,11 +46,11 @@
     </div>
 
     <!-- Buttons to edit line items -->
-    <div class="panel panel-default" ng-show="ledger.items.length > 0" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: -2px; z-index: 2; position: relative; border-bottom: 1px;">
+    <div class="panel panel-default" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: -2px; z-index: 2; position: relative; border-bottom: 1px;">
       <div class="panel-heading">
         <span class="pull-left"><strong>Expenses:</strong></span>
         <span class="pull-right text-right">
-          <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
+          <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items); isFocused = true" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
           <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
           <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
         </span>
@@ -85,7 +86,7 @@
                 <input focus="price{{$index}}" ng-maxlength="60" maxlength="60" ng-if="$last" class="form-control animate" id="{{'item' + $index}}" type="text" placeholder="{{item.placeholder}}" ng-model="item.description" sync-focus-with="isFocused">
               </td>
               <td class="priceColumn">
-                <input ng-if="$first" focus="item1" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
+                <input ng-if="$first" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
                 <input ng-if="!$first" id="{{'price' + $index}}" class="form-control" type="number" placeholder="{{item.placeholderPrice}}" ng-model="item.price" min="0" max="10000" step="any" decimal-places valid-number>
               </td>
             </tr>

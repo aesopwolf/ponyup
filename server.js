@@ -18,16 +18,16 @@ _.each(nconf.get(), function(value, key, list) {
 });
 
 // helper functions
-var removeEmptyItems = function(o) {
-  if(o) {
-    for(var i = 0; i < o.items.length; i++) {
-      if(!o.items[i].description && !o.items[i].price) {
-        o.items.splice(i, 1);
+var removeEmptyItems = function(object) {
+  if(object) {
+    for(var i = 0; i < object.items.length; i++) {
+      if(!object.items[i].description && !object.items[i].price) {
+        object.items.splice(i, 1);
         i--;
       }
     }
   }
-  return o;
+  return object;
 }
 
 // CREATE LEDGER
@@ -59,6 +59,8 @@ app.get('/api/ledger/:id', function(req, res) {
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
+    body = JSON.parse(body);
+    body.name = body.name ? body.name : "(empty)";
     res.send(body);
   })
 });
@@ -74,6 +76,12 @@ app.post('/api/ledger/update', function(req, res) {
   // rename description field
   req.body.description = req.body.descriptionNew ? req.body.descriptionNew : req.body.description;
   req.body.descriptionNew = undefined;
+
+  // we don't need to save the amount the user is paying into the Ledger class
+  req.body.dollarAmount = undefined;
+
+  // make email lower case (for gravater)
+  req.body.email = req.body.email.toLowerCase();
 
   request.put({
     json: req.body,
