@@ -184,6 +184,10 @@ var app = angular.module('app', [
   }, true)
 
   $scope.submit = function() {
+    if($location.path() !== "/") {
+      return
+    }
+
     $scope.loading = true;
     $scope.errorMessage = false;
     $http.post('api/ledger', $scope.ledger)
@@ -215,7 +219,7 @@ var app = angular.module('app', [
   $scope.ledger.contributions = [
     {
       "cardBrand": "Visa",
-      "amount": 300,
+      "amount": 700,
       "created": 1410485457
     },
     {
@@ -244,6 +248,48 @@ var app = angular.module('app', [
   angular.forEach($scope.ledger.contributions, function(value, key) {
     $scope.totalContributions += (value["amount"] / 100);
   });
+
+  // edit line-items
+  $scope.editingItems = false;
+
+  $scope.makeCopy = function(data) {
+    $cookieStore.put('itemsCopy', data);
+  };
+
+  $scope.cancelEditItems = function() {
+    $scope.ledger.items = $cookieStore.get('itemsCopy');
+    $cookieStore.remove('itemsCopy');
+
+    // show at least one line-item
+    if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+      $scope.ledger.items = [{}];
+    }
+  }
+
+  $scope.add = function() {
+    $scope.isFocused = false;
+    $scope.ledger.items.push({});
+    setTimeout(function() {
+      $scope.$apply(function() {
+        var name = "#item" + ($scope.ledger.items.length - 1);
+        angular.element(name).focus();
+        $scope.isFocused = true;
+      });
+    }, 100);
+  }
+
+  $scope.remove = function(data) {
+    $scope.ledger.items.splice(data, 1);
+  };
+
+  $scope.$watch("ledger.items", function(newValue, oldValue) {
+    $scope.totalPrice = 0;
+    angular.forEach($scope.ledger.items, function(value, key) {
+      if(parseFloat(value.price, 10)) {
+        $scope.totalPrice += parseFloat(value.price, 10);
+      }
+    })
+  }, true)
 })
 .controller("ledgerCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore) {
   // fetch the ledger info
