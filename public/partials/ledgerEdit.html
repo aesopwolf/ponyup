@@ -201,5 +201,13 @@
     <div class="alert alert-danger" ng-if="chargeError">{{chargeError}}</div>
 
     <button ng-disabled="!ledger.totalContributions || ledger.totalContributions" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Collect {{ledger.totalContributions || 0 | currency:"$"}}</button>
+
+    <hr>
+    <!-- todo: change the ui of this -->
+    <p>Advanced:</p>
+    <a class="btn btn-default btn-md">Create a custom url</a><br><br>
+    <a class="btn btn-default btn-md">Change email address</a><br><br>
+    <a class="btn btn-danger btn-md">Generate New Admin Link</a><br><br>
+    <a class="btn btn-primary btn-md">Send email to all contributors</a>
   </div>
 </div>

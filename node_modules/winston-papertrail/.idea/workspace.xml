@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="63b8df0c-1fe6-4ee9-98c7-86657b036a96" name="Default" comment="" />
+    <ignored path="winston-papertrail.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <file path="/Dummy.txt" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938791065" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367953131095" ignored="false" />
+    <file path="/pt.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1365784412059" ignored="false" />
+    <file path="/winston-papertrail.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369422430188" ignored="false" />
+    <file path="/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367939707092" ignored="false" />
+    <file path="/changelog.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369754199157" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367953199939" ignored="false" />
+    <file path="/pt2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367953178598" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston-papertrail/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1365790010050" ignored="false" />
+    <file path="/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369755120009" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston-papertrail/lib/winston-papertrail.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367952952244" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston-papertrail/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1365790010050" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston-papertrail/changelog.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1365790010050" ignored="false" />
+    <file path="/a.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1365887774417" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/iriscouch/database/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369935891621" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/iriscouch/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367504536374" ignored="false" />
+    <file path="/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367382156162" ignored="false" />
+    <file path="/https-server.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367531457814" ignored="false" />
+    <file path="/papertrail-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367531533857" ignored="false" />
+    <file path="/Makefile" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450327736" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/core/base/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/a.dummy" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936715252" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/azure/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/common/compute/server-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/common/compute/base-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/mongolab/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/iriscouch/databases/databases-redis-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/common/storage/base-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/openstack/identity/identity-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369774726446" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/compute/personality-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/compute/authentication-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203330" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/compute/image-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367871381207" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/macros.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/amazon/compute/client/groups-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367518610077" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/storage/container-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883373436" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/azure/compute/client/test-createServer.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/amazon/compute/client/keys-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/storage/storage-object-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203331" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/storage/storage-object-noauth-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203332" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/azure/compute/client/test-rebootServer.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/storage/authentication-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367939668188" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/databases/users-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/helpers/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367859007111" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/databases/flavor-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883392372" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/mongohq/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/databases/authentication-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/databases/instances-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883392372" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367939668188" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/redistogo/databases/databases-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367450324527" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/Makefile" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367518611887" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/realToken.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367859007111" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/realToken-multiRegionVolume.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367853648784" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/redistogo/database/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/identity-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367536717781" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/identity/identity.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367868630332" ignored="false" />
+    <file path="/identity.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367868580596" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pkg.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367902708884" ignored="false" />
+    <file path="/pkg.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367902702438" ignored="false" />
+    <file path="/service.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367525960425" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/identity/service.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369774726446" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/calls" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367529886979" ignored="false" />
+    <file path="/calls" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367529772918" ignored="false" />
+    <file path="/stream.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367940882102" ignored="false" />
+    <file path="/win.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878574870" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/win.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878629622" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/common.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/logger.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/logger.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="/logger.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369409937690" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/common.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/transports/webhook.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367534154671" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/test/logger-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367534248976" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/test/winston-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878655271" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/test/transports/transport.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367534248976" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/config/cli-config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367534248976" ignored="false" />
+    <file path="$PROJECT_DIR$/../winston/lib/winston/transports/transport.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367534248976" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/realToken-admin.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367853648776" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/initialToken-admin.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367853648776" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/tenantId-admin.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367535583336" ignored="false" />
+    <file path="$PROJECT_DIR$/../hock/lib/hock.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367536450532" ignored="false" />
+    <file path="$PROJECT_DIR$/../hock/lib/request.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367537795149" ignored="false" />
+    <file path="$PROJECT_DIR$/../hock/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367537898453" ignored="false" />
+    <file path="$PROJECT_DIR$/../hock/LICENSE" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367536450532" ignored="false" />
+    <file path="$PROJECT_DIR$/../hock/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367536450532" ignored="false" />
+    <file path="/request.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367537776131" ignored="false" />
+    <file path="/sample.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367901391204" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/sample.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367901427401" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/versions.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369774726446" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/openstack/identity/service-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367859007111" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/compute/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/compute/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/identity/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367853648784" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/identity/rackspaceIdentity.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367853716860" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/compute/computeClient.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367902660687" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/compute/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/database/flavor.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367857453049" ignored="false" />
+    <file path="/computeClient.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367873303315" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/rackspace.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203330" ignored="false" />
+    <file path="/base-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367855528650" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/versions.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367855665340" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/auth.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/compute/client/images.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/images.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367869151761" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/out.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367857289856" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/images.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367857453049" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/compute/client/flavors.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367860955681" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/flavors.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367857453049" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/flavor.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367857453050" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/compute/client/servers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367868589550" ignored="false" />
+    <file path="/servers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367864988107" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/setWaitResp1.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367864843988" ignored="false" />
+    <file path="/aws-2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367861089714" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/aws-2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367861089714" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/core/base/model.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/amazon/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/amazon/storage/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/amazon/storage/client/files.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/openstack/serverList.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367859007111" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/providers.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/iriscouch.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203332" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/redistogo.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/mongohq.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/azure.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/openstack.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/amazon.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203343" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/joyent.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/configs/mock/mongolab.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/amazon/storage/client/containers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/compute/client/servers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367859007111" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/common/aws-signature.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/aws-signature.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367861017053" ignored="false" />
+    <file path="/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369937815931" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/joyent/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/common/azure-signature.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/containers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369935597621" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/a0a5f183-b94e-4a41-a854-64cff53375bf.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367864105750" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/database/client/databases.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/storage/client/files.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/utils/azureApi.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/utils/sharedkey.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938162012" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/createdServer.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367864873655" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/a0a5f183-b94e-4a41-a854-00aa00aa00aa.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367864914346" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/servers.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367865074952" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/storage/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/storage/client/containers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/authentication-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367873844958" ignored="false" />
+    <file path="/image-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367869070619" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/image.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367869861857" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/database/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/databaseFlavor1.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883392372" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/databaseFlavor2.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883392367" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/databaseFlavor3.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367883392372" ignored="false" />
+    <file path="/serviceCatalog.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367873193973" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/openstack/identity/serviceCatalog.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367873343436" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/rackspace/queued_image.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878256570" ignored="false" />
+    <file path="/queued_image.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367878255613" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/blog" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367880032897" ignored="false" />
+    <file path="/blog" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367880032256" ignored="false" />
+    <file path="/files.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369935530044" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/storage/client/files.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/fixtures/joyent/14186c17.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/rackspace/storage/storage-object-metadata-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367882604581" ignored="false" />
+    <file path="/storage.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367884791852" ignored="false" />
+    <file path="$PROJECT_DIR$/../openstack/lib/storage/storage.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367887072198" ignored="false" />
+    <file path="$PROJECT_DIR$/../openstack/lib/client/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367887224084" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/stream.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367940882935" ignored="false" />
+    <file path="/cfdownload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367941979940" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/cfdownload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367942086553" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/cfupload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367946589156" ignored="false" />
+    <file path="/cfupload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367946563209" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/amazon/upload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936585873" ignored="false" />
+    <file path="/upload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367942762363" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/azure/storage/test-upload.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203329" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/common/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367945203330" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/.idea/workspace.xml" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367953654169" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/.travis.yml" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367948814278" ignored="false" />
+    <file path="/.travis.yml" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367948814278" ignored="false" />
+    <file path="$USER_HOME$/Library/Caches/WebStorm6/extLibs/nodejs-v0.8.19-src/core-modules-sources/lib/timers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367952408427" ignored="false" />
+    <file path="$USER_HOME$/Library/Caches/WebStorm6/extLibs/nodejs-v0.8.19-src/core-modules-sources/lib/module.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1367952408427" ignored="false" />
+    <file path="/fragment.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369412069733" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt/bug-14.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369421939849" ignored="false" />
+    <file path="/bug-14.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369421906406" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt/simple-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369366753661" ignored="false" />
+    <file path="/simple-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369366749621" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt/basic.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369422694002" ignored="false" />
+    <file path="/config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415341419" ignored="false" />
+    <file path="/basic.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369422693314" ignored="false" />
+    <file path="/console.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369409019198" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/transports/transport.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/node_modules/colors/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/config/syslog-config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/transports/console.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/transports/webhook.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/config/npm-config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/config/cli-config.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/README.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/transports/file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/lib/winston/transports/http.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/winston/package.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369415588929" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt/colors.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369754832598" ignored="false" />
+    <file path="/colors.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369754826290" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/pt/close.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369755071355" ignored="false" />
+    <file path="/close.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369755035707" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/CHANGELOG.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369774726446" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/storage/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/getFiles.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936291004" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/getFiles.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936679518" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/express-test/server.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369868290431" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/express-test/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369862801155" ignored="false" />
+    <file path="/server.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369868271056" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/express-test/server2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369929865519" ignored="false" />
+    <file path="/server2.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369929865111" ignored="false" />
+    <file path="/logging.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369930142033" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/common/logging.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369930142497" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/working.log" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369925522885" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/node_modules/request/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369926518939" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/not-working.log" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369926655725" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/node_modules/request/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369926752262" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/express-test/server-file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369930214480" ignored="false" />
+    <file path="/server-file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369930123682" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/core/storage/file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/getFile.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936744842" ignored="false" />
+    <file path="/getFile.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369935045757" ignored="false" />
+    <file path="/file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369935296758" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/amazon/getFiles.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936581710" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/streamAcrossAccountsSameRegion.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936680540" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/backup.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936721079" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/deleteContainer.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936677541" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/getBuckets.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936678346" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/getContainer.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936679239" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/loginWithValidCreds.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936679853" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/streamFromBucketToBucket.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936681312" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/streamFromUsToUk.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936703103" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/rackspace/sync-buckets.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369936726297" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/azure/config.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369937536597" ignored="false" />
+    <file path="/config.json" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369937516124" ignored="false" />
+    <file path="$PROJECT_DIR$/../scratch/azure/getContainers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369937973042" ignored="false" />
+    <file path="/getContainers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369937870116" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/storage/client/containers.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/database/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/common/base/client-test.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/compute/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/docs/providers/azure.md" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/compute/client/images.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/storage/file.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/examples/compute/azure.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/storage/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="/sharedkey.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938161154" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/azure/utils/sharedkeytable.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/common/http-signature.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/joyent/compute/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/test/helpers/azureNock.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/rackspace/cdn/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/amazon/compute/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/mongolab/database/client/index.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <file path="$PROJECT_DIR$/../pkgcloud/lib/pkgcloud/telefonica/compute/client.js" changelist="63b8df0c-1fe6-4ee9-98c7-86657b036a96" time="1369938159444" ignored="false" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="winston-papertrail" />
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Makefile" />
+        <option value="$PROJECT_DIR$/test/https-server.js" />
+        <option value="$PROJECT_DIR$/test/stream.js" />
+        <option value="$PROJECT_DIR$/test/papertrail-test.js" />
+        <option value="$PROJECT_DIR$/node_modules/winston/lib/winston/transports/console.js" />
+        <option value="$PROJECT_DIR$/node_modules/winston/lib/winston/config.js" />
+        <option value="$PROJECT_DIR$/node_modules/winston/lib/winston/logger.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/changelog.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/lib/winston-papertrail.js" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1160" />
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="1414" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents ProjectPane="true" />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="preferences.sourceCode.JavaScript" />
+    <property name="last_opened_file_path" value="/usr/local/bin/node" />
+    <property name="FullScreen" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="63b8df0c-1fe6-4ee9-98c7-86657b036a96" name="Default" comment="" />
+      <created>1365781708577</created>
+      <updated>1365781708577</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1160" y="22" width="1280" height="1414" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32856005" sideWeight="0.9791667" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
+    <option name="LIMIT_HISTORY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
+    <option name="UPDATE_FILTER_SCOPE_NAME" />
+    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
+    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
+    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="0" selection-start="581" selection-end="581" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/winston-papertrail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="274" column="25" selection-start="8501" selection-end="8501" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/papertrail-test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="2" selection-start="531" selection-end="531" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/changelog.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="807" selection-end="807" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="0" selection-start="991" selection-end="991" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="0" selection-start="577" selection-end="577" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/changelog.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="0" selection-start="2020" selection-end="2020" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/papertrail-test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="2" selection-start="531" selection-end="531" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/changelog.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="0" selection-start="147" selection-end="147" vertical-scroll-proportion="-1.6666666" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="161" column="3" selection-start="3724" selection-end="3724" vertical-scroll-proportion="-89.44444" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/winston-papertrail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="25" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="21" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

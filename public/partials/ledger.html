@@ -66,6 +66,7 @@
     </div>
 
     <!-- Contributions -->
+    <!-- todo: if list is long then have a 'show more' button -->
     <div class="panel panel-info">
       <div class="panel-heading">
         <span class="pull-left">So far we've ponied up:</span><span class="pull-right priceColumnAlt"><strong>{{totalContributions || 0 | currency:"$"}}</strong></span><div class="clearfix"></div>
@@ -88,7 +89,7 @@
               </div>
             </div>
         </li>
-        <li class="list-group-item" ng-repeat="payment in ledger.contributions">
+        <li class="list-group-item" ng-repeat="payment in ledger.contributions | orderBy:'created':true">
           <div class="pull-left">
             <i class="fa fa-cc-{{payment.cardBrand | lowercase}}"></i> {{ payment.created * 1000 | date:'MMM d, y h:mm a'}}
           </div>
@@ -118,7 +119,7 @@
     <hr>
 
     <div id="elevatorPitch">
-      <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money.</small>
+      <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money from several people.</small>
     </div>
   </div>
 </div>

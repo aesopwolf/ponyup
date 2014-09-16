@@ -1,4 +1,5 @@
 var express = require('express'),
+    http = require('http'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     RedisStore = require('connect-redis')(session),
@@ -10,7 +11,9 @@ var express = require('express'),
     bcrypt = require('bcrypt'),
     cache = require('memory-cache'),
     csrf = require('csurf'),
-    mandrill = require('mandrill-api/mandrill');
+    mandrill = require('mandrill-api/mandrill'),
+    winston = require('winston'),
+    Papertrail = require('winston-papertrail').Papertrail;
 
 var app = express();
 
@@ -19,8 +22,6 @@ nconf.argv().file({file: 'config.json'}).env();
 _.each(nconf.get(), function(value, key, list) {
   app.set(key, value.toString());
 });
-
-var mandrill_client = new mandrill.Mandrill(app.get('Mandrill-Key'));
 
 // middleware
 app.use(express.static('public'));
@@ -39,15 +40,59 @@ app.use(session({
   saveUninitialized: true,
   rolling: true
 }));
+// todo: setup csrf
 // app.use(csrf({
 //   cookie: {
 //     key: 'ponyup.csrf'
 //   }
 // }));
 
+// mandrill is our smtp module for transactional emails
+var mandrill_client = new mandrill.Mandrill(app.get('Mandrill-Key'));
+
+// create logging transports
+var consoleLogger = new winston.transports.Console({
+  colorize: true,
+  handleExceptions: true
+});
+var paperTrailLogger = new Papertrail({
+  host: app.get('Papertrail-Host'),
+  port: app.get('Papertrail-Port'),
+  colorize: true,
+  handleExceptions: true,
+  json: true
+});
+
+// define logging per environment
+var newTransports = [];
+if(app.get('NODE_ENV') !== 'production') {
+  newtransports = [consoleLogger];
+}
+else {
+  newtransports = [consoleLogger,paperTrailLogger];
+}
+
+// create the logging system
+var logger = new (winston.Logger)({
+  transports: newtransports,
+  exitOnError: true,
+  levels: {
+    debug: 0,
+    info: 1,
+    warn: 2,
+    error: 3
+  }
+});
+
+// papertrail event emitters (incase Papertrail goes crazy)
+paperTrailLogger.on('error', function(err) {
+  logger.error(err);
+});
+
 // helper functions
 var removeEmptyItems = function(object) {
   if(object) {
+    // todo: watch crockfords video and find out what to use instead of 'for'
     for(var i = 0; i < object.items.length; i++) {
       if(!object.items[i].description && !object.items[i].price) {
         object.items.splice(i, 1);
@@ -72,8 +117,9 @@ var sendAdminLink = function (email, id) {
 
     // generate email body
     var htmlBody = '';
-    htmlBody += '<p><a href="https://ponyup.localtunnel.me/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
     htmlBody += "<p><strong>Keep this link private</strong>. Anyone who get's access to this link can edit your listing!";
+    htmlBody += '<p><a href="https://ponyup.localtunnel.me/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
+    htmlBody += '<p><small>(This is where you can enter your bank info so we can pay you.)</small></p>';
     htmlBody += "<hr><p>" + body.name + "</p>";
 
     // generate table of line items
@@ -99,9 +145,9 @@ var sendAdminLink = function (email, id) {
     };
     var async = false;
     mandrill_client.messages.send({"message": message, "async": async}, function(result) {
-      console.log(result);
+      // console.log(result);
     }, function(e) {
-      console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+      logger.error(e);
     });
   })
 }
@@ -147,6 +193,7 @@ app.post('/api/ledger', function(req, res) {
 
 // READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
+  logger.info('cool');
   request.get({
     url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
     headers: {
@@ -175,6 +222,7 @@ app.get('/api/ledger/:id', function(req, res) {
 });
 
 // UPDATE LEDGER
+// todo: destruct this block and make it less complex
 app.post('/api/ledger/update', function(req, res) {
   /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
   var isNowAdmin = false;
@@ -280,6 +328,8 @@ app.post('/api/charge', function(req, res) {
       }, function(error, message, body) {
         // send the user the response
         res.json({status: 'success', message: charge});
+
+        // todo: send email to user with current 'name', 'description', and 'items'
       })
     }
   });
@@ -287,7 +337,7 @@ app.post('/api/charge', function(req, res) {
 
 // GET PAYMENTS FOR A PARTICULAR LEDGER
 app.get('/api/ledger/:id/charges', function(req, res) {
-  var query = encodeURI('where={\'ledgerId\': ' + req.params.id + '}');
+  var query = encodeURI('where={"ledgerId": "' + req.params.id + '"}');
   request.get({
     url: 'https://api.parse.com/1/classes/Charge?' + query,
     headers: {
@@ -297,6 +347,9 @@ app.get('/api/ledger/:id/charges', function(req, res) {
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
+    // console.log(error, body);
+    // todo: log body.error
+    // todo: log error
     var bodyObject = JSON.parse(body);
 
     // select only certain fields to make public
@@ -311,7 +364,7 @@ app.get('/api/ledger/:id/charges', function(req, res) {
       filteredCharges.push(element);
     });
 
-    // send it off
+    // send off the payments
     res.json({results: filteredCharges});
   })
 });
@@ -362,4 +415,8 @@ app.get('*', function(req, res) {
   res.sendFile('index.html', {'root': 'public'});
 })
 
-app.listen(8080);
+http.createServer(app).listen(8080, 'localhost', function() {
+  console.log("server listening on http://localhost:8080");
+});
+
+// todo: setup parse.onbeforecloudsave to check for unique /custom-url
