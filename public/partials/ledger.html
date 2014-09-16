@@ -8,7 +8,8 @@
 
 <div class="row" ng-if="ledger.objectId">
   <!-- Admin bar -->
-  <nav ng-if="ledger.admin" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  
+  <nav ng-if="ledger.admin" class="navbar navbar-inverse navbar-fixed-top">
     <div style="max-width: 768px; margin: 0 auto; padding-top: 8px;">
       <span class="text-left pull-left"><a href="/{{ledger.objectId}}/manage" class="btn btn-success btn-sm text-right">Edit <i class="fa fa-edit"></i></a></span>
       <span class="text-right pull-right"><a ng-click="logOut()" class="btn btn-default btn-sm text-right">Log Out <i class="fa fa-sign-out"></i></a></span>
@@ -35,7 +36,7 @@
 
     <!-- Show description -->
     <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
-      <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
+      <blockquote><small>{{ledger.description | unsafe}}</small></blockquote>
     </div>
 
     <!-- Buttons to edit line items -->

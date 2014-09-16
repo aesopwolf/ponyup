@@ -110,12 +110,14 @@ app.get('/api/ledger/:id', function(req, res) {
     body.name = body.name ? body.name : '(empty)';
     body.contributions = [];
     body.secretKey = undefined;
+    body.admin = undefined;
 
     // save to cache (used late for creating user sessions in a faster manner)
     cache.put(body.objectId, body);
 
-    // lookup ledger id in session
+    // does this session have admin access?
     if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
+      console.log(req.session);
       body.admin = true;
     }
 
@@ -143,6 +145,9 @@ app.post('/api/ledger/update', function(req, res) {
   if(_.indexOf(req.session.ledgers, req.body.objectId) < 0) {
     res.json({status: 'error', message: 'You don\'t have access to update this listing!'});
     return;
+  }
+  else if(_.indexOf(req.session.ledgers, req.body.objectId) > 0){
+    var wasAlreadyAdmin = true;
   }
 
   /* CLEAN UP INCOMING DATA */
@@ -173,8 +178,10 @@ app.post('/api/ledger/update', function(req, res) {
     gzip: true
   }, function(error, message, body) {
     if(body.updatedAt) {
-      // add an admin key if they have claimed the property
-      req.body.admin = isNowAdmin ? isNowAdmin : body.admin; 
+      // add an admin key if they are the owner
+      if(isNowAdmin || wasAlreadyAdmin || req.body.admin) {
+        req.body.admin = true;
+      }
       res.send(req.body);
     }
     else {

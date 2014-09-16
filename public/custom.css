@@ -425,10 +425,14 @@ form.editable-wrap, textarea.editable-has-buttons, .editable-controls {
 }
 
 .hasNavbarAbove {
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .tabletColumn {
   max-width: 768px;
   margin: 0 auto;
+}
+
+.editable-click {
+  border-bottom: dashed 2px #000 !important;
 }

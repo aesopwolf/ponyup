@@ -6,17 +6,45 @@
   </div>
 </div>
 
-<div class="row" ng-if="ledger.objectId">
+<div class="row" ng-if="ledger.objectId && !ledger.admin">
+  <h2 class="title">Unauthorized</h2>
+  <hr style="margin-top: 0;">
+  <div class="tabletColumn">
+    <div class="panel panel-default">
+      <div class="panel-heading">You don't have access to view this page</div>
+      <div class="panel-body">
+        <p class="text-center">You can <a href="/{{ledger.objectId}}">Return to the listing page</a></p>
+        <p class="text-center">or</p>
+        <div class="text-center">
+          <a ng-show="!requestAdmin" ng-click="requestAdmin = true" class="btn btn-lg btn-success">Request a special admin link</a>
+
+          <div ng-hide="requestedAccess">
+            <a ng-show="requestAdmin" ng-click="requestAccess(); requestedAccess = true" class="btn btn-lg btn-primary">Send admin link to the owner</a>
+            <br ng-show="requestAdmin">
+            <br ng-show="requestAdmin">
+            <a ng-show="requestAdmin" ng-click="requestAdmin = false" class="btn btn-lg btn-default">Cancel <i class="fa fa-remove"></i></a>
+          </div>
+
+          <div class="alert alert-success" ng-if="requestedAccess">Check your email at {{ledger.email}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="ledger.objectId && ledger.admin">
   <!-- Admin bar -->
   <nav ng-if="ledger.admin" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div style="max-width: 768px; margin: 0 auto; padding-top: 8px;">
-      <span class="text-left pull-left"><a href="/account" class="btn btn-success btn-sm text-right">All My Listings <i class="fa fa-list-alt"></i></a></span>
+      <span class="text-left pull-left">
+        <a href="/{{ledger.objectId}}" class="btn btn-danger btn-sm text-right">Cancel <i class="fa fa-remove"></i></a>
+        <a ng-click="submit()" class="btn btn-primary btn-sm text-right">Save  <i class="fa fa-check"></i></a>
+      </span>
       <span class="text-right pull-right"><a ng-click="logOut()" class="btn btn-default btn-sm text-right">Log Out <i class="fa fa-sign-out"></i></a></span>
     </div>
   </nav>
 
-  <h2 class="title" ng-class="{hasNavbarAbove: ledger.admin}"><span e-maxlength="60" editable-text="ledger.name" onaftersave="submit()">{{ledger.name}}</span></h2>
-  <hr style="margin-top: 0;">
+  <!-- <h2 class="title" ng-class="{hasNavbarAbove: ledger.admin}"><span e-maxlength="60" editable-text="ledger.name" onaftersave="submit()">{{ledger.name}}</span></h2> -->
   <div class="tabletColumn">
     <!-- Error message -->
     <div ng-if="errorMessage" class="alert alert-warning alert-dismissible alert-fixed">
@@ -26,10 +54,15 @@
       </div>
     </div>
 
+    <div class="form-group" ng-class="{hasNavbarAbove: ledger.admin}">
+      <input type="text" class="form-control" ng-model="ledger.name">
+    </div>
+    <hr style="margin-top: 0;">
+
     <!-- Claim listing -->
     <div ng-show="!ledger.email">
       <div class="alert alert-danger">We need your email address so we can send you money once people start contributing.</div>
-      <form name="emailForm" ng-submit="submit();">
+      <form name="emailForm">
         <div class="input-group">
           <input autofocus class="form-control" required type="email" ng-model="ledger.missingEmail" placeholder="Enter email" style="height: 45px;">
           <span class="input-group-btn">
@@ -40,25 +73,25 @@
       <hr>
     </div>
 
-    <!-- Empty description -->
-    <div class="panel panel-default" ng-if="editDescription || !ledger.description" ng-hide="dismissDescription">
+    <!-- Description -->
+    <div class="panel panel-default">
       <div class="panel-heading">
-        <div class="pull-left">Short description (optional):</div><div class="pull-right"><i style="padding: 10px; margin: -10px;" ng-click="dismissDescription = true" class="fa fa-close"></i></div><div class="clearfix"></div>
+        <div class="pull-left">Short description (optional):</div><div class="clearfix"></div>
       </div>
       <div class="panel-body">
         <form name="descriptionForm" ng-submit="submit();">
           <div class="form-group">
-            <textarea required ng-maxlength="300" maxlength="300" name="description" id="description" ng-model="ledger.descriptionNew" class="form-control" rows="3"></textarea>
+            <textarea required ng-maxlength="300" maxlength="300" name="description" id="description" ng-model="ledger.description" class="form-control" rows="3"></textarea>
           </div>
-          <button ng-disabled="descriptionForm.$invalid" type="submit" class="btn btn-primary pull-right">Submit</button>
+          <!-- <button ng-disabled="descriptionForm.$invalid" type="submit" class="btn btn-primary pull-right">Submit</button> -->
         </form>
       </div>
     </div>
 
     <!-- Show description -->
-    <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
+<!--     <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
       <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
-    </div>
+    </div> -->
 
     <!-- Buttons to edit line items -->
     <div class="panel panel-default" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: -2px; z-index: 2; position: relative; border-bottom: 1px;">
@@ -66,8 +99,8 @@
         <span class="pull-left"><strong>Expenses:</strong></span>
         <span class="pull-right text-right">
           <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items); isFocused = true" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
-          <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
-          <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
+<!--           <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
+          <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a> -->
         </span>
         <div class="clearfix"></div>
       </div>
@@ -110,7 +143,7 @@
               <td style="padding-left: 15px">Total</td>
               <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td colspan="3" style="background-color: #f5f5f5;">
                 <span class="pull-right text-right" style="padding-right: 10px;">
                   <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
@@ -119,7 +152,7 @@
                 </span>
                 <div class="clearfix"></div>
               </td>
-            </tr>
+            </tr> -->
           </table>
         </div>
       </form>
