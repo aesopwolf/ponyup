@@ -9,7 +9,8 @@ var express = require('express'),
     _ = require('underscore'),
     bcrypt = require('bcrypt'),
     cache = require('memory-cache'),
-    csrf = require('csurf');
+    csrf = require('csurf'),
+    mandrill = require('mandrill-api/mandrill');
 
 var app = express();
 
@@ -18,6 +19,8 @@ nconf.argv().file({file: 'config.json'}).env();
 _.each(nconf.get(), function(value, key, list) {
   app.set(key, value.toString());
 });
+
+var mandrill_client = new mandrill.Mandrill(app.get('Mandrill-Key'));
 
 // middleware
 app.use(express.static('public'));
@@ -55,9 +58,44 @@ var removeEmptyItems = function(object) {
   return object;
 }
 
+var sendAdminLink = function (email, id) {
+  request.get({
+    url: 'https://api.parse.com/1/classes/Ledger/' + id,
+    headers: {
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+    },
+    strictSSL: true,
+    gzip: true
+  }, function(error, message, body) {
+    body = JSON.parse(body);
+    console.log(body);
+    console.log(body.secretKey);
+
+    var message = {
+      "html": '<p><a href="http://localhost:8080/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>',
+      "subject": "PonyUp Listing",
+      "from_email": "yourfriends@ponyup.io",
+      "from_name": "PonyUp",
+      "to": [{
+          "email": email,
+          "type": "to"
+      }],
+      "tags": [
+          "claim-ownership"
+      ],
+    };
+    var async = false;
+    mandrill_client.messages.send({"message": message, "async": async}, function(result) {
+      console.log(result);
+    }, function(e) {
+      console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+    });
+  })
+}
+
 // CREATE LEDGER
 app.post('/api/ledger', function(req, res) {
-  console.log(req.session);
   req.body = removeEmptyItems(req.body);
 
   // save listing to parse
@@ -117,7 +155,6 @@ app.get('/api/ledger/:id', function(req, res) {
 
     // does this session have admin access?
     if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
-      console.log(req.session);
       body.admin = true;
     }
 
@@ -139,6 +176,9 @@ app.post('/api/ledger/update', function(req, res) {
     req.session.ledgers = req.session.ledgers ? req.session.ledgers : [];
     req.session.ledgers.push(req.body.objectId);
     isNowAdmin = true;
+
+    // send email for later access
+    sendAdminLink(req.body.missingEmail, req.body.objectId, 'secretkey');
   }
 
   // Authentication check
@@ -264,6 +304,7 @@ app.get('/api/ledger/:id/charges', function(req, res) {
   })
 });
 
+// LOG OUT OF SESSION
 app.post('/api/logout', function(req, res) {
   req.session.destroy(function(err) {
     if(!err) {
@@ -273,6 +314,35 @@ app.post('/api/logout', function(req, res) {
       res.json({status: 'error', message: 'We had trouble logging you out'});
     }
   });
+});
+
+// LOG IN TO SESSION USING SPECIAL LINK
+app.get('/:id/authorize', function(req, res) {
+  request.get({
+    url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
+    headers: {
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+    },
+    strictSSL: true,
+    gzip: true
+  }, function(error, message, body) {
+    body = JSON.parse(body);
+
+    if(body.secretKey === req.query.secret) {
+      var hour = 3600000
+      req.session.cookie.maxAge = hour * 24 * 30;
+
+      // save ledger id to session
+      req.session.ledgers = req.session.ledgers ? req.session.ledgers : [];
+      req.session.ledgers.push(req.params.id);
+
+      res.redirect(302, '/' + req.params.id + '/manage');
+    }
+    else {
+      res.redirect(302, '/' + req.params.id + '/manage?error=badKey');
+    }
+  })
 });
 
 app.get('*', function(req, res) {

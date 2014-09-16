@@ -40,7 +40,11 @@
         <a href="/{{ledger.objectId}}" class="btn btn-danger btn-sm text-right">Cancel <i class="fa fa-remove"></i></a>
         <a ng-click="submit()" class="btn btn-primary btn-sm text-right">Save  <i class="fa fa-check"></i></a>
       </span>
-      <span class="text-right pull-right"><a ng-click="logOut()" class="btn btn-default btn-sm text-right">Log Out <i class="fa fa-sign-out"></i></a></span>
+      <span class="text-right pull-right">
+        <a ng-show="!logOutConfirm" ng-click="logOutConfirm = true" class="btn btn-default btn-sm text-right">Log Out <i class="fa fa-sign-out"></i></a>
+        <a ng-show="logOutConfirm" ng-click="logOutConfirm = false" class="btn btn-primary btn-sm text-right">Stay logged in <i class="fa fa-remove"></i></a>
+        <a ng-show="logOutConfirm" ng-click="logOut()" class="btn btn-default btn-sm text-right">Yes, Log Out <i class="fa fa-sign-out"></i></a>
+      </span>
     </div>
   </nav>
 

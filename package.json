@@ -16,6 +16,7 @@
     "csurf": "^1.6.1",
     "express": "^4.9.0",
     "express-session": "^1.8.1",
+    "mandrill-api": "^1.0.40",
     "memory-cache": "0.0.5",
     "nconf": "^0.6.9",
     "request": "^2.42.0",
