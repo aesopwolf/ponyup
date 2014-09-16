@@ -45,8 +45,10 @@ var app = angular.module('app', [
       controller: 'ledgerCtrl'
     });
 })
-.run(function(editableOptions) {
+.run(function(editableOptions, $cookies, $http) {
   editableOptions.theme = 'bs3'; // for xeditable
+  // $http.defaults.xsrfCookieName = 'ponyup.csrf';
+  // $http.defaults.xsrfHeaderName = 'x-csrf-token';
 })
 .animation(".fakeMouse", function() {
   return {
@@ -196,7 +198,7 @@ var app = angular.module('app', [
 
     $scope.loading = true;
     $scope.errorMessage = false;
-    $http.post('api/ledger', $scope.ledger)
+    $http.post('/api/ledger', $scope.ledger)
     .success(function(data) {
       $scope.loading = false;
       $location.url('/' + data.objectId);
@@ -297,7 +299,7 @@ var app = angular.module('app', [
     })
   }, true)
 })
-.controller("ledgerCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore) {
+.controller("ledgerCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore, $cookies) {
   // fetch the ledger info
   $http.get('/api/ledger/' + $stateParams.id)
   .success(function(body) {
@@ -358,7 +360,7 @@ var app = angular.module('app', [
       token.description = $scope.ledger.name;
       token.objectId = $scope.ledger.objectId;
 
-      $http.post('api/charge', token)
+      $http.post('/api/charge', token)
       .success(function(data) {
         // add payment info to contributions list
         $scope.ledger.contributions.push(data.message)
@@ -412,26 +414,31 @@ var app = angular.module('app', [
   // update ledger information
   $scope.submit = function() {
     $scope.loading = true;
-    $scope.errorMessage = false;
-    $http.post('api/ledger/update', $scope.ledger)
+    $scope.errorMessage = undefined;
+    $http.post('/api/ledger/update', $scope.ledger)
     .success(function(data) {
-      $scope.loading = false;
-      $scope.ledger = data;
-      if($scope.ledger.email && $scope.ownerError) {
-        $scope.ownerError = undefined;
+      if(data.status === 'error') {
+        $scope.errorMessage = data.message;
       }
+      else {
+        $scope.loading = false;
+        $scope.ledger = data;
+        if($scope.ledger.email && $scope.ownerError) {
+          $scope.ownerError = undefined;
+        }
 
-      // show edit screen if items is empty
-      if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
-        $scope.ledger.items = [{}];
-        $scope.editingItems = true;
+        // show edit screen if items is empty
+        if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+          $scope.ledger.items = [{}];
+          $scope.editingItems = true;
+        }
       }
     })
     .error(function(data) {
       $scope.loading = false;
       $scope.errorMessage = data.message || "You can try refreshing the page.";
     });
-  }
+  };
 
   // edit line-items
   $scope.editingItems = false;
@@ -464,6 +471,31 @@ var app = angular.module('app', [
 
   $scope.remove = function(data) {
     $scope.ledger.items.splice(data, 1);
+  };
+
+  $scope.removeError = function() {
+    $timeout(function() {
+      $scope.errorMessage = undefined;
+    }, 10, true);
+  };
+
+  // todo: setup csrf here
+  $scope.logOut = function() {
+    var csrf = $cookies.undefined;
+    $http.post('/api/logout', {'_csrf': 'test'})
+    .success(function(data) {
+      if(data.status === 'error') {
+        $scope.errorMessage = data.message;
+      }
+      else {
+        $scope.ledger.admin = false;
+        $location.url('/' + $scope.ledger.objectId);
+      }
+    })
+    .error(function(data) {
+      $scope.loading = false;
+      $scope.errorMessage = data.message || "You can try refreshing the page.";
+    });
   };
 
   $scope.$watch("ledger.items", function(newValue, oldValue) {

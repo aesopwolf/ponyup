@@ -8,7 +8,8 @@ var express = require('express'),
     nconf = require('nconf'),
     _ = require('underscore'),
     bcrypt = require('bcrypt'),
-    cache = require('memory-cache');
+    cache = require('memory-cache'),
+    csrf = require('csurf');
 
 var app = express();
 
@@ -28,13 +29,18 @@ app.use(session({
     pass:  app.get('Redis-Pass'),
     port: app.get('Redis-Port')
   }),
-  name: 'session',
+  name: 'ponyup.session',
   secret: app.get('Express-Session-Secret'),
   cookie: { path: '/', httpOnly: true, secure: false, maxAge: null },
   resave: true,
   saveUninitialized: true,
   rolling: true
 }));
+// app.use(csrf({
+//   cookie: {
+//     key: 'ponyup.csrf'
+//   }
+// }));
 
 // helper functions
 var removeEmptyItems = function(object) {
@@ -51,15 +57,16 @@ var removeEmptyItems = function(object) {
 
 // CREATE LEDGER
 app.post('/api/ledger', function(req, res) {
+  console.log(req.session);
   req.body = removeEmptyItems(req.body);
 
   // save listing to parse
   request.post({
     json: req.body,
-    url: "https://api.parse.com/1/classes/Ledger",
+    url: 'https://api.parse.com/1/classes/Ledger',
     headers: {
-      "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-      "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
     },
     strictSSL: true,
     gzip: true
@@ -73,10 +80,10 @@ app.post('/api/ledger', function(req, res) {
       // save a secret access key
       request.put({
         json: {secretKey: hash},
-        url: "https://api.parse.com/1/classes/Ledger/" + body.objectId,
+        url: 'https://api.parse.com/1/classes/Ledger/' + body.objectId,
         headers: {
-          "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-          "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+          'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+          'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
         },
         strictSSL: true,
         gzip: true
@@ -91,20 +98,20 @@ app.post('/api/ledger', function(req, res) {
 // READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
   request.get({
-    url: "https://api.parse.com/1/classes/Ledger/" + req.params.id,
+    url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
     headers: {
-      "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-      "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
     },
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
     body = JSON.parse(body);
-    body.name = body.name ? body.name : "(empty)";
+    body.name = body.name ? body.name : '(empty)';
     body.contributions = [];
     body.secretKey = undefined;
 
-    // save to cache (for use in creating a user session faster)
+    // save to cache (used late for creating user sessions in a faster manner)
     cache.put(body.objectId, body);
 
     // lookup ledger id in session
@@ -119,14 +126,23 @@ app.get('/api/ledger/:id', function(req, res) {
 // UPDATE LEDGER
 app.post('/api/ledger/update', function(req, res) {
   /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
+  var isNowAdmin = false;
+  // todo: this cache isn't stateless. need to move to mongo or something
   if(req.body.missingEmail && !cache.get(req.body.objectId).email) {
     // extend the session for one month
     var hour = 3600000
     req.session.cookie.maxAge = hour * 24 * 30;
 
     // save ledger id to session
-    req.session.ledgers = [];
+    req.session.ledgers = req.session.ledgers ? req.session.ledgers : [];
     req.session.ledgers.push(req.body.objectId);
+    isNowAdmin = true;
+  }
+
+  // Authentication check
+  if(_.indexOf(req.session.ledgers, req.body.objectId) < 0) {
+    res.json({status: 'error', message: 'You don\'t have access to update this listing!'});
+    return;
   }
 
   /* CLEAN UP INCOMING DATA */
@@ -148,15 +164,17 @@ app.post('/api/ledger/update', function(req, res) {
 
   request.put({
     json: req.body,
-    url: "https://api.parse.com/1/classes/Ledger/" + req.body.objectId,
+    url: 'https://api.parse.com/1/classes/Ledger/' + req.body.objectId,
     headers: {
-      "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-      "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
     },
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
     if(body.updatedAt) {
+      // add an admin key if they have claimed the property
+      req.body.admin = isNowAdmin ? isNowAdmin : body.admin; 
       res.send(req.body);
     }
     else {
@@ -168,22 +186,22 @@ app.post('/api/ledger/update', function(req, res) {
 
 // CHARGE CARD
 app.post('/api/charge', function(req, res) {
-  stripe = require("stripe")(app.get("Stripe-Secret-Key"));
+  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
 
   var charge = stripe.charges.create({
     amount: req.body.amount,
-    currency: "usd",
+    currency: 'usd',
     card: req.body.id,
-    description: "https:/www.ponyup.io/" + req.body.objectId,
+    description: 'https:/www.ponyup.io/' + req.body.objectId,
     metadata: {
       customerEmail: req.body.email
     },
-    statement_description: ".io/" + req.body.objectId,
+    statement_description: '.io/' + req.body.objectId,
     receipt_email: req.body.email
   }, function(err, charge) {
     if (err && err.type === 'StripeCardError') {
       // The card has been declined
-      res.json({status: "error", message: err});
+      res.json({status: 'error', message: err});
     }
     else {
       // add some extra meta info
@@ -193,16 +211,16 @@ app.post('/api/charge', function(req, res) {
       // save charge to parse
       request.post({
         json: charge,
-        url: "https://api.parse.com/1/classes/Charge",
+        url: 'https://api.parse.com/1/classes/Charge',
         headers: {
-          "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-          "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+          'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+          'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
         },
         strictSSL: true,
         gzip: true
       }, function(error, message, body) {
         // send the user the response
-        res.json({status: "success", message: charge});
+        res.json({status: 'success', message: charge});
       })
     }
   });
@@ -210,12 +228,12 @@ app.post('/api/charge', function(req, res) {
 
 // GET PAYMENTS FOR A PARTICULAR LEDGER
 app.get('/api/ledger/:id/charges', function(req, res) {
-  var query = encodeURI('where={"ledgerId": "' + req.params.id + '"}');
+  var query = encodeURI('where={\'ledgerId\': ' + req.params.id + '}');
   request.get({
-    url: "https://api.parse.com/1/classes/Charge?" + query,
+    url: 'https://api.parse.com/1/classes/Charge?' + query,
     headers: {
-      "X-Parse-Application-Id": app.get("X-Parse-Application-Id"),
-      "X-Parse-REST-API-Key": app.get("X-Parse-REST-API-Key")
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
     },
     strictSSL: true,
     gzip: true
@@ -237,6 +255,17 @@ app.get('/api/ledger/:id/charges', function(req, res) {
     // send it off
     res.json({results: filteredCharges});
   })
+});
+
+app.post('/api/logout', function(req, res) {
+  req.session.destroy(function(err) {
+    if(!err) {
+      res.json({status: 'success', message: 'Thanks for using PonyUp!'});
+    }
+    else {
+      res.json({status: 'error', message: 'We had trouble logging you out'});
+    }
+  });
 });
 
 app.get('*', function(req, res) {
