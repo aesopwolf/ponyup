@@ -69,11 +69,23 @@ var sendAdminLink = function (email, id) {
     gzip: true
   }, function(error, message, body) {
     body = JSON.parse(body);
-    console.log(body);
-    console.log(body.secretKey);
+
+    // generate email body
+    var htmlBody = '';
+    htmlBody += '<p><a href="https://ponyup.localtunnel.me/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
+    htmlBody += "<p><strong>Keep this link private</strong>. Anyone who get's access to this link can edit your listing!";
+    htmlBody += "<hr><p>" + body.name + "</p>";
+
+    // generate table of line items
+    var htmlItems = '<table>';
+    _.each(body.items, function(element, index, list) {
+      htmlItems += "<tr><td>" + element.description + "</td><td>$" + element.price + "</td></tr>";
+    });
+    htmlItems += "</table>";
+    htmlBody += htmlItems;
 
     var message = {
-      "html": '<p><a href="http://localhost:8080/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>',
+      "html": htmlBody,
       "subject": "PonyUp Listing",
       "from_email": "yourfriends@ponyup.io",
       "from_name": "PonyUp",

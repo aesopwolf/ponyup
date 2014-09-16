@@ -222,7 +222,7 @@ var app = angular.module('app', [
   $scope.ledger.objectId = 'demo';
   $scope.ledger.name = "Summer BBQ at the beach";
   $scope.ledger.email = 'yourfriends@ponyup.io';
-  $scope.ledger.description = "Hey guys! We're having an end of summer beach party on September 13th. I already bought all of the supplies below. I'd appreciate it if you pitch in some $$ Thanks :)";
+  $scope.ledger.description = "You can send your friends directly to this page so they can pay you. They can also see how much money other people have pitched in.";
   $scope.ledger.items = [{description: "Hamburgers and hotdogs", price: 22.56}, {description: "Drinks and ice", price: 12.56}];
   $scope.ledger.contributions = [
     {
