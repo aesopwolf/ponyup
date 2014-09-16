@@ -90,8 +90,6 @@ app.post('/api/ledger', function(req, res) {
 
 // READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
-  console.log(req.session);
-
   request.get({
     url: "https://api.parse.com/1/classes/Ledger/" + req.params.id,
     headers: {
@@ -105,10 +103,16 @@ app.get('/api/ledger/:id', function(req, res) {
     body.name = body.name ? body.name : "(empty)";
     body.contributions = [];
     body.secretKey = undefined;
-    res.send(body);
 
     // save to cache (for use in creating a user session faster)
     cache.put(body.objectId, body);
+
+    // lookup ledger id in session
+    if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
+      body.admin = true;
+    }
+
+    res.send(body);
   })
 });
 
