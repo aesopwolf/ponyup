@@ -1,2 +1,4 @@
 ./assets
 config.json
+config-production.json
+config-staging.json

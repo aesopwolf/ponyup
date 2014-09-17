@@ -112,8 +112,9 @@
 
     <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
     <div class="alert alert-danger" ng-if="chargeError">{{chargeError}}</div>
+    <div class="alert alert-danger" ng-if="ledger.dollarAmount && !ledger.email">Someone must claim this listing before anyone can contribute money to it. Please enter an email at the top of the page.</div>
 
-    <button ng-disabled="!ledger.dollarAmount || ledger.objectId=='demo'" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
+    <button ng-disabled="!ledger.dollarAmount || ledger.objectId=='demo' || !ledger.email" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>
 

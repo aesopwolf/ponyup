@@ -372,8 +372,9 @@ var app = angular.module('app', [
   });
 
   // collect money from a user
+  var stripeKey = $location.host() === 'ponyip.io' ? 'pk_iQ9f8PrbR8se0IfGjmdw43iwxzGbr' : 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN';
   var handler = StripeCheckout.configure({
-    key: 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN',
+    key: stripeKey,
     token: function(token) {
       token.amount = $scope.ledger.dollarAmount * 100;
       token.description = $scope.ledger.name;
