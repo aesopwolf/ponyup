@@ -527,10 +527,11 @@ app.get('/:id/authorize', function(req, res) {
       req.session.ledgers = req.session.ledgers ? req.session.ledgers : [];
       req.session.ledgers.push(req.params.id);
 
-      res.redirect(302, '/' + req.params.id + '/manage');
+      res.redirect(302, '/' + req.params.id);
     }
     else {
-      res.redirect(302, '/' + req.params.id + '/manage?error=badKey');
+      res.redirect(302, '/' + req.params.id + '?error=badKey');
+      // todo: create ui for badkey
     }
   })
 });

@@ -72,7 +72,7 @@
     padding-left: 0;
   }
 
-  .nav>li>a:hover, .nav>li>a:focus {
+  .navbar-wrapper .navbar-nav>li>a:hover, .nav>li>a:focus {
     text-decoration: none;
     background-color: #3782B2;
     border-radius: 4px;
@@ -435,4 +435,8 @@ form.editable-wrap, textarea.editable-has-buttons, .editable-controls {
 
 .editable-click {
   border-bottom: dashed 2px #000 !important;
+}
+
+.tab-content>.active {
+  padding-top: 10px;
 }

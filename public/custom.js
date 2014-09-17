@@ -22,7 +22,7 @@ var app = angular.module('app', [
       templateUrl: '/partials/privacy.html'
     })
     .state('tos', {
-      url: '/terms-of-service',
+      url: '/terms',
       templateUrl: '/partials/tos.html'
     })
     .state('demo', {
@@ -39,7 +39,7 @@ var app = angular.module('app', [
       templateUrl: '/partials/pricing.html'
     })
     .state('listingEdit', {
-      url: "/{id:[A-Za-z0-9]{10}}/manage",
+      url: "/{id:[A-Za-z0-9]{10}}/edit",
       templateUrl: '/partials/ledgerEdit.html',
       controller: 'ledgerCtrl'
     })
@@ -167,15 +167,15 @@ var app = angular.module('app', [
   $scope.hidden = true;
   $rootScope.$on('$stateChangeSuccess', function() {
     $scope.home = false;
+    angular.element('.fakeMouse').remove();
     if($location.path() == '/') {
       $scope.home = true;
-      angular.element('.fakeMouse').remove();
       $scope.ledger = {};
       $scope.ledger.name = '';
       $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$40"}, {placeholder: "Drinks", placeholderPrice: "$12"}];
     }
 
-    if($location.path().search('manage') > 0 || $location.path() == '/ledger' || $location.path() == '/demo' || $location.path().split('').length == 11) {
+    if($location.path() === '/demo' || $location.path().split('').length >= 11) {
       angular.element('.navbar-wrapper').addClass('hidden');
     }
     else {
@@ -526,11 +526,11 @@ var app = angular.module('app', [
     $scope.errorMessage = undefined;
     $http.post('/api/ledger/update', $scope.ledger)
     .success(function(data) {
+      $scope.loading = false;
       if(data.status === 'error') {
         $scope.errorMessage = data.message;
       }
       else {
-        $scope.loading = false;
         $scope.ledger = data;
         if($scope.ledger.email && $scope.ownerError) {
           $scope.ownerError = undefined;
