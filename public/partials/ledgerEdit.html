@@ -165,7 +165,7 @@
     <!-- Contributions -->
     <div class="panel panel-info">
       <div class="panel-heading">
-        <span class="pull-left">So far you've collected:</span><span class="pull-right priceColumnAlt"><strong>{{totalContributions || 0 | currency:"$"}}</strong></span><div class="clearfix"></div>
+        <span class="pull-left">So far you've collected:</span><span class="pull-right"><strong>{{totalContributionsWithFee || 0 | currency:"$"}} ({{totalContributions || 0 | currency:"$"}})</strong></span><div class="clearfix"></div>
       </div>
       <ul class="list-group">
         <li class="list-group-item" ng-if="!ledger.contributions || ledger.contributions.length < 1">
@@ -189,8 +189,8 @@
           <div class="pull-left">
             <i class="fa fa-cc-{{payment.cardBrand | lowercase}}"></i> {{ payment.created * 1000 | date:'MMM d, y h:mm a'}}
           </div>
-          <div class="pull-right priceColumnAlt">
-            {{payment.amount / 100 | currency:"$"}}
+          <div class="pull-right">
+            {{payment.withFee / 100 | currency:"$"}} ({{payment.amount / 100 | currency:"$"}})
           </div>
           <div class="clearfix"></div>
         </li>
@@ -198,9 +198,55 @@
     </div>
 
     <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
-    <div class="alert alert-danger" ng-if="chargeError">{{chargeError}}</div>
+    <div class="alert alert-danger" ng-if="depositError">{{depositError}}</div>
 
-    <button ng-disabled="!ledger.totalContributions || ledger.totalContributions" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Collect {{ledger.totalContributions || 0 | currency:"$"}}</button>
+    <div ng-show="needVerification">
+      <div class="alert alert-success" ng-if="needVerification.status === 'success'">{{needVerification.message}}</div>
+      <form ng-submit="verify(needVerification)" ng-if="needVerification.status !== 'success'">
+        <p>Your deposit was schedule to occur immediately, however we need to verify the identity of the account before we can continue.</p>
+
+        <div class="alert alert-danger" ng-if="verifyError">{{verifyError}}</div>
+        <div class="input-group" ng-show="needVerification.type == 'individual'">
+          <input sync-focus-with="needVerification.type == 'individual'" class="form-control" type="text" ng-model="needVerification.verifyNumber" placeholder="Social Security Number" style="height: 45px;">
+          <span class="input-group-btn">
+            <button ng-disabled="!needVerification.verifyNumber" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
+          </span>
+        </div>
+
+        <div class="input-group" ng-show="needVerification.type == 'corporation'">
+          <input sync-focus-with="needVerification.type == 'corporation'" class="form-control" type="text" ng-model="needVerification.verifyNumber" placeholder="Employee Identification Number" style="height: 45px;">
+          <span class="input-group-btn">
+            <button ng-disabled="!needVerification.verifyNumber" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Legal name -->
+    <div ng-show="requestingDeposit" ng-init="depositorType = 'individual'">
+      <form ng-hide="requestingDepositDone" ng-submit="getDepositCC(legalName, depositorType); requestingDepositDone = true">
+        <label class="radio-inline">
+          <input required type="radio" ng-model="depositorType" value="individual">
+          Individual
+        </label>
+
+        <label class="radio-inline">
+          <input requird type="radio" ng-model="depositorType" value="corporation">
+          Corporation
+        </label>
+
+        <div class="input-group">
+          <input sync-focus-with="requestingDeposit" class="form-control" type="text" ng-model="legalName" placeholder="Full Legal Name" style="height: 45px;">
+          <span class="input-group-btn">
+            <button ng-disabled="!legalName" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <span ng-click="requestingDeposit = true" ng-hide="requestingDeposit">
+      <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee || 0 | currency:"$"}} to debit card</a></button>
+    </span>
 
     <hr>
     <!-- todo: change the ui of this -->

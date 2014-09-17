@@ -212,13 +212,11 @@ app.get('/api/ledger/:id', function(req, res) {
     var body = cache.get(req.params.id);
     // does this session have admin access?
     if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
-      console.log("has access");
       body.admin = true;
     }
     else {
       body.admin = undefined;
     }
-    console.log(body);
     res.send(body);
     return;
   }
@@ -318,6 +316,7 @@ app.post('/api/ledger/update', function(req, res) {
       if(isNowAdmin || wasAlreadyAdmin || req.body.admin) {
         req.body.admin = true;
       }
+      cache.put(req.body.objectId, req.body);
       res.send(req.body);
     }
     else {
@@ -367,6 +366,96 @@ app.post('/api/charge', function(req, res) {
 
         // todo: send email to user with current 'name', 'description', and 'items'
       })
+    }
+  });
+});
+
+// DEPOSIT MONEY TO CARD
+app.post('/api/deposit', function(req, res) {
+  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
+
+  // Create a Recipient
+  stripe.recipients.create({
+    name: req.body.legalName,
+    type: req.body.depositorType,
+    card: req.body.id,
+    email: req.body.email
+  }, function(err, recipient) {
+    if(err) {
+      logger.error(err);
+      res.json({status: "error", message: err.message});
+    }
+    else {
+      res.send(recipient);
+    }
+  });
+
+  // var charge = stripe.charges.create({
+  //   amount: req.body.amountToDeposit,
+  //   currency: 'usd',
+  //   card: req.body.id,
+  //   recipient: 'stripe customer id',
+  //   description: 'https:/www.ponyup.io/' + req.body.objectId,
+  //   metadata: {
+  //     customerEmail: req.body.email
+  //   },
+  //   statement_description: '.io/' + req.body.objectId,
+  //   receipt_email: req.body.email
+  // }, function(err, charge) {
+  //   if (err && err.type === 'StripeCardError') {
+  //     // The card has been declined
+  //     res.json({status: 'error', message: err});
+  //   }
+  //   else {
+  //     // add some extra meta info
+  //     charge.chargeId = charge.id;
+  //     charge.ledgerId = req.body.objectId;
+
+  //     // save charge to parse
+  //     request.post({
+  //       json: charge,
+  //       url: 'https://api.parse.com/1/classes/Charge',
+  //       headers: {
+  //         'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+  //         'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+  //       },
+  //       strictSSL: true,
+  //       gzip: true
+  //     }, function(error, message, body) {
+  //       // send the user the response
+  //       res.json({status: 'success', message: charge});
+
+  //       // todo: send email to user with current 'name', 'description', and 'items'
+  //     })
+  //   }
+  // });
+});
+
+// DEPOSIT MONEY TO CARD
+app.post('/api/verify', function(req, res) {
+  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
+
+  console.log("verify data");
+  console.log(req.body);
+
+  stripe.recipients.update(req.body.id, {
+    tax_id: req.body.verifyNumber
+  }, function(err, updatedUser) {
+    if(err) {
+      logger.error(err);
+      res.json({status: "error", message: err.message});
+    }
+    else {
+      console.log(updatedUser);
+      if(!updatedUser.verified) {
+        res.json({status: "error", message: "We couldn't verify your identity. Please email us at youfriends@ponyup.io"});
+        updatedUser.error = "couldn't verify identity";
+        logger.error(updatedUser);
+      }
+      else if(updatedUser.verified) {
+        res.json({status: "success", message: "Your money should be deposited in a few days. Check back here for the status."});
+        // todo: finish bank transfer
+      }
     }
   });
 });

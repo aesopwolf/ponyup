@@ -357,10 +357,15 @@ var app = angular.module('app', [
     if(body.code !== 101) {
       $scope.ledger.contributions = body.results;
 
-      // calculate the payments made
+      // calculate the contributions made
       $scope.totalContributions = 0;
-      angular.forEach($scope.ledger.contributions, function(value, key) {
-        $scope.totalContributions += (value.amount / 100);
+      $scope.totalContributionsWithFee = 0;
+      angular.forEach($scope.ledger.contributions, function(key, value) {
+        $scope.totalContributions += (key.amount / 100);
+
+        // calculate the fees
+        key.withFee = ((key.amount  * 0.97) - 30);
+        $scope.totalContributionsWithFee += (key.withFee / 100);
       });
     }
     else {
@@ -431,7 +436,91 @@ var app = angular.module('app', [
     $scope.chargeError = undefined;
   }
 
-  // update ledger information
+  // deposit money into owners account
+  var stripeKey = $location.host() === 'ponyip.io' ? 'pk_iQ9f8PrbR8se0IfGjmdw43iwxzGbr' : 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN';
+  var depositHandler = StripeCheckout.configure({
+    key: stripeKey,
+    panelLabel: 'Deposit {{amount}}',
+    token: function(token) {
+      $scope.requestingDeposit = undefined;
+      token.amountToDeposit = $scope.totalContributionsWithFee * 100;
+      token.objectId = $scope.ledger.objectId;
+      token.legalName = $scope.legalName;
+      token.depositorType = $scope.depositorType;
+
+      $scope.depositError = undefined;
+      $http.post('/api/deposit', token)
+      .success(function(data) {
+        if(!data.verified) {
+          $scope.requestingDeposit = undefined;
+          $scope.needVerification = data;
+        }
+        // // add deposit info to transfer list
+        // $scope.ledger.deposits.push(data.message)
+
+        // // add up total deposits
+        // $scope.totalDeposits = 0;
+        // angular.forEach($scope.ledger.deposits, function(value, key) {
+        //   if(typeof(value.amount) === "number") {
+        //     $scope.totalDeposits += (value.amount  / 100);
+        //   }
+        //   else {
+        //     $scope.totalDeposits += 0;
+        //   }
+        // });
+
+        if(data.status == 'error') {
+          $scope.depositError = data.message;
+        }
+      })
+      .error(function(data) {
+        $scope.depositError = data;
+      });
+    },
+    opened: function() {
+      angular.element('body').addClass('overflowFix');
+      angular.element('footer').addClass('hidden');
+    },
+    closed: function() {
+      angular.element('body').removeClass('overflowFix');
+      angular.element('footer').removeClass('hidden');
+    }
+  });
+
+  $scope.getDepositCC = function(legalName, depositorType) {
+    $scope.requestingDeposit = false;
+    $scope.legalName = legalName;
+    $scope.depositorType = depositorType;
+    var hash = md5($scope.ledger.email.toLowerCase() || "");
+    var defaultImage = encodeURI("http://i.imgur.com/dwL4UxC.jpg");
+    depositHandler.open({
+      name: legalName,
+      description: "Debit Cards Only",
+      amount: $scope.totalContributionsWithFee * 100,
+      image: "https://www.gravatar.com/avatar/" + hash + "?d=" + defaultImage
+    });
+    $scope.depositError = undefined;
+  }
+
+  $scope.verify = function(verification) {
+    $scope.requestingDeposit = undefined;
+    $scope.verifyError = undefined;
+    $http.post('/api/verify', verification)
+      .success(function(data) {
+        $scope.depositError = undefined;
+        if(data.status === 'success') {
+          $scope.needVerification = data;
+        }
+        else if(data.status == 'error') {
+          $scope.verifyError = data.message;
+        }
+      })
+      .error(function(data) {
+        $scope.verifyError = data;
+      });
+  }
+
+  // update ledger information ('name', 'items', 'description')
   $scope.submit = function() {
     $scope.loading = true;
     $scope.errorMessage = undefined;
