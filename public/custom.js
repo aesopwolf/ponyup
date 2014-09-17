@@ -17,9 +17,13 @@ var app = angular.module('app', [
       url: '/',
       templateUrl: '/partials/index.html'
     })
-    .state('faq', {
-      url: '/faq',
-      templateUrl: '/partials/faq.html'
+    .state('privacy', {
+      url: '/privacy',
+      templateUrl: '/partials/privacy.html'
+    })
+    .state('tos', {
+      url: '/terms-of-service',
+      templateUrl: '/partials/tos.html'
     })
     .state('demo', {
       url: '/demo',
@@ -91,15 +95,25 @@ var app = angular.module('app', [
   $state.go('demo.active');
 })
 .controller("mainCtrl", function($rootScope, $scope, $http, $location, $timeout, $state) {
+  // set default data
   $scope.ledger = {};
-  $scope.ledger.name = '';
-  $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
-
+  $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$40"}, {placeholder: "Drinks", placeholderPrice: "$12"}];
   $scope.totalPrice = 0;
   $scope.isFocused = false;
   $scope.isCollapsed = true;
   $scope.loading = false;
 
+  // update total price of items the user has entered
+  $scope.$watch("ledger.items", function(newValue, oldValue) {
+    $scope.totalPrice = 0;
+    angular.forEach($scope.ledger.items, function(value, key) {
+      if(parseFloat(value.price, 10)) {
+        $scope.totalPrice += parseFloat(value.price, 10);
+      }
+    })
+  }, true)
+
+  // show typing in real time (for the demo animation)
   var typingAnimation = function(scope, text) {
     eval(scope + " = '';");
     var counter = 0;
@@ -114,6 +128,7 @@ var app = angular.module('app', [
      }, 10);
   };
 
+  // animate a really cool interactive demo!
   $scope.demo = function() {
     if($rootScope.isDemoPlaying) {
       // in case people click the button twice in a row
@@ -123,7 +138,9 @@ var app = angular.module('app', [
       $state.go('home');
     }
     $rootScope.isDemoPlaying = true;
-    $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+    $scope.ledger.name = ''
+    $scope.ledger.items = [{}, {}];
+
     $timeout(function() {
       typingAnimation('$scope.ledger.name', "Summer BBQ at the beach");
       $timeout(function() {
@@ -155,9 +172,8 @@ var app = angular.module('app', [
       angular.element('.fakeMouse').remove();
       $scope.ledger = {};
       $scope.ledger.name = '';
-      $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$20"}, {placeholder: "Soda", placeholderPrice: "$5"}];
+      $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$40"}, {placeholder: "Drinks", placeholderPrice: "$12"}];
     }
-
 
     if($location.path().search('manage') > 0 || $location.path() == '/ledger' || $location.path() == '/demo' || $location.path().split('').length == 11) {
       angular.element('.navbar-wrapper').addClass('hidden');
@@ -168,6 +184,7 @@ var app = angular.module('app', [
     }
   });
 
+  // add new line-item
   $scope.add = function() {
     $scope.isFocused = false;
     $scope.ledger.items.push({});
@@ -178,19 +195,12 @@ var app = angular.module('app', [
     }, 100);
   }
 
+  // remove line-item
   $scope.remove = function(data) {
     $scope.ledger.items.splice(data, 1);
   };
 
-  $scope.$watch("ledger.items", function(newValue, oldValue) {
-    $scope.totalPrice = 0;
-    angular.forEach($scope.ledger.items, function(value, key) {
-      if(parseFloat(value.price, 10)) {
-        $scope.totalPrice += parseFloat(value.price, 10);
-      }
-    })
-  }, true)
-
+  // save the form to parse
   $scope.submit = function() {
     if($location.path() !== "/") {
       return
@@ -198,6 +208,14 @@ var app = angular.module('app', [
 
     $scope.loading = true;
     $scope.errorMessage = false;
+
+    // remove placeholder data
+    angular.forEach($scope.ledger.items, function(value, key) {
+      value.placeholder = undefined;
+      value.placeholderPrice = undefined;
+    });
+
+    // finally submit the data to the server
     $http.post('/api/ledger', $scope.ledger)
     .success(function(data) {
       $scope.loading = false;
@@ -209,13 +227,14 @@ var app = angular.module('app', [
     });
   }
 
-  $rootScope.pages = 0;
-  $rootScope.$on('$stateChangeStart', function() {
-    $rootScope.pages += 1;
-    if($rootScope.pages >= 2) {
-      $scope.isCollapsed = true;
-    }
-  })
+  // what is this?
+  // $rootScope.pages = 0;
+  // $rootScope.$on('$stateChangeStart', function() {
+  //   $rootScope.pages += 1;
+  //   if($rootScope.pages >= 2) {
+  //     $scope.isCollapsed = true;
+  //   }
+  // })
 })
 .controller("demoCtrl", function($scope, $http, $stateParams, $location) {
   $scope.ledger = {};

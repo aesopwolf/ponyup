@@ -17,6 +17,11 @@ var express = require('express'),
 
 var app = express();
 
+/*
+CONFIGURATION
+=================================================
+*/
+
 // load keys/secrets/salts/etc into app
 nconf.argv().file({file: 'config.json'}).env();
 _.each(nconf.get(), function(value, key, list) {
@@ -47,7 +52,7 @@ app.use(session({
 //   }
 // }));
 
-// mandrill is our smtp module for transactional emails
+// mandrill is our smtp service for transactional emails
 var mandrill_client = new mandrill.Mandrill(app.get('Mandrill-Key'));
 
 // create logging transports
@@ -89,10 +94,13 @@ paperTrailLogger.on('error', function(err) {
   logger.error(err);
 });
 
-// helper functions
+/*
+HELPER FUNCTIONS
+=================================================
+*/
+// remove line items that are missing the description and price
 var removeEmptyItems = function(object) {
   if(object) {
-    // todo: watch crockfords video and find out what to use instead of 'for'
     for(var i = 0; i < object.items.length; i++) {
       if(!object.items[i].description && !object.items[i].price) {
         object.items.splice(i, 1);
@@ -103,6 +111,7 @@ var removeEmptyItems = function(object) {
   return object;
 }
 
+// send a special authentication link via email
 var sendAdminLink = function (email, id) {
   request.get({
     url: 'https://api.parse.com/1/classes/Ledger/' + id,
@@ -152,6 +161,11 @@ var sendAdminLink = function (email, id) {
   })
 }
 
+/*
+ROUTES
+=================================================
+*/
+
 // CREATE LEDGER
 app.post('/api/ledger', function(req, res) {
   req.body = removeEmptyItems(req.body);
@@ -193,7 +207,20 @@ app.post('/api/ledger', function(req, res) {
 
 // READ LEDGER
 app.get('/api/ledger/:id', function(req, res) {
-  logger.info('cool');
+  if(cache.get(req.params.id)) {
+    var body = cache.get(req.params.id);
+    // does this session have admin access?
+    if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
+      console.log("has access");
+      body.admin = true;
+    }
+    else {
+      body.admin = undefined;
+    }
+    console.log(body);
+    res.send(body);
+    return;
+  }
   request.get({
     url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
     headers: {
@@ -209,12 +236,19 @@ app.get('/api/ledger/:id', function(req, res) {
     body.secretKey = undefined;
     body.admin = undefined;
 
-    // save to cache (used late for creating user sessions in a faster manner)
-    cache.put(body.objectId, body);
 
     // does this session have admin access?
     if(_.indexOf(req.session.ledgers, req.params.id) >= 0) {
+      // don't attach admin access to cache
+      var bodyCache = body;
+      bodyCache.admin = undefined;
+      cache.put(body.objectId, bodyCache);
+
+      // attach admin access to the output though
       body.admin = true;
+    }
+    else {
+      cache.put(body.objectId, body);
     }
 
     res.send(body);
@@ -222,10 +256,11 @@ app.get('/api/ledger/:id', function(req, res) {
 });
 
 // UPDATE LEDGER
-// todo: destruct this block and make it less complex
+// todo: deconstruct this block and make it less complex
 app.post('/api/ledger/update', function(req, res) {
   /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
   var isNowAdmin = false;
+
   // todo: this cache isn't stateless. need to move to mongo or something
   if(req.body.missingEmail && !cache.get(req.body.objectId).email) {
     // extend the session for one month
@@ -237,11 +272,11 @@ app.post('/api/ledger/update', function(req, res) {
     req.session.ledgers.push(req.body.objectId);
     isNowAdmin = true;
 
-    // send email for later access
-    sendAdminLink(req.body.missingEmail, req.body.objectId, 'secretkey');
+    // send email with admin token for later access
+    sendAdminLink(req.body.missingEmail, req.body.objectId);
   }
 
-  // Authentication check
+  // Check if user has access to update the rest of the listing
   if(_.indexOf(req.session.ledgers, req.body.objectId) < 0) {
     res.json({status: 'error', message: 'You don\'t have access to update this listing!'});
     return;

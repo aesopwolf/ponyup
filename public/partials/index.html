@@ -3,7 +3,7 @@
   <form name="theledger">
     <div class="form-group">
       <p>&nbsp;What are you collecting money for?</p>
-      <input focus-first type="text" class="form-control" id="ledger" ng-model="ledger.name" placeholder="A meetup" ng-maxlength="60" maxlength="60" autofocus>
+      <input focus-first type="text" class="form-control" id="ledger" ng-model="ledger.name" placeholder="A friends birthday" ng-maxlength="60" maxlength="60" autofocus>
     </div>
     <div class="form-group">
       <table class="table table-responsive table-condensed" style="background-color: #68c4ff; border: none;">
@@ -32,6 +32,6 @@
       <p style="padding-bottom: 40px;"><button ng-disabled="ledger.items.length >= 100" class="btn btn-lg btn-default btn-block" style="margin-top: 20px;" ng-click="add()"><i class="fa fa-plus-square-o"></i> Add another item </button></p>
     </div>
     <div ng-if="errorMessage" class="alert alert-danger animate"><strong>Something went wrong!</strong> {{errorMessage}}</div>
-    <button ng-disabled="(!ledger.items[0].description && !ledger.items[0].price) || !ledger.name || loading" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <i ng-if="!loading" class="fa fa-chevron-right"></i><i ng-if="loading" class="fa fa-circle-o-notch fa-spin"></i></button>
+    <button ng-disabled="!(ledger.items[0].description && ledger.items[0].price) || loading" ng-click="submit()" type="submit" class="btn btn-lg btn-success btn-block jumbo">Continue <i ng-if="!loading" class="fa fa-chevron-right"></i><i ng-if="loading" class="fa fa-circle-o-notch fa-spin"></i></button>
   </form>
 </div>
