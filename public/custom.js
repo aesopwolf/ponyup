@@ -15,7 +15,7 @@ var app = angular.module('app', [
   $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: '/partials/index.html'
+      templateUrl: '/partials/index.html',
     })
     .state('privacy', {
       url: '/privacy',
@@ -38,12 +38,17 @@ var app = angular.module('app', [
       url: '/pricing',
       templateUrl: '/partials/pricing.html'
     })
-    .state('listingEdit', {
+    .state('ledgerEdit', {
       url: "/{id:[A-Za-z0-9]{10}}/edit",
       templateUrl: '/partials/ledgerEdit.html',
       controller: 'ledgerCtrl'
     })
-    .state('listing', {
+    .state('ledgerTransfer', {
+      url: "/{id:[A-Za-z0-9]{10}}/transfer",
+      templateUrl: '/partials/ledgerTransfer.html',
+      controller: 'ledgerTransferCtrl'
+    })
+    .state('ledger', {
       url: "/{id:[A-Za-z0-9]{10}}",
       templateUrl: '/partials/ledger.html',
       controller: 'ledgerCtrl'
@@ -94,7 +99,48 @@ var app = angular.module('app', [
 .controller("demoCtrlForward", function($state) {
   $state.go('demo.active');
 })
-.controller("mainCtrl", function($rootScope, $scope, $http, $location, $timeout, $state) {
+.controller("mainCtrl", function($rootScope, $scope, $http, $location, $timeout, $state, $cookies) {
+  // scroll to top of page
+  $rootScope.$on('$stateChangeStart',  function() {
+    angular.element('body').animate({scrollTop: 0}, "fast");
+  });
+
+  // logout function
+  // todo: setup csrf here
+  $rootScope.logOut = function() {
+    var csrf = $cookies.undefined;
+    $http.post('/api/logout', {'_csrf': 'test'})
+    .success(function(data) {
+      if(data.status === 'error') {
+        $scope.errorMessage = data.message;
+      }
+      else {
+        $scope.ledger.admin = false;
+        $location.url('/' + $scope.ledger.objectId);
+      }
+    })
+    .error(function(data) {
+      $scope.loading = false;
+      $scope.errorMessage = data.message || "You can try refreshing the page.";
+    });
+  };
+
+  // get payments made on a listing
+  $rootScope.fetchPayments = function(id, cb) {
+    $http.get('/api/ledger/' + id + "/charges")
+    .success(function(body) {
+      if(body.code !== 101) {
+        cb(body.results);
+      }
+      else {
+        $scope.error = body.error;
+      }
+    })
+    .error(function() {
+
+    });
+  }
+
   // set default data
   $scope.ledger = {};
   $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$40"}, {placeholder: "Drinks", placeholderPrice: "$12"}];
@@ -138,7 +184,7 @@ var app = angular.module('app', [
       $state.go('home');
     }
     $rootScope.isDemoPlaying = true;
-    $scope.ledger.name = ''
+    $scope.ledger.name = '';
     $scope.ledger.items = [{}, {}];
 
     $timeout(function() {
@@ -188,11 +234,11 @@ var app = angular.module('app', [
   $scope.add = function() {
     $scope.isFocused = false;
     $scope.ledger.items.push({});
-    setTimeout(function() {
-      $scope.$apply(function() {
-        $scope.isFocused = true;
-      });
-    }, 100);
+
+    // todo: research $q
+    $timeout(function() {
+      $scope.isFocused = true;
+    }, 100, true);
   }
 
   // remove line-item
@@ -322,9 +368,18 @@ var app = angular.module('app', [
   // fetch the ledger info
   $http.get('/api/ledger/' + $stateParams.id)
   .success(function(body) {
-    angular.element('body').animate({scrollTop: 0}, "fast");
+    // angular.element('body').animate({scrollTop: 0}, "fast");
     if(body.code !== 101) {
       $scope.ledger = body;
+      $rootScope.fetchPayments($scope.ledger.objectId, function(data) {
+        $scope.ledger.contributions = data;
+
+        // calculate the contributions made
+        $scope.totalContributions = 0;
+        angular.forEach($scope.ledger.contributions, function(key, value) {
+          $scope.totalContributions += (key.amount / 100);
+        });
+      });
 
       // calculate the total price
       $scope.totalPrice = 0;
@@ -351,31 +406,6 @@ var app = angular.module('app', [
 
   });
 
-  // fetch the payments made
-  $http.get('/api/ledger/' + $stateParams.id + "/charges")
-  .success(function(body) {
-    if(body.code !== 101) {
-      $scope.ledger.contributions = body.results;
-
-      // calculate the contributions made
-      $scope.totalContributions = 0;
-      $scope.totalContributionsWithFee = 0;
-      angular.forEach($scope.ledger.contributions, function(key, value) {
-        $scope.totalContributions += (key.amount / 100);
-
-        // calculate the fees
-        key.withFee = ((key.amount  * 0.97) - 30);
-        $scope.totalContributionsWithFee += (key.withFee / 100);
-      });
-    }
-    else {
-      $scope.error = body.error;
-    }
-  })
-  .error(function() {
-
-  });
-
   // collect money from a user
   var stripeKey = $location.host() === 'ponyip.io' ? 'pk_iQ9f8PrbR8se0IfGjmdw43iwxzGbr' : 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN';
   var handler = StripeCheckout.configure({
@@ -388,6 +418,7 @@ var app = angular.module('app', [
       $http.post('/api/charge', token)
       .success(function(data) {
         // add payment info to contributions list
+        data.message.cardBrand = data.message.card.brand.toLowerCase();
         $scope.ledger.contributions.push(data.message)
         $scope.ledger.dollarAmount = undefined;
 
@@ -588,25 +619,6 @@ var app = angular.module('app', [
     }, 10, true);
   };
 
-  // todo: setup csrf here
-  $scope.logOut = function() {
-    var csrf = $cookies.undefined;
-    $http.post('/api/logout', {'_csrf': 'test'})
-    .success(function(data) {
-      if(data.status === 'error') {
-        $scope.errorMessage = data.message;
-      }
-      else {
-        $scope.ledger.admin = false;
-        $location.url('/' + $scope.ledger.objectId);
-      }
-    })
-    .error(function(data) {
-      $scope.loading = false;
-      $scope.errorMessage = data.message || "You can try refreshing the page.";
-    });
-  };
-
   $scope.$watch("ledger.items", function(newValue, oldValue) {
     $scope.totalPrice = 0;
     angular.forEach($scope.ledger.items, function(value, key) {
@@ -615,6 +627,53 @@ var app = angular.module('app', [
       }
     })
   }, true)
+})
+.controller("ledgerTransferCtrl", function($rootScope, $scope, $http, $stateParams, $location, $timeout, $cookieStore, $cookies) {
+  // fetch the ledger info
+  $http.get('/api/ledger/' + $stateParams.id)
+  .success(function(body) {
+    // angular.element('body').animate({scrollTop: 0}, "fast");
+    if(body.code !== 101) {
+      $scope.ledger = body;
+      $rootScope.fetchPayments($scope.ledger.objectId, function(data) {
+        $scope.ledger.contributions = data;
+
+        // calculate the contributions made
+        $scope.totalContributions = 0;
+        $scope.totalContributionsWithFee = 0;
+        angular.forEach($scope.ledger.contributions, function(key, value) {
+          $scope.totalContributions += (key.amount / 100);
+
+          // calculate the fees
+          key.withFee = ((key.amount  * 0.97) - 30);
+          $scope.totalContributionsWithFee += (key.withFee / 100);
+        });
+      });
+            
+      // calculate the total price
+      $scope.totalPrice = 0;
+      angular.forEach($scope.ledger.items, function(value, key) {
+        if(typeof(value.price) === "number") {
+          $scope.totalPrice += value.price;
+        }
+        else {
+          $scope.totalPrice += 0;
+        }
+      });
+
+      // show edit screen if items is empty
+      if(!$scope.ledger.items || $scope.ledger.items.length < 1) {
+        $scope.ledger.items = [{}, {}];
+        $scope.editingItems = true;
+      }
+    }
+    else {
+      $scope.error = body.error;
+    }
+  })
+  .error(function() {
+
+  });
 })
 .filter('url', function ($sce) {
   return function (text) {

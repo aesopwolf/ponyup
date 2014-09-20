@@ -19,10 +19,8 @@
           <a ng-show="!requestAdmin" ng-click="requestAdmin = true" class="btn btn-lg btn-success">Request a special admin link</a>
 
           <div ng-hide="requestedAccess">
-            <a ng-show="requestAdmin" ng-click="requestAccess(); requestedAccess = true" class="btn btn-lg btn-primary">Send admin link to the owner</a>
-            <br ng-show="requestAdmin">
-            <br ng-show="requestAdmin">
-            <a ng-show="requestAdmin" ng-click="requestAdmin = false" class="btn btn-lg btn-default">Cancel <i class="fa fa-remove"></i></a>
+            <a ng-show="requestAdmin" ng-click="requestAccess(); requestedAccess = true" class="btn btn-lg btn-primary">Email the login link to {{ledger.email}}</a>
+            <a ng-show="requestAdmin" ng-click="requestAdmin = false" class="btn btn-lg btn-danger">Cancel <i class="fa fa-remove"></i></a>
           </div>
 
           <div class="alert alert-success" ng-if="requestedAccess">Check your email at {{ledger.email}}</div>
@@ -57,10 +55,11 @@
     </div>
   </nav>
 
-  <!-- <h2 class="title" ng-class="{hasNavbarAbove: ledger.admin}"><span e-maxlength="60" editable-text="ledger.name" onaftersave="submit()">{{ledger.name}}</span></h2> -->
+  <!-- Edit fields -->
   <div class="tabletColumn">
     <div ng-class="{hasNavbarAbove: ledger.admin}"></div>
-    <!-- Error message -->
+
+    <!-- Error message if applicable -->
     <div ng-if="errorMessage" class="alert alert-warning alert-dismissible alert-fixed">
       <div class="tabletColumn">
         <button ng-click="removeError()" class="close" ><i class="fa fa-remove"></i></button>
@@ -68,23 +67,10 @@
       </div>
     </div>
 
+    <!-- Name of listing -->
     <small>Title</small>
     <div class="form-group">
       <input type="text" id="name" class="form-control" ng-model="ledger.name">
-    </div>
-
-    <!-- Claim listing -->
-    <div ng-show="!ledger.email">
-      <div class="alert alert-danger">We need your email address so we can send you money once people start contributing.</div>
-      <form name="emailForm">
-        <div class="input-group">
-          <input autofocus class="form-control" required type="email" ng-model="ledger.missingEmail" placeholder="Enter email" style="height: 45px;">
-          <span class="input-group-btn">
-            <button ng-disabled="emailForm.$invalid" type="submit" class="btn btn-lg btn-success pull-right">Submit</button>
-          </span>
-        </div>
-      </form>
-      <hr>
     </div>
 
     <!-- Description -->
@@ -102,19 +88,11 @@
       </div>
     </div>
 
-    <!-- Show description -->
-<!--     <div ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
-      <blockquote><div editable-textarea="ledger.description" e-rows="4" e-maxlength="300" onaftersave="submit()"><small>{{ledger.description | unsafe}}</small></div></blockquote>
-    </div> -->
-
-    <!-- Buttons to edit line items -->
+    <!-- Title for line items -->
     <div class="panel panel-default" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; z-index: 2; position: relative; border-bottom: 1px;">
       <div class="panel-heading" ng-init="editingItems = true">
         <span class="pull-left"><strong>Expenses:</strong></span>
         <span class="pull-right text-right">
-          <!-- <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items); isFocused = true" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a> -->
-<!--           <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
-          <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a> -->
         </span>
         <div class="clearfix"></div>
       </div>
@@ -143,16 +121,6 @@
               <td style="padding-left: 15px">Total</td>
               <td class="priceColumn">{{totalPrice | currency:"$"}}</td>
             </tr>
-            <!-- <tr>
-              <td colspan="3" style="background-color: #f5f5f5;">
-                <span class="pull-right text-right" style="padding-right: 10px;">
-                  <a ng-hide="editingItems" ng-click="editingItems = !editingItems; makeCopy(ledger.items)" class="btn btn-xs btn-warning">Edit <i class="fa fa-edit"></i></a>
-                  <a ng-show="editingItems" ng-click="editingItems = false; submit();" class="btn btn-xs btn-primary">Save <i class="fa fa-check"></i></a>
-                  <a ng-show="editingItems" ng-click="editingItems = false; cancelEditItems()" class="btn btn-xs btn-danger">Cancel <i class="fa fa-remove"></i></a>
-                </span>
-                <div class="clearfix"></div>
-              </td>
-            </tr> -->
           </table>
         </div>
       </form>
@@ -165,95 +133,7 @@
       </span>
       <div class="clearfix"></div>
     </div>
-
-    <!-- Contributions -->
-    <!-- <div class="panel panel-info">
-      <div class="panel-heading">
-        <span class="pull-left">So far you've collected:</span><span class="pull-right"><strong>{{totalContributionsWithFee || 0 | currency:"$"}} ({{totalContributions || 0 | currency:"$"}})</strong></span><div class="clearfix"></div>
-      </div>
-      <ul class="list-group">
-        <li class="list-group-item" ng-if="!ledger.contributions || ledger.contributions.length < 1">
-            <h3 class="text-center" style="padding-top: 30px; padding-bottom: 30px;"><strong>No one has made any contributions yet!</strong></h3>
-            <div class="container" style="width: 100%">
-              <div class="row">
-                <div class="col-sm-6">
-                  <p class="text-center" style="line-height: 50px;">Share this url with people: </p>
-                </div>
-                <div class="col-sm-6">
-                  <form class="form">
-                    <div class="form-group">
-                      <input select-on-click type="text" class="form-control" value="https://www.ponyup.io/{{ledger.objectId}}">
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-        </li>
-        <li class="list-group-item" ng-repeat="payment in ledger.contributions">
-          <div class="pull-left">
-            <i class="fa fa-cc-{{payment.cardBrand | lowercase}}"></i> {{ payment.created * 1000 | date:'MMM d, y h:mm a'}}
-          </div>
-          <div class="pull-right">
-            {{payment.withFee / 100 | currency:"$"}} ({{payment.amount / 100 | currency:"$"}})
-          </div>
-          <div class="clearfix"></div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
-    <div class="alert alert-danger" ng-if="depositError">{{depositError}}</div>
-
-    <div ng-show="needVerification">
-      <div class="alert alert-success" ng-if="needVerification.status === 'success'">{{needVerification.message}}</div>
-      <form ng-submit="verify(needVerification)" ng-if="needVerification.status !== 'success'">
-        <p>Your deposit was schedule to occur immediately, however we need to verify the identity of the account before we can continue.</p>
-
-        <div class="alert alert-danger" ng-if="verifyError">{{verifyError}}</div>
-        <div class="input-group" ng-show="needVerification.type == 'individual'">
-          <input sync-focus-with="needVerification.type == 'individual'" class="form-control" type="text" ng-model="needVerification.verifyNumber" placeholder="Social Security Number" style="height: 45px;">
-          <span class="input-group-btn">
-            <button ng-disabled="!needVerification.verifyNumber" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
-          </span>
-        </div>
-
-        <div class="input-group" ng-show="needVerification.type == 'corporation'">
-          <input sync-focus-with="needVerification.type == 'corporation'" class="form-control" type="text" ng-model="needVerification.verifyNumber" placeholder="Employee Identification Number" style="height: 45px;">
-          <span class="input-group-btn">
-            <button ng-disabled="!needVerification.verifyNumber" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
-          </span>
-        </div>
-      </form>
-    </div> -->
-
-    <!-- Legal name -->
-    <!-- <div ng-show="requestingDeposit" ng-init="depositorType = 'individual'">
-      <form ng-hide="requestingDepositDone" ng-submit="getDepositCC(legalName, depositorType); requestingDepositDone = true">
-        <label class="radio-inline">
-          <input required type="radio" ng-model="depositorType" value="individual">
-          Individual
-        </label>
-
-        <label class="radio-inline">
-          <input requird type="radio" ng-model="depositorType" value="corporation">
-          Corporation
-        </label>
-
-        <div class="input-group">
-          <input sync-focus-with="requestingDeposit" class="form-control" type="text" ng-model="legalName" placeholder="Full Legal Name" style="height: 45px;">
-          <span class="input-group-btn">
-            <button ng-disabled="!legalName" type="submit" class="btn btn-lg btn-success pull-right">Continue <i class="fa fa-arrow-right"></i></button>
-          </span>
-        </div>
-      </form>
-    </div>
-
-    <span ng-click="requestingDeposit = true" ng-hide="requestingDeposit">
-      <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee || 0 | currency:"$"}} to debit card</a></button>
-    </span> -->
-
-    <hr>
-
+    <!-- 
     <tabset>
       <tab heading="1">
         choose a custom url
@@ -275,5 +155,6 @@
         </form>
       </tab>
     </tabset>
+     -->
   </div>
 </div>

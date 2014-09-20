@@ -129,7 +129,7 @@ var sendAdminLink = function (email, id) {
     var htmlBody = '';
     htmlBody += "<p><strong>Keep this link private</strong>. Anyone who get's access to this link can edit your listing!";
     htmlBody += '<p><a href="https://ponyup.localtunnel.me/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
-    htmlBody += '<p><small>(This is where you can enter your bank info so we can pay you.)</small></p>';
+    htmlBody += '<p><small>(This is also where you can enter your bank info so we can pay you.)</small></p>';
     htmlBody += "<hr><p>" + body.name + "</p>";
 
     // generate table of line items

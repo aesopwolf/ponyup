@@ -1,4 +1,12 @@
 {
-  "X-Parse-Application-Id": "id",
-  "X-Parse-REST-API-Key": "key"
+  "Express-Session-Secret": "",
+  "Mandrill-Key": "",
+  "Papertrail-Host": "",
+  "Papertrail-Port": "",
+  "Redis-Host": "",
+  "Redis-Pass": "",
+  "Redis-Port": "",
+  "Stripe-Secret-Key": "",
+  "X-Parse-Application-Id": "",
+  "X-Parse-REST-API-Key": ""
 }
