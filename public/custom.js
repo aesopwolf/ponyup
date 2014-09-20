@@ -141,6 +141,22 @@ var app = angular.module('app', [
     });
   }
 
+// get paymouts made on a listing
+  $rootScope.fetchPayouts = function(id, cb) {
+    $http.get('/api/ledger/' + id + "/payouts")
+    .success(function(body) {
+      if(body.code !== 101) {
+        cb(body.results);
+      }
+      else {
+        $scope.error = body.error;
+      }
+    })
+    .error(function() {
+
+    });
+  }
+
   // set default data
   $scope.ledger = {};
   $scope.ledger.items = [{placeholder: "Pizza", placeholderPrice: "$40"}, {placeholder: "Drinks", placeholderPrice: "$12"}];
@@ -532,7 +548,7 @@ var app = angular.module('app', [
   $scope.removeError = function() {
     $timeout(function() {
       $scope.errorMessage = undefined;
-    }, 10, true);
+    }, 100, true);
   };
 
   $scope.$watch("ledger.items", function(newValue, oldValue) {
@@ -551,7 +567,7 @@ var app = angular.module('app', [
     if(body.code !== 101) {
       $scope.ledger = body;
 
-      // get the payments made so far
+      // get the contributions made so far
       $rootScope.fetchPayments($scope.ledger.objectId, function(data) {
         $scope.ledger.contributions = data;
 
@@ -562,9 +578,26 @@ var app = angular.module('app', [
           $scope.totalContributions += (key.amount / 100);
 
           // calculate the fees
-          key.withFee = ((key.amount  * 0.97) - 30);
+          key.withFee = ((key.amount * 0.97) - 30);
           $scope.totalContributionsWithFee += (key.withFee / 100);
         });
+
+        $scope.requestingDeposit = false;
+      });
+
+      // get the payouts made so far
+      $rootScope.fetchPayouts($scope.ledger.objectId, function(data) {
+        $scope.ledger.payouts = data;
+
+        // calculate the payouts made
+        $scope.totalPayouts = 0;
+        angular.forEach($scope.ledger.payouts, function(key, value) {
+          $scope.totalPayouts += key.amount / 100;
+        });
+
+        $timeout(function() {
+          $scope.remainingBalance = $scope.totalContributionsWithFee - 0.25 - ($scope.totalPayouts + (($scope.ledger.payouts.length * 25) / 100));
+        }, 100, true);
 
         $scope.requestingDeposit = false;
       });
@@ -584,7 +617,6 @@ var app = angular.module('app', [
     panelLabel: 'Deposit {{amount}}',
     token: function(token) {
       $scope.requestingDeposit = undefined;
-      token.amountToDeposit = $scope.totalContributionsWithFee * 100;
       token.objectId = $scope.ledger.objectId;
       token.legalName = $scope.legalName;
       token.depositorType = $scope.depositorType;
@@ -592,20 +624,6 @@ var app = angular.module('app', [
       $scope.depositError = undefined;
       $http.post('/api/deposit', token)
       .success(function(data) {
-        // add deposit info to transfer list
-        // $scope.ledger.deposits.push(data.message)
-
-        // // add up total deposits
-        // $scope.totalDeposits = 0;
-        // angular.forEach($scope.ledger.deposits, function(value, key) {
-        //   if(typeof(value.amount) === "number") {
-        //     $scope.totalDeposits += (value.amount  / 100);
-        //   }
-        //   else {
-        //     $scope.totalDeposits += 0;
-        //   }
-        // });
-
         if(data.status === 'error') {
           $scope.depositError = data.message + " Try again...";
           $timeout(function() {
@@ -645,7 +663,7 @@ var app = angular.module('app', [
       email: $scope.ledger.email,
       name: legalName,
       description: "Enter your debit card information",
-      amount: $scope.totalContributionsWithFee * 100,
+      amount: Math.ceil($scope.remainingBalance * 100),
       image: "https://www.gravatar.com/avatar/" + hash + "?d=" + defaultImage
     });
     $scope.depositError = undefined;
@@ -661,6 +679,27 @@ var app = angular.module('app', [
         if(data.status === 'success') {
           $scope.needVerification = undefined;
           $scope.transferSuccess = 'Success! Your money transfer is complete.';
+
+          // put in a temporary payout
+          $scope.ledger.payouts.push({temp: 'New payout is pending...'})
+          // download/refresh the payouts
+          // get the payouts made so far
+          $scope.ledger.payouts = undefined;
+          $rootScope.fetchPayouts($scope.ledger.objectId, function(data) {
+            $scope.ledger.payouts = data;
+
+            // calculate the payouts made
+            $scope.totalPayouts = 0;
+            angular.forEach($scope.ledger.payouts, function(key, value) {
+              $scope.totalPayouts += key.amount / 100;
+            });
+
+            $timeout(function() {
+              $scope.remainingBalance = $scope.totalContributionsWithFee - ($scope.totalPayouts + (($scope.ledger.payouts.length * 25) / 100));
+            }, 100, true);
+
+            $scope.requestingDeposit = false;
+          });
         }
         else if(data.status == 'error') {
           $scope.verifyError = data.message;

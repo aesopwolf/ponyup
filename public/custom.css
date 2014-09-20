@@ -440,3 +440,7 @@ form.editable-wrap, textarea.editable-has-buttons, .editable-controls {
 .tab-content>.active {
   padding-top: 10px;
 }
+
+.finePrint {
+  opacity: 0.5;
+}

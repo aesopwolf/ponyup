@@ -115,7 +115,7 @@ var removeEmptyItems = function(object) {
 // send a special authentication link via email
 var sendAdminLink = function (email, id) {
   request.get({
-    url: 'https://api.parse.com/1/classes/Ledger/' + id,
+    url: 'https://api.parse.com/1/classes/Ledgers/' + id,
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -160,7 +160,51 @@ var sendAdminLink = function (email, id) {
       logger.error(e);
     });
   })
-}
+};
+
+var getRemainingBalance = function(ledgerId, cb) {
+  var totalContributionsWithFee = 0;
+  var totalPayouts = 0;
+
+  // get the contributions made so far
+  var query = encodeURI('where={"ledgerId": "' + ledgerId + '"}');
+  request.get({
+    url: 'https://api.parse.com/1/classes/Charges?' + query,
+    headers: {
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+    },
+    strictSSL: true,
+    gzip: true
+  }, function(error, message, body) {
+    body = JSON.parse(body);
+    _.each(body.results, function(element, index, list) {
+      totalContributionsWithFee += (element.amount * 0.97) - 30;
+    });
+
+    // CALLBACK HELL:
+
+    // get the payouts made so far
+    var query = encodeURI('where={"metadata.ledgerId": "' + ledgerId + '"}');
+    request.get({
+      url: 'https://api.parse.com/1/classes/Transfers?' + query,
+      headers: {
+        'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+        'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+      },
+      strictSSL: true,
+      gzip: true
+    }, function(error, message, body) {
+      body = JSON.parse(body);
+      _.each(body.results, function(element, index, list) {
+        totalPayouts += element.amount;
+      });
+
+      // return totalContributionsWithFee - totalPayouts - 25;
+      cb(totalContributionsWithFee - totalPayouts - 25);
+    });
+  });
+};
 
 /*
 ROUTES
@@ -174,7 +218,7 @@ app.post('/api/ledger', function(req, res) {
   // save listing to parse
   request.post({
     json: req.body,
-    url: 'https://api.parse.com/1/classes/Ledger',
+    url: 'https://api.parse.com/1/classes/Ledgers',
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -191,7 +235,7 @@ app.post('/api/ledger', function(req, res) {
       // save a secret access key
       request.put({
         json: {secretKey: hash},
-        url: 'https://api.parse.com/1/classes/Ledger/' + body.objectId,
+        url: 'https://api.parse.com/1/classes/Ledgers/' + body.objectId,
         headers: {
           'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
           'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -221,7 +265,7 @@ app.get('/api/ledger/:id', function(req, res) {
     return;
   }
   request.get({
-    url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
+    url: 'https://api.parse.com/1/classes/Ledgers/' + req.params.id,
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -295,7 +339,7 @@ app.post('/api/ledger/update', function(req, res) {
   req.body.description = req.body.descriptionNew ? req.body.descriptionNew : req.body.description;
   req.body.descriptionNew = undefined;
 
-  // we don't need to save the amount the user is paying into the Ledger class
+  // we don't need to save the amount the user is paying into the Ledgers class
   req.body.dollarAmount = undefined;
 
   // make email lower case (for gravater)
@@ -303,7 +347,7 @@ app.post('/api/ledger/update', function(req, res) {
 
   request.put({
     json: req.body,
-    url: 'https://api.parse.com/1/classes/Ledger/' + req.body.objectId,
+    url: 'https://api.parse.com/1/classes/Ledgers/' + req.body.objectId,
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -353,7 +397,7 @@ app.post('/api/charge', function(req, res) {
       // save charge to parse
       request.post({
         json: charge,
-        url: 'https://api.parse.com/1/classes/Charge',
+        url: 'https://api.parse.com/1/classes/Charges',
         headers: {
           'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
           'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -370,18 +414,26 @@ app.post('/api/charge', function(req, res) {
   });
 });
 
-// DEPOSIT MONEY TO CARD
+// START THE DEPOSIT MONEY PROCESS (IS FINISHED AFTER THEIR IDENTIFY IS VERIFIED)
 app.post('/api/deposit', function(req, res) {
-  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
+  // authenticate user
+  if(_.indexOf(req.session.ledgers, req.body.objectId) < 0) {
+    res.json({status: 'error', message: 'You don\'t have access to transfer money out of this listing'});
+    return;
+  }
 
-  // Lookup recipient by email
+  // continue if they have access
+  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
 
   // Create a Recipient
   stripe.recipients.create({
     name: req.body.legalName,
     type: req.body.depositorType,
     card: req.body.id,
-    email: req.body.email
+    email: req.body.email,
+    metadata: {
+      ledgerId: req.body.objectId
+    }
   }, function(err, recipient) {
     if(err) {
       logger.error(err);
@@ -391,54 +443,18 @@ app.post('/api/deposit', function(req, res) {
       res.send(recipient);
     }
   });
-
-  // var charge = stripe.charges.create({
-  //   amount: req.body.amountToDeposit,
-  //   currency: 'usd',
-  //   card: req.body.id,
-  //   recipient: 'stripe customer id',
-  //   description: 'https:/www.ponyup.io/' + req.body.objectId,
-  //   metadata: {
-  //     customerEmail: req.body.email
-  //   },
-  //   statement_description: '.io/' + req.body.objectId,
-  //   receipt_email: req.body.email
-  // }, function(err, charge) {
-  //   if (err && err.type === 'StripeCardError') {
-  //     // The card has been declined
-  //     res.json({status: 'error', message: err});
-  //   }
-  //   else {
-  //     // add some extra meta info
-  //     charge.chargeId = charge.id;
-  //     charge.ledgerId = req.body.objectId;
-
-  //     // save charge to parse
-  //     request.post({
-  //       json: charge,
-  //       url: 'https://api.parse.com/1/classes/Charge',
-  //       headers: {
-  //         'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
-  //         'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
-  //       },
-  //       strictSSL: true,
-  //       gzip: true
-  //     }, function(error, message, body) {
-  //       // send the user the response
-  //       res.json({status: 'success', message: charge});
-
-  //       // todo: send email to user with current 'name', 'description', and 'items'
-  //     })
-  //   }
-  // });
 });
 
-// DEPOSIT MONEY TO CARD
+// DEPOSIT MONEY TO CARD ONCE THEY'RE VERIFIED
 app.post('/api/verify', function(req, res) {
-  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
+  // authenticate user
+  if(_.indexOf(req.session.ledgers, req.body.metadata.ledgerId) < 0) {
+    res.json({status: 'error', message: 'You don\'t have access to transfer money out of this listing'});
+    return;
+  }
 
-  console.log("verify data");
-  console.log(req.body);
+  // continue if they have access
+  stripe = require('stripe')(app.get('Stripe-Secret-Key'));
 
   stripe.recipients.update(req.body.id, {
     tax_id: req.body.verifyNumber
@@ -448,25 +464,72 @@ app.post('/api/verify', function(req, res) {
       res.json({status: "error", message: err.message});
     }
     else {
-      console.log(updatedUser);
       if(!updatedUser.verified) {
         res.json({status: "error", message: "We couldn't verify your identity. Please send us an email."});
         updatedUser.error = "couldn't verify identity";
         logger.error(updatedUser);
       }
       else if(updatedUser.verified) {
-        res.json({status: "success", message: "Your money should be deposited in a few days. Check back here for the status."});
-        // todo: finish bank transfer
+        // send a success message 'prematurely' for a faster response
+        res.json({status: "success", message: "Your money transfer is complete."});
+
+        // get the remaining balance (we don't trust user input)
+        getRemainingBalance(req.body.metadata.ledgerId, function(remainingBalance) {
+          // finish the debit card transfer
+          stripe.transfers.create({
+            amount: remainingBalance,
+            currency: "usd",
+            recipient: req.body.id,
+            metadata: {
+              ledgerId: req.body.metadata.ledgerId
+            }
+          }, function(err, transfer) {
+            if(err) {
+              // save failed data to parse
+              request.post({
+                json: err,
+                url: 'https://api.parse.com/1/classes/Transfers',
+                headers: {
+                  'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+                  'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+                },
+                strictSSL: true,
+                gzip: true
+              },
+              function(error, message, body) {
+                if(error) console.log(error);
+              });
+            }
+            else {
+            // save transfer data to parse
+              request.post({
+                json: transfer,
+                url: 'https://api.parse.com/1/classes/Transfers',
+                headers: {
+                  'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+                  'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+                },
+                strictSSL: true,
+                gzip: true
+              },
+              function(error, message, body) {
+                if(error) console.log(error);
+              });
+            }
+          });
+        });
       }
     }
   });
+
+
 });
 
 // GET PAYMENTS FOR A PARTICULAR LEDGER
 app.get('/api/ledger/:id/charges', function(req, res) {
   var query = encodeURI('where={"ledgerId": "' + req.params.id + '"}');
   request.get({
-    url: 'https://api.parse.com/1/classes/Charge?' + query,
+    url: 'https://api.parse.com/1/classes/Charges?' + query,
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
@@ -474,7 +537,6 @@ app.get('/api/ledger/:id/charges', function(req, res) {
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
-    // console.log(error, body);
     // todo: log body.error
     // todo: log error
     var bodyObject = JSON.parse(body);
@@ -496,6 +558,57 @@ app.get('/api/ledger/:id/charges', function(req, res) {
   })
 });
 
+// GET TRANSFERS FOR A PARTICULAR LEDGER
+app.get('/api/ledger/:id/payouts', function(req, res) {
+  // authenticate user
+  if(_.indexOf(req.session.ledgers, req.params.id) < 0) {
+    res.json({status: 'error', message: 'You don\'t have access to view the payouts for this listing'});
+    return;
+  }
+
+  var query = encodeURI('where={"metadata.ledgerId": "' + req.params.id + '"}');
+  request.get({
+    url: 'https://api.parse.com/1/classes/Transfers?' + query,
+    headers: {
+      'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
+      'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')
+    },
+    strictSSL: true,
+    gzip: true
+  }, function(error, message, body) {
+    // todo: log body.error
+    // todo: log error
+    var bodyObject = JSON.parse(body);
+
+    // select only certain fields to make public
+    var filteredPayouts = [];
+    _.each(bodyObject.results, function(element, index, list) {
+      element.cardBrand = element.card.type;
+      element.cardTemp = {};
+      element.cardTemp.last4 = element.card.last4;
+      element.cardTemp.exp_month = element.card.exp_month;
+      element.cardTemp.exp_year = element.card.exp_year;
+      element.cardTemp.recipient = element.card.recipient;
+      element = _.pick(element, [
+        'cardBrand',
+        'amount',
+        'created',
+        'status',
+        'fee',
+        'cardTemp'
+      ]);
+      element.card = element.cardTemp;
+      element.cardTemp = undefined;
+      filteredPayouts.push(element);
+    });
+
+    // send off the payments
+
+    res.json({results: filteredPayouts});
+    // res.json(bodyObject);
+  })
+});
+
 // LOG OUT OF SESSION
 app.post('/api/logout', function(req, res) {
   req.session.destroy(function(err) {
@@ -511,7 +624,7 @@ app.post('/api/logout', function(req, res) {
 // LOG IN TO SESSION USING SPECIAL LINK
 app.get('/:id/authorize', function(req, res) {
   request.get({
-    url: 'https://api.parse.com/1/classes/Ledger/' + req.params.id,
+    url: 'https://api.parse.com/1/classes/Ledgers/' + req.params.id,
     headers: {
       'X-Parse-Application-Id': app.get('X-Parse-Application-Id'),
       'X-Parse-REST-API-Key': app.get('X-Parse-REST-API-Key')

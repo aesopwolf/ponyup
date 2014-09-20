@@ -68,7 +68,7 @@
     <!-- Contributions -->
     <div class="panel panel-info">
       <div class="panel-heading">
-        <span class="pull-left">So far you've collected:</span><span class="pull-right"><strong>{{totalContributionsWithFee || 0 | currency:"$"}} ({{totalContributions || 0 | currency:"$"}})</strong></span><div class="clearfix"></div>
+        <span class="pull-left">Your friends have ponied up:</span><span class="pull-right"><strong>{{totalContributions || 0 | currency:"$"}}</strong></span><div class="clearfix"></div>
       </div>
       <ul class="list-group">
         <li class="list-group-item" ng-if="ledger.contributions && ledger.totalContributions == 0">
@@ -98,6 +98,61 @@
           <div class="clearfix"></div>
         </li>
       </ul>
+      <div class="panel-footer">
+        <span class="pull-left">After processing fees:</span><span class="pull-right"><strong>{{totalContributionsWithFee || 0 | currency:"$"}} </strong></span><div class="clearfix"></div>
+      </div>
+    </div>
+
+    <small class="finePrint pull-right">Please note: Each outbound transfer costs $0.25</small>
+    <div class="clearfix"></div>
+    <hr>
+
+    <!-- Remaining Balance -->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <span class="pull-left">Payouts:</span>
+        <span class="pull-right">
+          <strong>{{totalPayouts + ((ledger.payouts.length * 25) / 100) || 0 | currency:"$"}}</strong>
+        </span>
+        <div class="clearfix"></div>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="payout in ledger.payouts">
+          <div class="pull-left">
+            <span title="{{ payout.created * 1000 | date:'MMM d, y h:mm a'}}"><span ng-if="payout.temp"><p class="text-center"><i class="fa fa-refresh fa-spin"></i></p></span><i class="fa fa-cc-{{payout.cardBrand | lowercase}}"></i> ****-{{payout.card.last4}} {{payout.card.exp_month}}/{{payout.card.exp_year}}</span>
+          </div>
+          <div class="pull-right">
+            ({{payout.status}}) {{(payout.amount) / 100 | currency:"$"}} 
+          </div>
+          <div class="clearfix"></div>
+        </li> 
+        <li class="list-group-item">
+          <div class="pull-left">
+            <i class="fa fa-money"></i> Transfer fees
+          </div>
+          <div class="pull-right">
+            <small>({{ledger.payouts.length}} x $0.25)&nbsp;&nbsp;</small> {{(ledger.payouts.length * 25) / 100 | currency:"$"}}
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+      <div class="panel-footer">
+        <span class="pull-left">Remaining balance:</span>
+        <span class="pull-right text-right">
+          <span ng-if="totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) > 0">
+            {{totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) | currency:"$"}}<br>
+          </span>
+          <span ng-if="totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) <= 0">{{0 | currency:"$"}}<br></span>
+          <!-- {{totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) || 0 | currency:"$"}}<br> -->
+          <span ng-if="totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) > 0" style="border-bottom: 1px solid">
+            - <small>(transfer fee)</small> $0.25<br>
+          </span>
+          <strong ng-if="totalContributionsWithFee - (totalPayouts + ((ledger.payouts.length * 25) / 100)) > 0">
+            {{totalContributionsWithFee - 0.25 - (totalPayouts + ((ledger.payouts.length * 25) / 100)) || 0 | currency:"$"}}
+          </strong>
+          </span>
+          <div class="clearfix"></div>
+      </div>
     </div>
 
     <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
@@ -124,7 +179,7 @@
     </div>
 
     <!-- Legal name -->
-    <div ng-show="requestingDeposit" ng-hide="transferSuccess" ng-init="depositorType = 'individual'">
+    <div ng-if="requestingDeposit && totalContributionsWithFee" ng-hide="transferSuccess" ng-init="depositorType = 'individual'">
       <form ng-hide="requestingDepositDone || verifyError" ng-submit="getDepositCC(legalName, depositorType);">
         <p ng-hide="depositError"><strong>First, we need your name, or your company's name</strong></p>
         <label class="radio-inline">
@@ -146,9 +201,14 @@
       </form>
     </div>
 
-    <span ng-click="requestingDeposit = true" ng-show="totalContributionsWithFee && !requestingDeposit">
-      <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee || 0 | currency:"$"}} to my debit card</a></button>
-    </span>
+    
+    <div ng-hide="remainingBalance <= 0.25 || !remainingBalance">
+      <span ng-click="requestingDeposit = true" ng-show="totalContributionsWithFee && !requestingDeposit">
+        <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee - 0.25 - (totalPayouts + ((ledger.payouts.length * 25) / 100)) | currency:"$"}} to my debit card</a></button>
+      </span>
+    </div>
+
+    <div ng-show="remainingBalance <= 0.25 || !remainingBalance" class="alert alert-warning">You need <strong>at least</strong> $0.25 to make a transfer</div>
 
     <!-- 
     <tabset>
