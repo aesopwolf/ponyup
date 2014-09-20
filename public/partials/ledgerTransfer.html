@@ -66,12 +66,12 @@
     </div>
 
     <!-- Contributions -->
-    <div class="panel panel-info" ng-if="ledger.contributions">
+    <div class="panel panel-info">
       <div class="panel-heading">
         <span class="pull-left">So far you've collected:</span><span class="pull-right"><strong>{{totalContributionsWithFee || 0 | currency:"$"}} ({{totalContributions || 0 | currency:"$"}})</strong></span><div class="clearfix"></div>
       </div>
       <ul class="list-group">
-        <li class="list-group-item" ng-if="!ledger.contributions || ledger.contributions.length < 1">
+        <li class="list-group-item" ng-if="ledger.contributions && ledger.totalContributions == 0">
             <h3 class="text-center" style="padding-top: 30px; padding-bottom: 30px;"><strong>No one has made any contributions yet!</strong></h3>
             <div class="container" style="width: 100%">
               <div class="row">
@@ -102,13 +102,11 @@
 
     <div class="alert alert-danger" ng-if="ownerError">{{ownerError}}</div>
     <div class="alert alert-danger" ng-if="depositError">{{depositError}}</div>
+    <div class="alert alert-success" ng-if="transferSuccess">{{transferSuccess}}</div>
 
     <div ng-show="needVerification">
-      <div class="alert alert-success" ng-if="needVerification.status === 'success'">{{needVerification.message}}</div>
-      <form ng-submit="verify(needVerification)" ng-if="needVerification.status !== 'success'">
-        <p>Your deposit was schedule to occur immediately, however we need to verify the identity of the account before we can continue.</p>
-
-        <div class="alert alert-danger" ng-if="verifyError">{{verifyError}}</div>
+      <form ng-submit="verify(needVerification)">
+        <div class="alert alert-danger">{{verifyError}}</div>
         <div class="input-group" ng-show="needVerification.type == 'individual'">
           <input sync-focus-with="needVerification.type == 'individual'" class="form-control" type="text" ng-model="needVerification.verifyNumber" placeholder="Social Security Number" style="height: 45px;">
           <span class="input-group-btn">
@@ -126,9 +124,9 @@
     </div>
 
     <!-- Legal name -->
-    <div ng-show="requestingDeposit" ng-init="depositorType = 'individual'">
-      <form ng-hide="requestingDepositDone" ng-submit="getDepositCC(legalName, depositorType); requestingDepositDone = true">
-        <p><strong>First, we need your name</strong></p>
+    <div ng-show="requestingDeposit" ng-hide="transferSuccess" ng-init="depositorType = 'individual'">
+      <form ng-hide="requestingDepositDone || verifyError" ng-submit="getDepositCC(legalName, depositorType);">
+        <p ng-hide="depositError"><strong>First, we need your name, or your company's name</strong></p>
         <label class="radio-inline">
           <input required type="radio" ng-model="depositorType" value="individual">
           Individual
@@ -148,7 +146,31 @@
       </form>
     </div>
 
-    <span ng-click="requestingDeposit = true" ng-hide="requestingDeposit">
-      <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee || 0 | currency:"$"}} to debit card</a></button>
+    <span ng-click="requestingDeposit = true" ng-show="totalContributionsWithFee && !requestingDeposit">
+      <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee || 0 | currency:"$"}} to my debit card</a></button>
     </span>
+
+    <!-- 
+    <tabset>
+      <tab heading="1">
+        choose a custom url
+      </tab>
+      <tab heading="2">
+        write an email blast
+      </tab>
+      <tab heading="2">
+        change the access link
+      </tab>
+      <tab heading="4">
+        <form name="emailForm">
+          <div class="input-group">
+            <input autofocus class="form-control" required type="email" ng-model="ledger.email"  style="height: 45px;">
+            <span class="input-group-btn">
+              <button ng-disabled="emailForm.$invalid" type="submit" class="btn btn-lg btn-success pull-right">Change Email</button>
+            </span>
+          </div>
+        </form>
+      </tab>
+    </tabset>
+     -->
 </div>

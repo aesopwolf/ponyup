@@ -374,6 +374,8 @@ app.post('/api/charge', function(req, res) {
 app.post('/api/deposit', function(req, res) {
   stripe = require('stripe')(app.get('Stripe-Secret-Key'));
 
+  // Lookup recipient by email
+
   // Create a Recipient
   stripe.recipients.create({
     name: req.body.legalName,
@@ -448,7 +450,7 @@ app.post('/api/verify', function(req, res) {
     else {
       console.log(updatedUser);
       if(!updatedUser.verified) {
-        res.json({status: "error", message: "We couldn't verify your identity. Please email us at youfriends@ponyup.io"});
+        res.json({status: "error", message: "We couldn't verify your identity. Please send us an email."});
         updatedUser.error = "couldn't verify identity";
         logger.error(updatedUser);
       }
