@@ -13,7 +13,9 @@ var express = require('express'),
     csrf = require('csurf'),
     mandrill = require('mandrill-api/mandrill'),
     winston = require('winston'),
-    Papertrail = require('winston-papertrail').Papertrail;
+    Papertrail = require('winston-papertrail').Papertrail,
+    errorhandler = require('errorhandler'),
+    morgan = require('morgan');
 
 var app = express();
 
@@ -29,7 +31,13 @@ _.each(nconf.get(), function(value, key, list) {
   app.set(key, value.toString());
 });
 
+// express settings
+app.enable('trust proxy');
+app.enable('strict routing');
+app.disable('x-powered-by');
+
 // middleware
+app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -95,6 +103,19 @@ paperTrailLogger.on('error', function(err) {
   logger.error(err);
 });
 
+// ERROR HANDLING
+if(process.env.NODE_ENV !== 'production') {
+  app.use(errorhandler());
+}
+
+app.use(function(err, req, res, next) {
+  logger.error(err);
+  res.status(500);
+  res.json({status: "error", messsage: err});
+});
+
+
+
 /*
 HELPER FUNCTIONS
 =================================================
@@ -128,7 +149,7 @@ var sendAdminLink = function (email, id) {
     // generate email body
     var htmlBody = '';
     htmlBody += "<p><strong>Keep this link private</strong>. Anyone who get's access to this link can edit your listing!";
-    htmlBody += '<p><a href="https://ponyup.localtunnel.me/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
+    htmlBody += '<p><a href="https://www.ponyup.io/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
     htmlBody += '<p><small>(This is also where you can enter your bank info so we can pay you.)</small></p>';
     htmlBody += "<hr><p>" + body.name + "</p>";
 
@@ -385,7 +406,7 @@ app.post('/api/charge', function(req, res) {
     statement_description: '.io/' + req.body.objectId,
     receipt_email: req.body.email
   }, function(err, charge) {
-    if (err && err.type === 'StripeCardError') {
+    if(err && err.type === 'StripeCardError') {
       // The card has been declined
       res.json({status: 'error', message: err});
     }
@@ -653,10 +674,11 @@ app.get('/:id/authorize', function(req, res) {
 
 // RECIEVE A WEBHOOK FROM STRIPE
 app.get('/stripehook', function(req, res) {
-  logger.info(req.body);
   console.log(req.body);
+  logger.info(req.body);
 });
 
+// IF NO ABOVE ROUTES HAVE MATCHED, THEN SEND ANGULAR
 app.get('*', function(req, res) {
   // send single page app
   res.sendFile('index.html', {'root': 'public'});
@@ -665,5 +687,3 @@ app.get('*', function(req, res) {
 http.createServer(app).listen(8080, 'localhost', function() {
   console.log("server listening on http://localhost:8080");
 });
-
-// todo: setup parse.onbeforecloudsave to check for unique /custom-url

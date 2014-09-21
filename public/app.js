@@ -4,8 +4,7 @@ var app = angular.module('app', [
   'ui.bootstrap',
   'ngAnimate',
   'ngCookies',
-  'ngFitText',
-  'xeditable',
+  'ngFitText'
 ])
 .config(function($stateProvider, $locationProvider, $uiViewScrollProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);
@@ -54,8 +53,7 @@ var app = angular.module('app', [
       controller: 'ledgerCtrl'
     });
 })
-.run(function(editableOptions, $cookies, $http) {
-  editableOptions.theme = 'bs3'; // for xeditable
+.run(function($cookies, $http) {
   // $http.defaults.xsrfCookieName = 'ponyup.csrf';
   // $http.defaults.xsrfHeaderName = 'x-csrf-token';
 })
