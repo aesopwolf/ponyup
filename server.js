@@ -651,6 +651,12 @@ app.get('/:id/authorize', function(req, res) {
   })
 });
 
+// RECIEVE A WEBHOOK FROM STRIPE
+app.get('/stripehook', function(req, res) {
+  logger.info(req.body);
+  console.log(req.body);
+});
+
 app.get('*', function(req, res) {
   // send single page app
   res.sendFile('index.html', {'root': 'public'});

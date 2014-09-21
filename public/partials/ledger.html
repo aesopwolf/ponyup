@@ -79,7 +79,7 @@
             <div class="container" style="width: 100%">
               <div class="row">
                 <div class="col-sm-6">
-                  <p class="text-center" style="line-height: 50px;">Share this url with people: </p>
+                  <p class="text-center" style="line-height: 50px;">Share this link with people: </p>
                 </div>
                 <div class="col-sm-6">
                   <form class="form">
@@ -120,6 +120,21 @@
     <button ng-disabled="!ledger.dollarAmount || ledger.objectId=='demo' || !ledger.email" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>
+    <div ng-if="ledger.objectId !== 'demo'">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'ponyupteam'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <hr>
+    </div>
 
     <div id="elevatorPitch">
       <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money from several people.</small>

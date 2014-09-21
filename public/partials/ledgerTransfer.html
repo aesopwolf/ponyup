@@ -103,10 +103,6 @@
       </div>
     </div>
 
-    <small class="finePrint pull-right">Please note: Each outbound transfer costs $0.25</small>
-    <div class="clearfix"></div>
-    <hr>
-
     <!-- Remaining Balance -->
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -118,13 +114,15 @@
       </div>
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="payout in ledger.payouts">
-          <div class="pull-left">
-            <span title="{{ payout.created * 1000 | date:'MMM d, y h:mm a'}}"><span ng-if="payout.temp"><p class="text-center"><i class="fa fa-refresh fa-spin"></i></p></span><i class="fa fa-cc-{{payout.cardBrand | lowercase}}"></i> ****-{{payout.card.last4}} {{payout.card.exp_month}}/{{payout.card.exp_year}}</span>
+          <div title="{{ payout.created * 1000 | date:'MMM d, y h:mm a'}}">
+            <div class="pull-left">
+              <span><span ng-if="payout.temp"><p class="text-center"><i class="fa fa-refresh fa-spin"></i></p></span><i class="fa fa-cc-{{payout.cardBrand | lowercase}}"></i> ****-{{payout.card.last4}} {{payout.card.exp_month}}/{{payout.card.exp_year}}</span>
+            </div>
+            <div class="pull-right">
+              {{(payout.amount) / 100 | currency:"$"}} 
+            </div>
+            <div class="clearfix"></div>
           </div>
-          <div class="pull-right">
-            ({{payout.status}}) {{(payout.amount) / 100 | currency:"$"}} 
-          </div>
-          <div class="clearfix"></div>
         </li> 
         <li class="list-group-item">
           <div class="pull-left">
@@ -132,6 +130,15 @@
           </div>
           <div class="pull-right">
             <small>({{ledger.payouts.length}} x $0.25)&nbsp;&nbsp;</small> {{(ledger.payouts.length * 25) / 100 | currency:"$"}}
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item" ng-if="ledger.penalties">
+          <div class="pull-left">
+            <i class="fa fa-money"></i> Penalties
+          </div>
+          <div class="pull-right">
+            Todo
           </div>
           <div class="clearfix"></div>
         </li>
@@ -202,13 +209,17 @@
     </div>
 
     
-    <div ng-hide="remainingBalance <= 0.25 || !remainingBalance">
+    <div ng-hide="totalContributionsWithFee - 0.25 - (totalPayouts + ((ledger.payouts.length * 25) / 100)) <= 0.25">
       <span ng-click="requestingDeposit = true" ng-show="totalContributionsWithFee && !requestingDeposit">
         <button style="font-weight: 300;" data-fittext-max="30" data-fittext-min="12" data-fittext="2" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Transfer {{totalContributionsWithFee - 0.25 - (totalPayouts + ((ledger.payouts.length * 25) / 100)) | currency:"$"}} to my debit card</a></button>
       </span>
     </div>
 
-    <div ng-show="remainingBalance <= 0.25 || !remainingBalance" class="alert alert-warning">You need <strong>at least</strong> $0.25 to make a transfer</div>
+    <div ng-show="totalContributionsWithFee - 0.25 - (totalPayouts + ((ledger.payouts.length * 25) / 100)) <= 0.25" class="alert alert-warning">You need <strong>at least</strong> $0.25 to make a transfer</div>
+
+    <hr>
+    <small class="finePrint pull-right">Please note: Each outbound transfer costs $0.25</small>
+    <div class="clearfix"></div>
 
     <!-- 
     <tabset>
