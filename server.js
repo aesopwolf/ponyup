@@ -1,4 +1,5 @@
-var express = require('express'),
+var _ = require('underscore'),
+    express = require('express'),
     http = require('http'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
@@ -7,7 +8,6 @@ var express = require('express'),
     request = require('request'),
     fs = require('fs'),
     nconf = require('nconf'),
-    _ = require('underscore'),
     bcrypt = require('bcrypt'),
     cache = require('memory-cache'),
     csrf = require('csurf'),
@@ -235,6 +235,8 @@ ROUTES
 // CREATE LEDGER
 app.post('/api/ledger', function(req, res) {
   req.body = removeEmptyItems(req.body);
+  
+  // todo: validate user input
 
   // save listing to parse
   request.post({
@@ -322,6 +324,8 @@ app.get('/api/ledger/:id', function(req, res) {
 // UPDATE LEDGER
 // todo: deconstruct this block and make it less complex
 app.post('/api/ledger/update', function(req, res) {
+  // todo: validate user input
+  
   /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
   var isNowAdmin = false;
 

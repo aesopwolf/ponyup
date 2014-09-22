@@ -4,7 +4,8 @@ var app = angular.module('app', [
   'ui.bootstrap',
   'ngAnimate',
   'ngCookies',
-  'ngFitText'
+  'ngFitText',
+  'ngSanitize'
 ])
 .config(function($stateProvider, $locationProvider, $uiViewScrollProvider, $urlRouterProvider) {
   $locationProvider.html5Mode(true);

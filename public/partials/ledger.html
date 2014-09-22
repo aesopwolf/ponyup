@@ -42,7 +42,7 @@
 
     <!-- Show description -->
     <div class="animate" ng-if="ledger.description" ng-hide="editDescription || !ledger.description">
-      <blockquote>{{ledger.description | unsafe}}</blockquote>
+      <blockquote ng-bind-html="ledger.description | linky"></blockquote>
     </div>
 
     <!-- Line items title -->
@@ -120,18 +120,6 @@
     <button ng-disabled="!ledger.dollarAmount || ledger.objectId=='demo' || !ledger.email" style="font-weight: 300;" ng-click="getCC()" data-fittext-max="30" data-fittext-min="12" data-fittext="2" ng-click="submit()" type="submit" class="btn btn-lg btn-primary btn-block jumbo"><small><i class="fa fa-credit-card"></i></small> Make a contribution</button>
 
     <hr>
-    <div ng-if="ledger.objectId !== 'demo'">
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-          var disqus_shortname = 'ponyupteam';
-          (function() {
-              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-      </script>
-      <hr>
-    </div>
 
     <div id="elevatorPitch">
       <small><strong>What is this website?</strong> <a href="/"><img src="/images/ponyup-alt.png" alt="PonyUp" style="max-height: 20px;"></a> is an online platform that provides an easy way to collect money from several people.</small>
