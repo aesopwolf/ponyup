@@ -8,5 +8,6 @@
   "Redis-Port": "",
   "Stripe-Secret-Key": "",
   "X-Parse-Application-Id": "",
-  "X-Parse-REST-API-Key": ""
+  "X-Parse-REST-API-Key": "",
+  "Configured": "Set this to 'True' when you are done"
 }

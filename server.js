@@ -1,4 +1,5 @@
 var _ = require('underscore'),
+    helmet = require('helmet'),
     express = require('express'),
     http = require('http'),
     cookieParser = require('cookie-parser'),
@@ -38,7 +39,6 @@ app.disable('x-powered-by');
 
 // middleware
 app.use(morgan('dev'));
-app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
@@ -49,17 +49,25 @@ app.use(session({
   }),
   name: 'ponyup.session',
   secret: app.get('Express-Session-Secret'),
-  cookie: { path: '/', httpOnly: true, secure: false, maxAge: null },
+  cookie: {path: '/', httpOnly: true, secure: false, maxAge: null},
   resave: true,
   saveUninitialized: true,
   rolling: true
 }));
-// todo: setup csrf
-// app.use(csrf({
-//   cookie: {
-//     key: 'ponyup.csrf'
-//   }
-// }));
+
+app.use(express.static('public'));
+
+// TODO: security features
+// setup csrf
+// setup csp
+// see https://www.npmjs.org/package/helmet for more
+// if(process.env.NODE_ENV === 'production-todo') {
+//   app.use(helmet.xframe('deny'));
+//   app.use(helmet.hsts({
+//     maxAge: 7776000000,
+//     includeSubdomains: true
+//   }));
+// }
 
 // mandrill is our smtp service for transactional emails
 var mandrill_client = new mandrill.Mandrill(app.get('Mandrill-Key'));
@@ -69,6 +77,7 @@ var consoleLogger = new winston.transports.Console({
   colorize: true,
   handleExceptions: true
 });
+
 var paperTrailLogger = new Papertrail({
   host: app.get('Papertrail-Host'),
   port: app.get('Papertrail-Port'),
@@ -114,12 +123,11 @@ app.use(function(err, req, res, next) {
   res.json({status: "error", messsage: err});
 });
 
-
-
 /*
 HELPER FUNCTIONS
 =================================================
 */
+
 // remove line items that are missing the description and price
 var removeEmptyItems = function(object) {
   if(object) {
@@ -235,8 +243,6 @@ ROUTES
 // CREATE LEDGER
 app.post('/api/ledger', function(req, res) {
   req.body = removeEmptyItems(req.body);
-  
-  // todo: validate user input
 
   // save listing to parse
   request.post({
@@ -324,8 +330,7 @@ app.get('/api/ledger/:id', function(req, res) {
 // UPDATE LEDGER
 // todo: deconstruct this block and make it less complex
 app.post('/api/ledger/update', function(req, res) {
-  // todo: validate user input
-  
+
   /* CREATE USER SESSION IF SOMEONE IS CLAIMING THE LISTING */
   var isNowAdmin = false;
 
@@ -562,8 +567,11 @@ app.get('/api/ledger/:id/charges', function(req, res) {
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
-    // todo: log body.error
-    // todo: log error
+    if(error) {
+      logger.error(error);
+      logger.error(body);
+    }
+
     var bodyObject = JSON.parse(body);
 
     // select only certain fields to make public
@@ -601,8 +609,11 @@ app.get('/api/ledger/:id/payouts', function(req, res) {
     strictSSL: true,
     gzip: true
   }, function(error, message, body) {
-    // todo: log body.error
-    // todo: log error
+    if(error) {
+      logger.error(error);
+      logger.error(body);
+    }
+
     var bodyObject = JSON.parse(body);
 
     // select only certain fields to make public
@@ -671,7 +682,7 @@ app.get('/:id/authorize', function(req, res) {
     }
     else {
       res.redirect(302, '/' + req.params.id + '?error=badKey');
-      // todo: create ui for badkey
+      // todo: create ui for bad auth key
     }
   })
 });
@@ -689,5 +700,12 @@ app.get('*', function(req, res) {
 })
 
 http.createServer(app).listen(8080, 'localhost', function() {
-  console.log("server listening on http://localhost:8080");
+  if(app.get('Configured') !== 'True') {
+    console.log("Please set your environment variables in config-staging.json or config-production.json");
+    console.log("See config-sample.json for an example");
+    process.exit(1);
+  }
+  else {
+    console.log("server listening on http://localhost:8080");
+  }
 });

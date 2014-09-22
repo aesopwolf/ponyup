@@ -1,19 +1,19 @@
 Parse.Cloud.beforeSave("Ledgers", function(req, res) {
   // limit name to 60 characters
   var name = req.object.get("name");
-  if(name.length > 59) {
+  if(name && name.length > 59) {
     req.object.set("name", name.substring(0, 59));
   }
 
   // limit description to 300 characters
   var description = req.object.get("description");
-  if(description.length > 299) {
+  if(description && description.length > 299) {
     req.object.set("description", description.substring(0, 299));
   }
 
   // limit items to 100
   var items = req.object.get("items");
-  if(items.length > 99) {
+  if(items && items.length > 99) {
     req.object.set("items", items.splice(0, 99));
   }
 

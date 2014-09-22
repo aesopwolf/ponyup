@@ -55,8 +55,8 @@ var app = angular.module('app', [
     });
 })
 .run(function($cookies, $http) {
-  // $http.defaults.xsrfCookieName = 'ponyup.csrf';
-  // $http.defaults.xsrfHeaderName = 'x-csrf-token';
+  $http.defaults.xsrfCookieName = 'ponyup.csrf';
+  $http.defaults.xsrfHeaderName = 'x-csrf-token';
 })
 .animation(".fakeMouse", function() {
   return {
@@ -104,6 +104,8 @@ var app = angular.module('app', [
     angular.element('body').animate({scrollTop: 0}, "fast");
   });
 
+  $http.get('/api/csrf');
+  
   // logout function
   // todo: setup csrf here
   $rootScope.logOut = function() {
