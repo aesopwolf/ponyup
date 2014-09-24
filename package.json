@@ -1,6 +1,6 @@
 {
   "name": "ponyup",
-  "version": "1.0.0-2",
+  "version": "1.0.0-3",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -30,6 +30,10 @@
     "winston-papertrail": "^0.1.4"
   },
   "subdomain": "ponyup",
+  "domains": [
+    "ponyup.io",
+    "www.ponyup.io"
+  ],
   "engines": {
     "node": "0.10.x"
   }
