@@ -105,7 +105,6 @@ var app = angular.module('app', [
   });
 
   $http.get('/api/csrf');
-  
   // logout function
   // todo: setup csrf here
   $rootScope.logOut = function() {
@@ -252,7 +251,7 @@ var app = angular.module('app', [
     $scope.isFocused = false;
     $scope.ledger.items.push({});
 
-    // todo: research $q
+    // todo: use $q instead of a timeout
     $timeout(function() {
       $scope.isFocused = true;
     }, 100, true);
@@ -546,6 +545,7 @@ var app = angular.module('app', [
     $scope.ledger.items.splice(data, 1);
   };
 
+  // todo: use $q instead of a timeout
   $scope.removeError = function() {
     $timeout(function() {
       $scope.errorMessage = undefined;
@@ -596,6 +596,7 @@ var app = angular.module('app', [
           $scope.totalPayouts += key.amount / 100;
         });
 
+        // todo: use $q instead of a timeout
         $timeout(function() {
           $scope.remainingBalance = $scope.totalContributionsWithFee - 0.25 - ($scope.totalPayouts + (($scope.ledger.payouts.length * 25) / 100));
         }, 100, true);
@@ -627,6 +628,7 @@ var app = angular.module('app', [
       .success(function(data) {
         if(data.status === 'error') {
           $scope.depositError = data.message + " Try again...";
+          // todo: use $q
           $timeout(function() {
             $scope.requestingDeposit = true;
             $scope.requestingDepositDone = false;
@@ -695,6 +697,7 @@ var app = angular.module('app', [
               $scope.totalPayouts += key.amount / 100;
             });
 
+            // todo: use $q
             $timeout(function() {
               $scope.remainingBalance = $scope.totalContributionsWithFee - ($scope.totalPayouts + (($scope.ledger.payouts.length * 25) / 100));
             }, 100, true);
