@@ -157,7 +157,7 @@ var sendAdminLink = function (email, id) {
     // generate email body
     var htmlBody = '';
     htmlBody += "<p><strong>Keep this link private</strong>. Anyone who get's access to this link can edit your listing!";
-    htmlBody += '<p><a href="https://www.ponyup.io/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
+    htmlBody += '<p><a href="http://ponyup.io/' + id + "/authorize?secret=" + encodeURI(body.secretKey) + '">Click here to access the admin panel</a></p>';
     htmlBody += '<p><small>(This is also where you can enter your bank info so we can pay you.)</small></p>';
     htmlBody += "<hr><p>" + body.name + "</p>";
 
