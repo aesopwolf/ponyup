@@ -613,10 +613,10 @@ var app = angular.module('app', [
   });
 
   // deposit money into owners account
-  var stripeKey = $location.host() === 'ponyip.io' ? 'pk_iQ9f8PrbR8se0IfGjmdw43iwxzGbr' : 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN';
+  var stripeKey = $location.host() === 'ponyup.io' ? 'pk_iQ9f8PrbR8se0IfGjmdw43iwxzGbr' : 'pk_y1vPjpvylOlQt4wnKp24cAF3nfFrN';
   var depositHandler = StripeCheckout.configure({
     key: stripeKey,
-    panelLabel: 'Deposit {{amount}}',
+    panelLabel: 'Deposit ',
     token: function(token) {
       $scope.requestingDeposit = undefined;
       token.objectId = $scope.ledger.objectId;
