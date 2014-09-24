@@ -27,7 +27,7 @@ CONFIGURATION
 
 // load keys/secrets/salts/etc into app
 var configuration = process.env.NODE_ENV === 'production' ? 'config-production.json' : 'config-staging.json';
-nconf.argv().file({file: configuration}).env();
+nconf.argv().env().file({file: configuration});
 _.each(nconf.get(), function(value, key, list) {
   app.set(key, value.toString());
 });
